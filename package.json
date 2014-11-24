@@ -15,9 +15,10 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
+    "fecs": "*",
     "istanbul": "^0.3.2",
     "jasmine-node": "^1.14.5",
-    "fecs": "*"
+    "shelljs": "^0.3.0"
   },
   "scripts": {
     "lint": "fecs lib cli test/**/*.spec.js --type=js",
