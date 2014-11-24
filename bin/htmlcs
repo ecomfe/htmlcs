@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var htmlhinter = require('../');
+var info = require('../package.json');
+
+var path = process.argv[2];
+
+if (path) {
+    htmlhinter.hintFile(path).forEach(function (item) {
+        console.log('[%s] line %d, col %d: %s', item.type, item.pos.line, item.pos.col, item.message);
+    });
+}
