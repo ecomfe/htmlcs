@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 var path = require('path');
-var hinter = require('../../../');
+var hinter = require('../../../../');
 
 var rule = path.basename(__dirname);
 
