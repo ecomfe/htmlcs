@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var parse = require('../../lib/parse');
 
-var testCasePath = path.resolve(__dirname, '../cases/1.html');
+var testCasePath = path.resolve(__dirname, '../fixture/all.html');
 var testCase = fs.readFileSync(testCasePath, {
     encoding: 'utf-8'
 });
