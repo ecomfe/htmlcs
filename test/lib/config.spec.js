@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var sh = require('shelljs');
 var fs = require('fs');
 var path = require('path');
@@ -29,7 +27,7 @@ describe('load', function () {
         it('should return right config', function () {
             createConfigFile(__dirname);
 
-            assert.strictEqual(true, config.load(__filename, true).test);
+            expect(config.load(__filename, true).test).toBe(true);
 
             removeConfigFile();
         });
@@ -39,7 +37,7 @@ describe('load', function () {
         it('should return right config', function () {
             createConfigFile(path.resolve(__dirname, '../'));
 
-            assert.strictEqual(true, config.load(__filename, true).test);
+            expect(config.load(__filename, true).test).toBe(true);
 
             removeConfigFile();
         });
@@ -49,7 +47,7 @@ describe('load', function () {
         it('should return right config', function () {
             createConfigFile(path.resolve(__dirname, '../../'));
 
-            assert.strictEqual(true, config.load(__filename, true).test);
+            expect(config.load(__filename, true).test).toBe(true);
 
             removeConfigFile();
         });
@@ -60,7 +58,7 @@ describe('load', function () {
         it('should return right config', function () {
             createConfigFile(path.resolve('/'));
 
-            assert.strictEqual(true, config.load(__filename).test);
+            expect(config.load(__filename).test).toBe(true);
 
             removeConfigFile();
         });
@@ -70,7 +68,7 @@ describe('load', function () {
         it('should return right config', function () {
             createConfigFile(util.getHomePath());
 
-            assert.strictEqual(true, config.load(__filename, true).test);
+            expect(config.load(__filename, true).test).toBe(true);
 
             removeConfigFile();
         });
@@ -79,7 +77,7 @@ describe('load', function () {
     describe('no config file', function () {
         it('should use default config', function () {
             var cfg = config.load(__filename, true);
-            assert.strictEqual(true, cfg['default']);
+            expect(cfg['default']).toBe(true);
         });
     });
 
@@ -95,7 +93,7 @@ describe('load', function () {
                 err = e;
             }
 
-            assert.strictEqual(true, err instanceof Error);
+            expect(err instanceof Error).toBe(true);
 
             removeConfigFile();
         });

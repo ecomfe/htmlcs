@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var fs = require('fs');
 var path = require('path');
 var parse = require('../../lib/parse');
@@ -13,31 +11,31 @@ describe('parse', function () {
     var document = parse(testCase);
 
     it('should return a dom tree', function () {
-        assert.strictEqual('#document', document.nodeName);
+        expect(document.nodeName).toBe('#document');
 
         var html = document.firstElementChild;
-        assert.strictEqual('HTML', html.tagName);
-        assert.strictEqual('HEAD', html.firstElementChild.tagName);
-        assert.strictEqual('BODY', html.lastElementChild.tagName);
+        expect(html.tagName).toBe('HTML');
+        expect(html.firstElementChild.tagName).toBe('HEAD');
+        expect(html.lastElementChild.tagName).toBe('BODY');
 
         var imgs = document.querySelectorAll('img');
-        assert.strictEqual(3, imgs.length);
-        assert.strictEqual('img1', imgs[0].id);
-        assert.strictEqual('img2', imgs[1].id);
-        assert.strictEqual('img3', imgs[2].id);
+        expect(imgs.length).toBe(3);
+        expect(imgs[0].id).toBe('img1');
+        expect(imgs[1].id).toBe('img2');
+        expect(imgs[2].id).toBe('img3');
     });
 
     it('should record positions', function () {
         var titlePos = document.querySelector('title').startPos;
-        assert.strictEqual(5, titlePos.line);
-        assert.strictEqual(5, titlePos.col);
+        expect(titlePos.line).toBe(5);
+        expect(titlePos.col).toBe(5);
 
         var divPos = document.querySelector('#div').startPos;
-        assert.strictEqual(27, divPos.line);
-        assert.strictEqual(9, divPos.col);
+        expect(divPos.line).toBe(27);
+        expect(divPos.col).toBe(9);
 
         var img1Pos = document.querySelector('#img1').startPos;
-        assert.strictEqual(36, img1Pos.line);
-        assert.strictEqual(5, img1Pos.col);
+        expect(img1Pos.line).toBe(36);
+        expect(img1Pos.col).toBe(5);
     });
 });

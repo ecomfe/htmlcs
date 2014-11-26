@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var htmlparser2 = require('htmlparser2');
 
 var Node = require('../../lib/node');
@@ -25,7 +23,7 @@ describe('deal unnormal node', function () {
     describe('empty node', function () {
         var node = null;
         it('should return right result', function () {
-            assert.strictEqual(true, Node.init(node) instanceof Node);
+            expect(Node.init(node) instanceof Node).toBe(true);
         });
     });
 
@@ -37,7 +35,7 @@ describe('deal unnormal node', function () {
         };
 
         it('should return right result', function () {
-            assert.strictEqual(true, Node.init(node) instanceof Node);
+            expect(Node.init(node) instanceof Node).toBe(true);
         });
     });
 
@@ -49,7 +47,7 @@ describe('deal unnormal node', function () {
         };
 
         it('should return right result', function () {
-            assert.strictEqual(true, Node.init(node) instanceof Node);
+            expect(Node.init(node) instanceof Node).toBe(true);
         });
     });
 });
@@ -67,12 +65,12 @@ describe('node methods', function () {
     it('should have node methods', function () {
         var node = Node.init(p.children[1]);
 
-        assert.strictEqual(true, node.hasChildNodes());
-        assert.strictEqual(false, node.childNodes[0].hasChildNodes());
+        expect(node.hasChildNodes()).toBe(true);
+        expect(node.childNodes[0].hasChildNodes()).toBe(false);
 
-        assert.strictEqual(true, node.contains(node.childNodes[0]));
-        assert.strictEqual(true, node.parentNode.contains(node.childNodes[0]));
-        assert.strictEqual(false, node.previousSibling.contains(node.childNodes[0]));
+        expect(node.contains(node.childNodes[0])).toBe(true);
+        expect(node.parentNode.contains(node.childNodes[0])).toBe(true);
+        expect(node.previousSibling.contains(node.childNodes[0])).toBe(false);
     });
 });
 
@@ -82,15 +80,15 @@ describe('text node', function () {
     it('should behave like a text node', function () {
         var node = Node.init(p.children[1]);
 
-        assert.strictEqual('#text', node.nodeName);
-        assert.strictEqual(NodeType.TEXT_NODE, node.nodeType);
-        assert.strictEqual('aaa', node.nodeValue);
-        assert.strictEqual('aaa', node.textContent);
+        expect(node.nodeName).toBe('#text');
+        expect(node.nodeType).toBe(NodeType.TEXT_NODE);
+        expect(node.nodeValue).toBe('aaa');
+        expect(node.textContent).toBe('aaa');
 
-        assert.strictEqual('P', node.parentNode.tagName);
-        assert.strictEqual(node.parentNode, node.parentElement);
-        assert.strictEqual('SPAN', node.previousSibling.tagName);
-        assert.strictEqual('I', node.nextSibling.tagName);
+        expect(node.parentNode.tagName).toBe('P');
+        expect(node.parentElement).toBe(node.parentNode);
+        expect(node.previousSibling.tagName).toBe('SPAN');
+        expect(node.nextSibling.tagName).toBe('I');
     });
 });
 
@@ -100,8 +98,8 @@ describe('doctype node', function () {
     it('should behave like a doctype node', function () {
         node = Node.init(node);
 
-        assert.strictEqual('html', node.nodeName);
-        assert.strictEqual(NodeType.DOCUMENT_TYPE_NODE, node.nodeType);
+        expect(node.nodeName).toBe('html');
+        expect(node.nodeType).toBe(NodeType.DOCUMENT_TYPE_NODE);
     });
 });
 
@@ -114,8 +112,8 @@ describe('cdata node', function () {
     it('should behave like a cdata node', function () {
         node = Node.init(node);
 
-        assert.strictEqual('#cdata', node.nodeName);
-        assert.strictEqual(NodeType.CDATA_SECTION_NODE, node.nodeType);
+        expect(node.nodeName).toBe('#cdata');
+        expect(node.nodeType).toBe(NodeType.CDATA_SECTION_NODE);
     });
 });
 
@@ -125,15 +123,15 @@ describe('comment node', function () {
     it('should behave like a comment node', function () {
         var node = Node.init(p.children[1]);
 
-        assert.strictEqual('#comment', node.nodeName);
-        assert.strictEqual(NodeType.COMMENT_NODE, node.nodeType);
-        assert.strictEqual('aaa', node.nodeValue);
-        assert.strictEqual('aaa', node.textContent);
+        expect(node.nodeName).toBe('#comment');
+        expect(node.nodeType).toBe(NodeType.COMMENT_NODE);
+        expect(node.nodeValue).toBe('aaa');
+        expect(node.textContent).toBe('aaa');
 
-        assert.strictEqual('P', node.parentNode.tagName);
-        assert.strictEqual(node.parentNode, node.parentElement);
-        assert.strictEqual('SPAN', node.previousSibling.tagName);
-        assert.strictEqual('I', node.nextSibling.tagName);
+        expect(node.parentNode.tagName).toBe('P');
+        expect(node.parentElement).toBe(node.parentNode);
+        expect(node.previousSibling.tagName).toBe('SPAN');
+        expect(node.nextSibling.tagName).toBe('I');
     });
 });
 
@@ -148,17 +146,17 @@ describe('document node', function () {
     it('should behave like a document node', function () {
         node = Node.init(node, node);
 
-        assert.strictEqual('#document', node.nodeName);
-        assert.strictEqual(NodeType.DOCUMENT_NODE, node.nodeType);
+        expect(node.nodeName).toBe('#document');
+        expect(node.nodeType).toBe(NodeType.DOCUMENT_NODE);
 
-        assert.strictEqual('html', node.doctype.nodeName);
-        assert.strictEqual(NodeType.DOCUMENT_TYPE_NODE, node.doctype.nodeType);
+        expect(node.doctype.nodeName).toBe('html');
+        expect(node.doctype.nodeType).toBe(NodeType.DOCUMENT_TYPE_NODE);
 
-        assert.strictEqual(node, node.querySelector('body').ownerDocument);
+        expect(node.querySelector('body').ownerDocument).toBe(node);
 
-        assert.strictEqual('HTML', node.documentElement.tagName);
-        assert.strictEqual('HEAD', node.head.tagName);
-        assert.strictEqual('BODY', node.body.tagName);
+        expect(node.documentElement.tagName).toBe('HTML');
+        expect(node.head.tagName).toBe('HEAD');
+        expect(node.body.tagName).toBe('BODY');
     });
 });
 
@@ -178,60 +176,62 @@ describe('element', function () {
         var node = Node.init(p.children[1]);
 
         // as a node
-        assert.strictEqual('A', node.nodeName);
-        assert.strictEqual(NodeType.ELEMENT_NODE, node.nodeType);
+        expect(node.nodeName).toBe('A');
+        expect(node.nodeType).toBe(NodeType.ELEMENT_NODE);
 
-        assert.strictEqual('P', node.parentNode.tagName);
-        assert.strictEqual(node.parentNode, node.parentElement);
-        assert.strictEqual('SPAN', node.previousSibling.tagName);
-        assert.strictEqual('I', node.nextSibling.tagName);
+        expect(node.parentNode.tagName).toBe('P');
+        expect(node.parentElement).toBe(node.parentNode);
+        expect(node.previousSibling.tagName).toBe('SPAN');
+        expect(node.nextSibling.tagName).toBe('I');
 
         // as an element
-        assert.strictEqual('a', node.localName);
-        assert.strictEqual('A', node.tagName);
-        assert.strictEqual('x', node.id);
-        assert.strictEqual('y z', node.className);
-        assert.deepEqual(['y', 'z'], node.classList);
+        expect(node.localName).toBe('a');
+        expect(node.tagName).toBe('A');
+        expect(node.id).toBe('x');
+        expect(node.className).toBe('y z');
+        expect(node.classList.length).toBe(2);
+        expect(node.classList[0]).toBe('y');
+        expect(node.classList[1]).toBe('z');
 
-        assert.strictEqual('x', node.attributes.id);
-        assert.strictEqual('y z', node.attributes.class);
-        assert.strictEqual('#', node.attributes.href);
-        assert.strictEqual('test', node.attributes['data-role']);
-        assert.strictEqual('', node.attributes.disabled);
+        expect(node.attributes.id).toBe('x');
+        expect(node.attributes.class).toBe('y z');
+        expect(node.attributes.href).toBe('#');
+        expect(node.attributes['data-role']).toBe('test');
+        expect(node.attributes.disabled).toBe('');
 
-        assert.strictEqual(2, node.children.length);
-        assert.strictEqual(node.firstElementChild, node.children[0]);
-        assert.strictEqual(node.lastElementChild, node.children[1]);
-        assert.strictEqual(2, node.childElementCount);
-        assert.strictEqual('c1', node.children[0].id);
-        assert.strictEqual('c2', node.children[1].id);
+        expect(node.children.length).toBe(2);
+        expect(node.children[0]).toBe(node.firstElementChild);
+        expect(node.children[1]).toBe(node.lastElementChild);
+        expect(node.childElementCount).toBe(2);
+        expect(node.children[0].id).toBe('c1');
+        expect(node.children[1].id).toBe('c2');
 
-        assert.strictEqual('SPAN', node.previousElementSibling.tagName);
-        assert.strictEqual('I', node.nextElementSibling.tagName);
+        expect(node.previousElementSibling.tagName).toBe('SPAN');
+        expect(node.nextElementSibling.tagName).toBe('I');
 
-        assert.strictEqual('#', node.getAttribute('href'));
-        assert.strictEqual(true, node.hasAttribute('href'));
-        assert.strictEqual(true, node.hasAttribute('disabled'));
-        assert.strictEqual(false, node.hasAttribute('disabledddd'));
+        expect(node.getAttribute('href')).toBe('#');
+        expect(node.hasAttribute('href')).toBe(true);
+        expect(node.hasAttribute('disabled')).toBe(true);
+        expect(node.hasAttribute('disabledddd')).toBe(false);
 
         var elementsOfTagNameImg = node.getElementsByTagName('img');
-        assert.strictEqual(1, elementsOfTagNameImg.length);
-        assert.strictEqual('c1', elementsOfTagNameImg[0].id);
+        expect(elementsOfTagNameImg.length).toBe(1);
+        expect(elementsOfTagNameImg[0].id).toBe('c1');
 
         var elementsOfClassNameCls = node.getElementsByClassName('cls');
-        assert.strictEqual(2, elementsOfClassNameCls.length);
-        assert.strictEqual('c1', elementsOfClassNameCls[0].id);
-        assert.strictEqual('c2', elementsOfClassNameCls[1].id);
+        expect(elementsOfClassNameCls.length).toBe(2);
+        expect(elementsOfClassNameCls[0].id).toBe('c1');
+        expect(elementsOfClassNameCls[1].id).toBe('c2');
 
         var elementsOfClassNameClsCls2 = node.getElementsByClassName('cls cls2');
-        assert.strictEqual(1, elementsOfClassNameClsCls2.length);
-        assert.strictEqual('c1', elementsOfClassNameClsCls2[0].id);
+        expect(elementsOfClassNameClsCls2.length).toBe(1);
+        expect(elementsOfClassNameClsCls2[0].id).toBe('c1');
 
         var elementOfIdC2 = node.querySelector('#c2');
-        assert.strictEqual('c2', elementOfIdC2.id);
+        expect(elementOfIdC2.id).toBe('c2');
 
         var elementsOfIdC2 = node.querySelectorAll('#c2');
-        assert.strictEqual(1, elementsOfIdC2.length);
-        assert.strictEqual('c2', elementsOfIdC2[0].id);
+        expect(elementsOfIdC2.length).toBe(1);
+        expect(elementsOfIdC2[0].id).toBe('c2');
     });
 });

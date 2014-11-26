@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var path = require('path');
 var hinter = require('../../../../');
 
@@ -9,30 +7,30 @@ describe('rule ' + rule, function () {
     var result = hinter.hintFile(path.join(__dirname, 'case.html'));
 
     it('should return right result', function () {
-        assert.equal(6, result.length);
+        expect(result.length).toBe(6);
 
-        assert.equal('WARN', result[0].type);
-        assert.equal(11, result[0].pos.line);
-        assert.equal(5, result[0].pos.col);
+        expect(result[0].type).toBe('WARN');
+        expect(result[0].pos.line).toBe(11);
+        expect(result[0].pos.col).toBe(5);
 
-        assert.equal('WARN', result[1].type);
-        assert.equal(13, result[1].pos.line);
-        assert.equal(5, result[1].pos.col);
+        expect(result[1].type).toBe('WARN');
+        expect(result[1].pos.line).toBe(13);
+        expect(result[1].pos.col).toBe(5);
 
-        assert.equal('WARN', result[2].type);
-        assert.equal(15, result[2].pos.line);
-        assert.equal(5, result[2].pos.col);
+        expect(result[2].type).toBe('WARN');
+        expect(result[2].pos.line).toBe(15);
+        expect(result[2].pos.col).toBe(5);
 
-        assert.equal('WARN', result[3].type);
-        assert.equal(17, result[3].pos.line);
-        assert.equal(5, result[3].pos.col);
+        expect(result[3].type).toBe('WARN');
+        expect(result[3].pos.line).toBe(17);
+        expect(result[3].pos.col).toBe(5);
 
-        assert.equal('WARN', result[4].type);
-        assert.equal(19, result[4].pos.line);
-        assert.equal(5, result[4].pos.col);
+        expect(result[4].type).toBe('WARN');
+        expect(result[4].pos.line).toBe(19);
+        expect(result[4].pos.col).toBe(5);
 
-        assert.equal('WARN', result[5].type);
-        assert.equal(21, result[5].pos.line);
-        assert.equal(5, result[5].pos.col);
+        expect(result[5].type).toBe('WARN');
+        expect(result[5].pos.line).toBe(21);
+        expect(result[5].pos.col).toBe(5);
     });
 });

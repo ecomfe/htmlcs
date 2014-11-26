@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var path = require('path');
 var hinter = require('../../../../');
 
@@ -14,27 +12,27 @@ describe('rule ' + rule, function () {
     var result6 = hinter.hintFile(path.join(__dirname, 'case6.html'));
 
     it('should return right result', function () {
-        assert.equal(1, result1.length);
-        assert.equal('WARN', result1[0].type);
-        assert.equal(3, result1[0].pos.line);
-        assert.equal(1, result1[0].pos.col);
+        expect(result1.length).toBe(1);
+        expect(result1[0].type).toBe('WARN');
+        expect(result1[0].pos.line).toBe(3);
+        expect(result1[0].pos.col).toBe(1);
 
-        assert.equal(1, result2.length);
-        assert.equal('WARN', result2[0].type);
-        assert.equal(3, result2[0].pos.line);
-        assert.equal(1, result2[0].pos.col);
+        expect(result2.length).toBe(1);
+        expect(result2[0].type).toBe('WARN');
+        expect(result2[0].pos.line).toBe(3);
+        expect(result2[0].pos.col).toBe(1);
 
-        assert.equal(1, result3.length);
-        assert.equal('WARN', result3[0].type);
-        assert.equal(6, result3[0].pos.line);
-        assert.equal(5, result3[0].pos.col);
+        expect(result3.length).toBe(1);
+        expect(result3[0].type).toBe('WARN');
+        expect(result3[0].pos.line).toBe(6);
+        expect(result3[0].pos.col).toBe(5);
 
-        assert.equal(1, result4.length);
-        assert.equal('WARN', result4[0].type);
-        assert.equal(4, result4[0].pos.line);
-        assert.equal(5, result4[0].pos.col);
+        expect(result4.length).toBe(1);
+        expect(result4[0].type).toBe('WARN');
+        expect(result4[0].pos.line).toBe(4);
+        expect(result4[0].pos.col).toBe(5);
 
-        assert.equal(0, result5.length);
-        assert.equal(0, result6.length);
+        expect(result5.length).toBe(0);
+        expect(result6.length).toBe(0);
     });
 });

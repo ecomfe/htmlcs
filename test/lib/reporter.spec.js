@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var Reporter = require('../../lib/reporter');
 
 describe('result', function () {
@@ -8,8 +6,8 @@ describe('result', function () {
             var reporter = new Reporter();
             var result = reporter.result();
 
-            assert.strictEqual(true, Array.isArray(result));
-            assert.strictEqual(0, result.length);
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBe(0);
         });
     });
 
@@ -27,11 +25,11 @@ describe('result', function () {
             reporter.report(report);
             var result = reporter.result();
 
-            assert.strictEqual(1, result.length);
-            assert.strictEqual(report.pos.line, result[0].pos.line);
-            assert.strictEqual(report.pos.col, result[0].pos.col);
-            assert.strictEqual(report.type, result[0].type);
-            assert.strictEqual(report.message, result[0].message);
+            expect(result.length).toBe(1);
+            expect(result[0].pos.line).toBe(report.pos.line);
+            expect(result[0].pos.col).toBe(report.pos.col);
+            expect(result[0].type).toBe(report.type);
+            expect(result[0].message).toBe(report.message);
         });
     });
 
@@ -79,27 +77,27 @@ describe('result', function () {
 
             var result = reporter.result();
 
-            assert.strictEqual(4, result.length);
+            expect(result.length).toBe(4);
 
-            assert.strictEqual(report1.pos.line, result[0].pos.line);
-            assert.strictEqual(report1.pos.col, result[0].pos.col);
-            assert.strictEqual(report1.type, result[0].type);
-            assert.strictEqual(report1.message, result[0].message);
+            expect(result[0].pos.line).toBe(report1.pos.line);
+            expect(result[0].pos.col).toBe(report1.pos.col);
+            expect(result[0].type).toBe(report1.type);
+            expect(result[0].message).toBe(report1.message);
 
-            assert.strictEqual(report2.pos.line, result[1].pos.line);
-            assert.strictEqual(report2.pos.col, result[1].pos.col);
-            assert.strictEqual(report2.type, result[1].type);
-            assert.strictEqual(report2.message, result[1].message);
+            expect(result[1].pos.line).toBe(report2.pos.line);
+            expect(result[1].pos.col).toBe(report2.pos.col);
+            expect(result[1].type).toBe(report2.type);
+            expect(result[1].message).toBe(report2.message);
 
-            assert.strictEqual(report3.pos.line, result[2].pos.line);
-            assert.strictEqual(report3.pos.col, result[2].pos.col);
-            assert.strictEqual(report3.type, result[2].type);
-            assert.strictEqual(report3.message, result[2].message);
+            expect(result[2].pos.line).toBe(report3.pos.line);
+            expect(result[2].pos.col).toBe(report3.pos.col);
+            expect(result[2].type).toBe(report3.type);
+            expect(result[2].message).toBe(report3.message);
 
-            assert.strictEqual(report4.pos.line, result[3].pos.line);
-            assert.strictEqual(report4.pos.col, result[3].pos.col);
-            assert.strictEqual(report4.type, result[3].type);
-            assert.strictEqual(report4.message, result[3].message);
+            expect(result[3].pos.line).toBe(report4.pos.line);
+            expect(result[3].pos.col).toBe(report4.pos.col);
+            expect(result[3].type).toBe(report4.type);
+            expect(result[3].message).toBe(report4.message);
         });
     });
 });
@@ -119,11 +117,11 @@ describe('report', function () {
             reporter.report(report);
             var result = reporter.result();
 
-            assert.strictEqual(1, result.length);
-            assert.strictEqual(report.pos.line, result[0].pos.line);
-            assert.strictEqual(report.pos.col, result[0].pos.col);
-            assert.strictEqual(report.type, result[0].type);
-            assert.strictEqual(report.message, result[0].message);
+            expect(result.length).toBe(1);
+            expect(result[0].pos.line).toBe(report.pos.line);
+            expect(result[0].pos.col).toBe(report.pos.col);
+            expect(result[0].type).toBe(report.type);
+            expect(result[0].message).toBe(report.message);
         });
     });
 
@@ -143,11 +141,11 @@ describe('report', function () {
             reporter.report(report);
             var result = reporter.result();
 
-            assert.strictEqual(1, result.length);
-            assert.strictEqual(report.elem.startPos.line, result[0].pos.line);
-            assert.strictEqual(report.elem.startPos.col, result[0].pos.col);
-            assert.strictEqual(report.type, result[0].type);
-            assert.strictEqual(report.message, result[0].message);
+            expect(result.length).toBe(1);
+            expect(result[0].pos.line).toBe(report.elem.startPos.line);
+            expect(result[0].pos.col).toBe(report.elem.startPos.col);
+            expect(result[0].type).toBe(report.type);
+            expect(result[0].message).toBe(report.message);
         });
     });
 
@@ -161,11 +159,11 @@ describe('report', function () {
             reporter.report(report);
             var result = reporter.result();
 
-            assert.strictEqual(1, result.length);
-            assert.strictEqual(0, result[0].pos.line);
-            assert.strictEqual(0, result[0].pos.col);
-            assert.strictEqual(report.type, result[0].type);
-            assert.strictEqual(report.message, result[0].message);
+            expect(result.length).toBe(1);
+            expect(result[0].pos.line).toBe(0);
+            expect(result[0].pos.col).toBe(0);
+            expect(result[0].type).toBe(report.type);
+            expect(result[0].message).toBe(report.message);
         });
     });
 });
@@ -183,11 +181,11 @@ describe('info', function () {
         reporter.info(element, message);
         var result = reporter.result();
 
-        assert.strictEqual(1, result.length);
-        assert.strictEqual('INFO', result[0].type);
-        assert.strictEqual(element.startPos.line, result[0].pos.line);
-        assert.strictEqual(element.startPos.col, result[0].pos.col);
-        assert.strictEqual(message, result[0].message);
+        expect(result.length).toBe(1);
+        expect(result[0].type).toBe('INFO');
+        expect(result[0].pos.line).toBe(element.startPos.line);
+        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].message).toBe(message);
     });
 });
 
@@ -204,11 +202,11 @@ describe('warn', function () {
         reporter.warn(element, message);
         var result = reporter.result();
 
-        assert.strictEqual(1, result.length);
-        assert.strictEqual('WARN', result[0].type);
-        assert.strictEqual(element.startPos.line, result[0].pos.line);
-        assert.strictEqual(element.startPos.col, result[0].pos.col);
-        assert.strictEqual(message, result[0].message);
+        expect(result.length).toBe(1);
+        expect(result[0].type).toBe('WARN');
+        expect(result[0].pos.line).toBe(element.startPos.line);
+        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].message).toBe(message);
     });
 });
 
@@ -225,10 +223,10 @@ describe('error', function () {
         reporter.error(element, message);
         var result = reporter.result();
 
-        assert.strictEqual(1, result.length);
-        assert.strictEqual('ERROR', result[0].type);
-        assert.strictEqual(element.startPos.line, result[0].pos.line);
-        assert.strictEqual(element.startPos.col, result[0].pos.col);
-        assert.strictEqual(message, result[0].message);
+        expect(result.length).toBe(1);
+        expect(result[0].type).toBe('ERROR');
+        expect(result[0].pos.line).toBe(element.startPos.line);
+        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].message).toBe(message);
     });
 });
