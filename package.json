@@ -21,8 +21,8 @@
     "shelljs": "^0.3.0"
   },
   "scripts": {
-    "lint": "fecs lib cli test/**/*.spec.js --type=js",
-    "coverage": "istanbul cover jasmine-node --captureExceptions test/**/*.spec.js",
+    "lint": "fecs lib cli test --type=js",
+    "coverage": "istanbul cover jasmine-node --captureExceptions test/**/*.spec.js test/lib/rules/*/*.spec.js",
     "test": "npm run lint && npm run coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
