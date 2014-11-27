@@ -16,6 +16,18 @@ var NodeType = {
     DOCUMENT_FRAGMENT_NODE: 11
 };
 
+var transformRecursively = function (node, root) {
+    root = root || node;
+
+    Node.init(node, root);
+
+    node.childNodes.forEach(function (childNode) {
+        transformRecursively(childNode, root);
+    });
+
+    return node;
+};
+
 describe('element', function () {
     var p = htmlparser2.parseDOM(
         '<p><span></span>' +
@@ -27,7 +39,9 @@ describe('element', function () {
     )[0];
 
     it('should behave like a element(<a>)', function () {
-        var node = Node.init(p.children[1]);
+        transformRecursively(p);
+
+        var node = p.childNodes[1];
 
         // as a node
         expect(node.nodeName).toBe('A');

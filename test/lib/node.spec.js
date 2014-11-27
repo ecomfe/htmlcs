@@ -18,6 +18,18 @@ var NodeType = {
     DOCUMENT_FRAGMENT_NODE: 11
 };
 
+var transformRecursively = function (node, root) {
+    root = root || node;
+
+    Node.init(node, root);
+
+    node.childNodes.forEach(function (childNode) {
+        transformRecursively(childNode, root);
+    });
+
+    return node;
+};
+
 describe('deal unnormal node', function () {
 
     describe('empty node', function () {
@@ -63,7 +75,8 @@ describe('node methods', function () {
     )[0];
 
     it('should have node methods', function () {
-        var node = Node.init(p.children[1]);
+        transformRecursively(p);
+        var node = p.childNodes[1];
 
         expect(node.hasChildNodes()).toBe(true);
         expect(node.childNodes[0].hasChildNodes()).toBe(false);
@@ -78,7 +91,8 @@ describe('text node', function () {
     var p = htmlparser2.parseDOM('<p><span></span>aaa<i></i></p>')[0];
 
     it('should behave like a text node', function () {
-        var node = Node.init(p.children[1]);
+        transformRecursively(p);
+        var node = p.childNodes[1];
 
         expect(node.nodeName).toBe('#text');
         expect(node.nodeType).toBe(NodeType.TEXT_NODE);
@@ -121,7 +135,8 @@ describe('comment node', function () {
     var p = htmlparser2.parseDOM('<p><span></span><!--aaa--><i></i></p>')[0];
 
     it('should behave like a comment node', function () {
-        var node = Node.init(p.children[1]);
+        transformRecursively(p);
+        var node = p.childNodes[1];
 
         expect(node.nodeName).toBe('#comment');
         expect(node.nodeType).toBe(NodeType.COMMENT_NODE);
@@ -144,7 +159,7 @@ describe('document node', function () {
     )[0];
 
     it('should behave like a document node', function () {
-        node = Node.init(node, node);
+        transformRecursively(node);
 
         expect(node.nodeName).toBe('#document');
         expect(node.nodeType).toBe(NodeType.DOCUMENT_NODE);
