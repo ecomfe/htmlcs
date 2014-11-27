@@ -1,11 +1,11 @@
 htmlcs
+========
 
 [![Build Status](https://travis-ci.org/ecomfe/htmlcs.svg)](http://travis-ci.org/ecomfe/htmlcs)
 [![NPM version](https://badge.fury.io/js/htmlcs.svg)](http://badge.fury.io/js/htmlcs)
 [![Coverage Status](https://coveralls.io/repos/ecomfe/htmlcs/badge.png)](https://coveralls.io/r/ecomfe/htmlcs)
 [![Dependencies](http://img.shields.io/david/ecomfe/htmlcs.svg?style=flat-square)](https://david-dm.org/ecomfe/htmlcs)
 [![DevDependencies](http://img.shields.io/david/dev/ecomfe/htmlcs.svg?style=flat-square)](https://david-dm.org/ecomfe/htmlcs)
-========
 
 html hint tool, focused on semantic code style.
 
