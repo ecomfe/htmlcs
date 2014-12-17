@@ -1,3 +1,8 @@
+/**
+ * @file test for parse
+ * @author nighca<nighca@live.cn>
+ */
+
 var fs = require('fs');
 var path = require('path');
 var parse = require('../../lib/parse');

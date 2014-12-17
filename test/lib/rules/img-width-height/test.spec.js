@@ -1,3 +1,8 @@
+/**
+ * @file test for rule img-width-height
+ * @author nighca<nighca@live.cn>
+ */
+
 var path = require('path');
 var hinter = require('../../../../');
 
@@ -10,37 +15,37 @@ describe('rule ' + rule, function () {
         expect(result.length).toBe(7);
 
         expect(result[0].type).toBe('WARN');
-        expect(result[0].rule).toBe('015');
+        expect(result[0].code).toBe('015');
         expect(result[0].line).toBe(10);
         expect(result[0].col).toBe(5);
 
         expect(result[1].type).toBe('WARN');
-        expect(result[1].rule).toBe('015');
+        expect(result[1].code).toBe('015');
         expect(result[1].line).toBe(11);
         expect(result[1].col).toBe(5);
 
         expect(result[2].type).toBe('WARN');
-        expect(result[2].rule).toBe('015');
+        expect(result[2].code).toBe('015');
         expect(result[2].line).toBe(12);
         expect(result[2].col).toBe(5);
 
         expect(result[3].type).toBe('WARN');
-        expect(result[3].rule).toBe('017');
+        expect(result[3].code).toBe('017');
         expect(result[3].line).toBe(13);
         expect(result[3].col).toBe(5);
 
         expect(result[4].type).toBe('WARN');
-        expect(result[4].rule).toBe('016');
+        expect(result[4].code).toBe('016');
         expect(result[4].line).toBe(14);
         expect(result[4].col).toBe(5);
 
         expect(result[5].type).toBe('WARN');
-        expect(result[5].rule).toBe('017');
+        expect(result[5].code).toBe('017');
         expect(result[5].line).toBe(15);
         expect(result[5].col).toBe(5);
 
         expect(result[6].type).toBe('WARN');
-        expect(result[6].rule).toBe('016');
+        expect(result[6].code).toBe('016');
         expect(result[6].line).toBe(16);
         expect(result[6].col).toBe(5);
     });

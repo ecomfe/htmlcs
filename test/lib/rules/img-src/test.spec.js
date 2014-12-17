@@ -1,3 +1,8 @@
+/**
+ * @file test for rule img-src
+ * @author nighca<nighca@live.cn>
+ */
+
 var path = require('path');
 var hinter = require('../../../../');
 
@@ -10,7 +15,7 @@ describe('rule ' + rule, function () {
         expect(result.length).toBe(1);
 
         expect(result[0].type).toBe('WARN');
-        expect(result[0].rule).toBe('013');
+        expect(result[0].code).toBe('013');
         expect(result[0].line).toBe(11);
         expect(result[0].col).toBe(5);
     });

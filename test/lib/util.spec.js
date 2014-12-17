@@ -1,3 +1,8 @@
+/**
+ * @file test for util methods
+ * @author nighca<nighca@live.cn>
+ */
+
 var path = require('path');
 var util = require('../../lib/util');
 var packageInfo = require('../../package.json');

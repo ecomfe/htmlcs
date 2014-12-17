@@ -1,3 +1,8 @@
+/**
+ * @file test for rule ie-edge
+ * @author nighca<nighca@live.cn>
+ */
+
 var path = require('path');
 var hinter = require('../../../../');
 
@@ -12,7 +17,7 @@ describe('rule ' + rule, function () {
         expect(result1.length).toBe(1);
 
         expect(result1[0].type).toBe('WARN');
-        expect(result1[0].rule).toBe('011');
+        expect(result1[0].code).toBe('011');
         expect(result1[0].line).toBe(3);
         expect(result1[0].col).toBe(1);
 
