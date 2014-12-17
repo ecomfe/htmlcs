@@ -1,0 +1,41 @@
+{
+    "asset-type": "001,002",
+
+    "bool-attribute-value": "003",
+
+    "button-name": "004",
+
+    "button-type": "005",
+
+    "charset": "006,007",
+
+    "css-in-head": "008",
+
+    "doctype": "009",
+
+    "html-lang": "010",
+
+    "ie-edge": "011",
+
+    "img-alt": "012",
+
+    "img-src": "013",
+
+    "img-title": "014",
+
+    "img-width-height": "015,016,017",
+
+    "lowercase-class-with-hyphen": "018,019",
+
+    "lowercase-id-with-hyphen": "020,021",
+
+    "rel-stylesheet": "022",
+
+    "script-in-tail": "023",
+
+    "title-required": "024,025",
+
+    "unique-id": "026",
+
+    "viewport": "027"
+}

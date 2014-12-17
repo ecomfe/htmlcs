@@ -7,7 +7,7 @@ var path = process.argv[2];
 
 if (path) {
     htmlcs.hintFile(path).forEach(function (item) {
-        console.log('[%s] line %d, col %d: %s', item.type, item.pos.line, item.pos.col, item.message);
+        console.log('[%s] line %d, col %d: %s (%s)', item.type, item.line, item.col, item.message, item.rule);
     });
 } else {
     console.log([
