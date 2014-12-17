@@ -1,3 +1,8 @@
+/**
+ * @file test for config
+ * @author nighca<nighca@live.cn>
+ */
+
 var sh = require('shelljs');
 var fs = require('fs');
 var path = require('path');

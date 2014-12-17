@@ -1,3 +1,8 @@
+/**
+ * @file test for Element
+ * @author nighca<nighca@live.cn>
+ */
+
 var htmlparser2 = require('htmlparser2');
 
 var Node = require('../../lib/node');

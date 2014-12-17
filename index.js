@@ -1,3 +1,8 @@
+/**
+ * @file main file
+ * @author nighca<nighca@live.cn>
+ */
+
 var fs = require('fs');
 
 var parse = require('./lib/parse');
@@ -45,6 +50,7 @@ var hint = function (code, cfg) {
     var reporter = new Reporter();
 
     rules.forEach(function (rule) {
+        reporter.setRule(rule.name);
         rule.lint(cfg[rule.name], document, reporter);
     });
 
