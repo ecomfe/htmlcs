@@ -20,15 +20,17 @@ describe('result', function () {
                     col: 1
                 },
                 type: 'INFO',
+                rule: '001',
                 message: 'test report'
             };
             reporter.report(report);
             var result = reporter.result();
 
             expect(result.length).toBe(1);
-            expect(result[0].pos.line).toBe(report.pos.line);
-            expect(result[0].pos.col).toBe(report.pos.col);
+            expect(result[0].line).toBe(report.pos.line);
+            expect(result[0].col).toBe(report.pos.col);
             expect(result[0].type).toBe(report.type);
+            expect(result[0].rule).toBe(report.rule);
             expect(result[0].message).toBe(report.message);
         });
     });
@@ -43,6 +45,7 @@ describe('result', function () {
                     col: 1
                 },
                 type: 'INFO',
+                rule: '001',
                 message: 'test report1'
             };
             var report2 = {
@@ -51,6 +54,7 @@ describe('result', function () {
                     col: 2
                 },
                 type: 'WARN',
+                rule: '002',
                 message: 'test report2'
             };
             var report3 = {
@@ -59,6 +63,7 @@ describe('result', function () {
                     col: 3
                 },
                 type: 'ERROR',
+                rule: '003',
                 message: 'test report3'
             };
             var report4 = {
@@ -67,6 +72,7 @@ describe('result', function () {
                     col: 4
                 },
                 type: 'ERROR',
+                rule: '004',
                 message: 'test report4'
             };
 
@@ -79,24 +85,28 @@ describe('result', function () {
 
             expect(result.length).toBe(4);
 
-            expect(result[0].pos.line).toBe(report1.pos.line);
-            expect(result[0].pos.col).toBe(report1.pos.col);
+            expect(result[0].line).toBe(report1.pos.line);
+            expect(result[0].col).toBe(report1.pos.col);
             expect(result[0].type).toBe(report1.type);
+            expect(result[0].rule).toBe(report1.rule);
             expect(result[0].message).toBe(report1.message);
 
-            expect(result[1].pos.line).toBe(report2.pos.line);
-            expect(result[1].pos.col).toBe(report2.pos.col);
+            expect(result[1].line).toBe(report2.pos.line);
+            expect(result[1].col).toBe(report2.pos.col);
             expect(result[1].type).toBe(report2.type);
+            expect(result[1].rule).toBe(report2.rule);
             expect(result[1].message).toBe(report2.message);
 
-            expect(result[2].pos.line).toBe(report3.pos.line);
-            expect(result[2].pos.col).toBe(report3.pos.col);
+            expect(result[2].line).toBe(report3.pos.line);
+            expect(result[2].col).toBe(report3.pos.col);
             expect(result[2].type).toBe(report3.type);
+            expect(result[2].rule).toBe(report3.rule);
             expect(result[2].message).toBe(report3.message);
 
-            expect(result[3].pos.line).toBe(report4.pos.line);
-            expect(result[3].pos.col).toBe(report4.pos.col);
+            expect(result[3].line).toBe(report4.pos.line);
+            expect(result[3].col).toBe(report4.pos.col);
             expect(result[3].type).toBe(report4.type);
+            expect(result[3].rule).toBe(report4.rule);
             expect(result[3].message).toBe(report4.message);
         });
     });
@@ -112,15 +122,17 @@ describe('report', function () {
                     col: 1
                 },
                 type: 'INFO',
+                rule: '001',
                 message: 'test report'
             };
             reporter.report(report);
             var result = reporter.result();
 
             expect(result.length).toBe(1);
-            expect(result[0].pos.line).toBe(report.pos.line);
-            expect(result[0].pos.col).toBe(report.pos.col);
+            expect(result[0].line).toBe(report.pos.line);
+            expect(result[0].col).toBe(report.pos.col);
             expect(result[0].type).toBe(report.type);
+            expect(result[0].rule).toBe(report.rule);
             expect(result[0].message).toBe(report.message);
         });
     });
@@ -136,15 +148,17 @@ describe('report', function () {
                     }
                 },
                 type: 'INFO',
+                rule: '001',
                 message: 'test report'
             };
             reporter.report(report);
             var result = reporter.result();
 
             expect(result.length).toBe(1);
-            expect(result[0].pos.line).toBe(report.elem.startPos.line);
-            expect(result[0].pos.col).toBe(report.elem.startPos.col);
+            expect(result[0].line).toBe(report.elem.startPos.line);
+            expect(result[0].col).toBe(report.elem.startPos.col);
             expect(result[0].type).toBe(report.type);
+            expect(result[0].rule).toBe(report.rule);
             expect(result[0].message).toBe(report.message);
         });
     });
@@ -154,15 +168,17 @@ describe('report', function () {
             var reporter = new Reporter();
             var report = {
                 type: 'INFO',
+                rule: '001',
                 message: 'test report'
             };
             reporter.report(report);
             var result = reporter.result();
 
             expect(result.length).toBe(1);
-            expect(result[0].pos.line).toBe(0);
-            expect(result[0].pos.col).toBe(0);
+            expect(result[0].line).toBe(0);
+            expect(result[0].col).toBe(0);
             expect(result[0].type).toBe(report.type);
+            expect(result[0].rule).toBe(report.rule);
             expect(result[0].message).toBe(report.message);
         });
     });
@@ -177,14 +193,16 @@ describe('info', function () {
                 col: 1
             }
         };
+        var rule = '001';
         var message = 'test info';
-        reporter.info(element, message);
+        reporter.info(element, rule, message);
         var result = reporter.result();
 
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('INFO');
-        expect(result[0].pos.line).toBe(element.startPos.line);
-        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].rule).toBe(rule);
+        expect(result[0].line).toBe(element.startPos.line);
+        expect(result[0].col).toBe(element.startPos.col);
         expect(result[0].message).toBe(message);
     });
 });
@@ -198,14 +216,16 @@ describe('warn', function () {
                 col: 1
             }
         };
+        var rule = '001';
         var message = 'test warn';
-        reporter.warn(element, message);
+        reporter.warn(element, rule, message);
         var result = reporter.result();
 
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('WARN');
-        expect(result[0].pos.line).toBe(element.startPos.line);
-        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].rule).toBe(rule);
+        expect(result[0].line).toBe(element.startPos.line);
+        expect(result[0].col).toBe(element.startPos.col);
         expect(result[0].message).toBe(message);
     });
 });
@@ -219,14 +239,16 @@ describe('error', function () {
                 col: 1
             }
         };
+        var rule = '001';
         var message = 'test error';
-        reporter.error(element, message);
+        reporter.error(element, rule, message);
         var result = reporter.result();
 
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('ERROR');
-        expect(result[0].pos.line).toBe(element.startPos.line);
-        expect(result[0].pos.col).toBe(element.startPos.col);
+        expect(result[0].rule).toBe(rule);
+        expect(result[0].line).toBe(element.startPos.line);
+        expect(result[0].col).toBe(element.startPos.col);
         expect(result[0].message).toBe(message);
     });
 });
