@@ -30,18 +30,22 @@ html hint tool, focused on semantic code style.
 
 	result.forEach(function(item){
 	    console.log(
-	        '[%s] line %d, col %d: %s',
+	        '[%s] line %d, col %d: %s (%s, %s)',
 	        item.type,
 	        item.pos.line,
 	        item.pos.col,
-	        item.message
+	        item.message,
+	        item.rule,
+	        item.code
 	    );
 	});
 	```
 
-### Rules
+### Rules & Codes
 
 [lib/rules/](./lib/rules/)
+
+[rule map](./lib/default/rule-map.json)
 
 ### Config
 
