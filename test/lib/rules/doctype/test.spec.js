@@ -11,8 +11,9 @@ describe('rule ' + rule, function () {
         expect(result1.length).toBe(1);
 
         expect(result1[0].type).toBe('WARN');
-        expect(result1[0].pos.line).toBe(0);
-        expect(result1[0].pos.col).toBe(0);
+        expect(result1[0].rule).toBe('009');
+        expect(result1[0].line).toBe(0);
+        expect(result1[0].col).toBe(0);
 
         expect(result2.length).toBe(0);
     });
