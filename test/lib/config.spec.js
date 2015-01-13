@@ -82,7 +82,7 @@ describe('load', function () {
     describe('no config file', function () {
         it('should use default config', function () {
             var cfg = config.load(__filename, true);
-            expect(cfg['default']).toBe(true);
+            expect(cfg.default).toBe(true);
         });
     });
 
