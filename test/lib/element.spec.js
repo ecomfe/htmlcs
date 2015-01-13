@@ -43,6 +43,7 @@ describe('element', function () {
         '<i></i></p>'
     )[0];
 
+    /* eslint-disable fecs-max-statements */
     it('should behave like a element(<a>)', function () {
         transformRecursively(p);
 
@@ -66,11 +67,16 @@ describe('element', function () {
         expect(node.classList[0]).toBe('y');
         expect(node.classList[1]).toBe('z');
 
-        expect(node.attributes.id).toBe('x');
-        expect(node.attributes.class).toBe('y z');
-        expect(node.attributes.href).toBe('#');
-        expect(node.attributes['data-role']).toBe('test');
-        expect(node.attributes.disabled).toBe('');
+        expect(node.attributes[0].name).toBe('id');
+        expect(node.attributes[0].value).toBe('x');
+        expect(node.attributes[1].name).toBe('class');
+        expect(node.attributes[1].value).toBe('y z');
+        expect(node.attributes[2].name).toBe('href');
+        expect(node.attributes[2].value).toBe('#');
+        expect(node.attributes[3].name).toBe('data-role');
+        expect(node.attributes[3].value).toBe('test');
+        expect(node.attributes[4].name).toBe('disabled');
+        expect(node.attributes[4].value).toBe('');
 
         expect(node.children.length).toBe(2);
         expect(node.children[0]).toBe(node.firstElementChild);
@@ -107,4 +113,5 @@ describe('element', function () {
         expect(elementsOfIdC2.length).toBe(1);
         expect(elementsOfIdC2[0].id).toBe('c2');
     });
+    /* eslint-enable fecs-max-statements */
 });
