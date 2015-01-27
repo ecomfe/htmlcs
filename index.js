@@ -9,6 +9,8 @@ var parse = require('./lib/parse');
 var Reporter = require('./lib/reporter');
 var config = require('./lib/config');
 
+var htmlGenner = require('html-code-gen');
+
 // rules
 var rules = [];
 
@@ -44,9 +46,8 @@ var addRule = function (rule) {
     addRule(rule);
 });
 
-// hint code
-var hint = function (code, cfg) {
-    var document = parse(code);
+// hint document
+var hintDocument = function (document, cfg) {
     var reporter = new Reporter();
 
     rules.forEach(function (rule) {
@@ -55,6 +56,13 @@ var hint = function (code, cfg) {
     });
 
     return reporter.result();
+};
+
+// hint code
+var hintCode = function (code, cfg) {
+    var document = parse(code);
+    
+    return hintDocument(document, cfg);
 };
 
 // hint file
@@ -66,11 +74,37 @@ var hintFile = function (filePath, options) {
     var cnt = fs.readFileSync(filePath, options);
     var cfg = config.load(filePath);
 
-    return hint(cnt, cfg);
+    return hintCode(cnt, cfg);
+};
+
+// format document
+var formatDocument = function (document, cfg) {
+    return htmlGenner.print(document, cfg);
+};
+
+// format code
+var formatCode = function (code, cfg) {
+    var document = parse(code);
+
+    return formatDocument(document, cfg);
+};
+
+// format file
+var formatFile = function (filePath, options) {
+    options = options || {
+        encoding: 'utf-8'
+    };
+
+    var cnt = fs.readFileSync(filePath, options);
+    var cfg = config.load(filePath);
+
+    return formatCode(cnt, cfg);
 };
 
 module.exports = {
     addRule: addRule,
-    hint: hint,
-    hintFile: hintFile
+    hint: hintCode,
+    hintFile: hintFile,
+    format: formatCode,
+    formatFile: formatFile
 };
