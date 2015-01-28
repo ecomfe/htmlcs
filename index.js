@@ -49,12 +49,19 @@ var hint = function (code, cfg) {
     var document = parse(code);
     var reporter = new Reporter();
 
-    rules.forEach(function (rule) {
+    // max error num
+    var maxError = cfg['max-error'];
+    delete cfg['max-error'];
+
+    rules.every(function (rule) {
         reporter.setRule(rule.name);
         rule.lint(cfg[rule.name], document, reporter);
+
+        return !(maxError && reporter.num() >= maxError);
     });
 
-    return reporter.result();
+    var result = reporter.result();
+    return maxError ? result.slice(0, maxError) : result;
 };
 
 // hint file
