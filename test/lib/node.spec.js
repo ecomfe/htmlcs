@@ -79,16 +79,26 @@ describe('node methods', function () {
         '<i></i></p>'
     )[0];
 
+    var p2 = htmlparser2.parseDOM('<p></p>')[0];
+
     it('should have node methods', function () {
         transformRecursively(p);
         var node = p.childNodes[1];
 
         expect(node.hasChildNodes()).toBe(true);
-        expect(node.childNodes[0].hasChildNodes()).toBe(false);
+        expect(node.firstChild.hasChildNodes()).toBe(false);
 
         expect(node.isEqualNode(node)).toBe(true);
         expect(node.isEqualNode(p)).toBe(false);
         expect(node.isEqualNode(node.firstChild)).toBe(false);
+
+        expect(node.compareDocumentPosition(node)).toBe(0);
+        expect([35, 37].indexOf(node.compareDocumentPosition(null)) >= 0).toBe(true);
+        expect([35, 37].indexOf(node.compareDocumentPosition(p2)) >= 0).toBe(true);
+        expect(node.compareDocumentPosition(p)).toBe(10);
+        expect(node.compareDocumentPosition(node.firstChild)).toBe(20);
+        expect(node.compareDocumentPosition(node.previousSibling)).toBe(2);
+        expect(node.compareDocumentPosition(node.nextSibling)).toBe(4);
 
         expect(node.contains(node.childNodes[0])).toBe(true);
         expect(node.parentNode.contains(node.childNodes[0])).toBe(true);
