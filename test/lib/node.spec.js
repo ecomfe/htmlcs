@@ -86,6 +86,10 @@ describe('node methods', function () {
         expect(node.hasChildNodes()).toBe(true);
         expect(node.childNodes[0].hasChildNodes()).toBe(false);
 
+        expect(node.isEqualNode(node)).toBe(true);
+        expect(node.isEqualNode(p)).toBe(false);
+        expect(node.isEqualNode(node.firstChild)).toBe(false);
+
         expect(node.contains(node.childNodes[0])).toBe(true);
         expect(node.parentNode.contains(node.childNodes[0])).toBe(true);
         expect(node.previousSibling.contains(node.childNodes[0])).toBe(false);
