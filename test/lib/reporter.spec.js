@@ -9,8 +9,10 @@ describe('result', function () {
     describe('inititial status', function () {
         it('should return empty list', function () {
             var reporter = new Reporter();
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(0);
             expect(Array.isArray(result)).toBe(true);
             expect(result.length).toBe(0);
         });
@@ -29,8 +31,10 @@ describe('result', function () {
                 message: 'test report'
             };
             reporter.report(report);
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(1);
             expect(result.length).toBe(1);
             expect(result[0].line).toBe(report.pos.line);
             expect(result[0].col).toBe(report.pos.col);
@@ -86,8 +90,10 @@ describe('result', function () {
             reporter.report(report1);
             reporter.report(report3);
 
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(4);
             expect(result.length).toBe(4);
 
             expect(result[0].line).toBe(report1.pos.line);
@@ -131,8 +137,10 @@ describe('report', function () {
                 message: 'test report'
             };
             reporter.report(report);
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(1);
             expect(result.length).toBe(1);
             expect(result[0].line).toBe(report.pos.line);
             expect(result[0].col).toBe(report.pos.col);
@@ -157,8 +165,10 @@ describe('report', function () {
                 message: 'test report'
             };
             reporter.report(report);
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(1);
             expect(result.length).toBe(1);
             expect(result[0].line).toBe(report.elem.startPos.line);
             expect(result[0].col).toBe(report.elem.startPos.col);
@@ -177,8 +187,10 @@ describe('report', function () {
                 message: 'test report'
             };
             reporter.report(report);
+            var num = reporter.num();
             var result = reporter.result();
 
+            expect(num).toBe(1);
             expect(result.length).toBe(1);
             expect(result[0].line).toBe(0);
             expect(result[0].col).toBe(0);
@@ -201,8 +213,10 @@ describe('info', function () {
         var code = '001';
         var message = 'test info';
         reporter.info(element, code, message);
+        var num = reporter.num();
         var result = reporter.result();
 
+        expect(num).toBe(1);
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('INFO');
         expect(result[0].code).toBe(code);
@@ -224,8 +238,10 @@ describe('warn', function () {
         var code = '001';
         var message = 'test warn';
         reporter.warn(element, code, message);
+        var num = reporter.num();
         var result = reporter.result();
 
+        expect(num).toBe(1);
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('WARN');
         expect(result[0].code).toBe(code);
@@ -247,8 +263,10 @@ describe('error', function () {
         var code = '001';
         var message = 'test error';
         reporter.error(element, code, message);
+        var num = reporter.num();
         var result = reporter.result();
 
+        expect(num).toBe(1);
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('ERROR');
         expect(result[0].code).toBe(code);

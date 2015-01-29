@@ -50,12 +50,19 @@ var addRule = function (rule) {
 var hintDocument = function (document, cfg) {
     var reporter = new Reporter();
 
-    rules.forEach(function (rule) {
+    // max error num
+    var maxError = cfg['max-error'];
+    delete cfg['max-error'];
+
+    rules.every(function (rule) {
         reporter.setRule(rule.name);
         rule.lint(cfg[rule.name], document, reporter);
+
+        return !(maxError && reporter.num() >= maxError);
     });
 
-    return reporter.result();
+    var result = reporter.result();
+    return maxError ? result.slice(0, maxError) : result;
 };
 
 // hint code
