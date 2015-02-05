@@ -89,6 +89,9 @@ describe('element', function () {
         expect(node.nextElementSibling.tagName).toBe('I');
 
         expect(node.getAttribute('href')).toBe('#');
+        var hrefAttributeNode = node.getAttributeNode('href');
+        expect(hrefAttributeNode.name).toBe('href');
+        expect(hrefAttributeNode.value).toBe('#');
         expect(node.hasAttribute('href')).toBe(true);
         expect(node.hasAttribute('disabled')).toBe(true);
         expect(node.hasAttribute('disabledddd')).toBe(false);
@@ -114,4 +117,39 @@ describe('element', function () {
         expect(elementsOfIdC2[0].id).toBe('c2');
     });
     /* eslint-enable fecs-max-statements */
+});
+
+describe('element write ops', function () {
+    var a = htmlparser2.parseDOM(
+        '<a id="x" class="y z" href="#" data-role="test" disabled></a>'
+    )[0];
+
+    transformRecursively(a);
+
+    var Attr = a.getAttributeNode('href').constructor;
+
+    it('should work well', function () {
+        expect(a.getAttribute('id')).toBe('x');
+        expect(a.getAttributeNode('id').name).toBe('id');
+        expect(a.getAttributeNode('id').value).toBe('x');
+        a.setAttribute('id', 'xx');
+        expect(a.getAttribute('id')).toBe('xx');
+        expect(a.getAttributeNode('id').name).toBe('id');
+        expect(a.getAttributeNode('id').value).toBe('xx');
+
+        a.removeAttribute('id');
+        expect(a.hasAttribute('id')).toBe(false);
+        expect(a.getAttribute('id')).toBe(null);
+        expect(a.getAttributeNode('id')).toBe(null);
+
+        var oldAttribute = a.setAttributeNode(new Attr('data-role', 'test2'));
+        expect(oldAttribute.name).toBe('data-role');
+        expect(oldAttribute.value).toBe('test');
+        expect(a.getAttribute('data-role')).toBe('test2');
+
+        oldAttribute = a.removeAttributeNode(a.getAttributeNode('disabled'));
+        expect(oldAttribute.name).toBe('disabled');
+        expect(oldAttribute.value).toBe('');
+        expect(a.hasAttribute('disabled')).toBe(false);
+    });
 });
