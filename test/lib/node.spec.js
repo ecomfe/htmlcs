@@ -67,6 +67,56 @@ describe('deal unnormal node', function () {
             expect(Node.init(node) instanceof Node).toBe(true);
         });
     });
+
+    describe('a node instance', function () {
+        var node = Node.init({
+            type: typeMap.Directive,
+            name: 'node',
+            data: ''
+        });
+        var node2 = Node.init(node);
+
+        it('should return itself', function () {
+            expect(node2 === node).toBe(true);
+        });
+    });
+});
+
+describe('node properties', function () {
+    var document = htmlparser2.parseDOM(
+        '<document><p><span></span><i></i></p></document>'
+    )[0];
+
+    var p2 = htmlparser2.parseDOM('<p></p>')[0];
+
+    it('should have node properties', function () {
+        transformRecursively(document);
+        transformRecursively(p2);
+
+        var p = document.childNodes[0];
+        var span = p.firstChild;
+        var i = p.lastChild;
+
+        expect(span.ownerDocument).toBe(document);
+        expect(p2.ownerDocument).toBe(null);
+
+        expect(span.parentElement).toBe(p);
+        expect(document.parentElement).toBe(null);
+
+        expect(span.firstChild).toBe(null);
+        expect(span).toBe(p.childNodes[0]);
+
+        expect(i.lastChild).toBe(null);
+        expect(i).toBe(p.childNodes[p.childNodes.length - 1]);
+
+        expect(document.previousSibling).toBe(null);
+        expect(p.previousSibling).toBe(null);
+        expect(i.previousSibling).toBe(span);
+
+        expect(document.nextSibling).toBe(null);
+        expect(p.nextSibling).toBe(null);
+        expect(span.nextSibling).toBe(i);
+    });
 });
 
 describe('node methods', function () {
