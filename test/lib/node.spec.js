@@ -119,7 +119,7 @@ describe('node properties', function () {
     });
 });
 
-describe('node methods', function () {
+describe('node methods (read ops)', function () {
     var p = htmlparser2.parseDOM(
         '<p><span></span>' +
         '<a id="x" class="y z" href="#" data-role="test" disabled>' +
@@ -131,8 +131,11 @@ describe('node methods', function () {
 
     var p2 = htmlparser2.parseDOM('<p></p>')[0];
 
+    transformRecursively(p);
+    transformRecursively(p2);
+
     it('should have node methods', function () {
-        transformRecursively(p);
+
         var node = p.childNodes[1];
 
         expect(node.hasChildNodes()).toBe(true);
@@ -153,6 +156,175 @@ describe('node methods', function () {
         expect(node.contains(node.childNodes[0])).toBe(true);
         expect(node.parentNode.contains(node.childNodes[0])).toBe(true);
         expect(node.previousSibling.contains(node.childNodes[0])).toBe(false);
+    });
+});
+
+describe('method insertBefore', function () {
+    var document = htmlparser2.parseDOM(
+        '<document><html><body>' +
+        '<a>' +
+        '<img id="c1" class="cls">' +
+        '<span id="c2" class="cls"></span>' +
+        '</a>' +
+        '</body></html></document>'
+    )[0];
+
+    var p = htmlparser2.parseDOM('<p></p>')[0];
+
+    transformRecursively(document);
+    transformRecursively(p);
+
+    var body = document.querySelector('body');
+    var a = body.querySelector('a');
+    var img = a.firstChild;
+    var span = a.lastChild;
+
+    it('should works well', function () {
+        a.insertBefore(span, img);
+        expect(a.firstChild).toBe(span);
+        expect(a.lastChild).toBe(img);
+        expect(span.previousSibling).toBe(null);
+        expect(span.nextSibling).toBe(img);
+        expect(img.previousSibling).toBe(span);
+        expect(img.nextSibling).toBe(null);
+
+        a.insertBefore(p, img);
+        expect(a.childNodes.length).toBe(3);
+        expect(a.childNodes[1]).toBe(p);
+        expect(p.parentNode).toBe(a);
+        expect(img.previousSibling).toBe(p);
+        expect(span.nextSibling).toBe(p);
+        expect(p.previousSibling).toBe(span);
+        expect(p.nextSibling).toBe(img);
+        expect(p.ownerDocument).toBe(document);
+    });
+});
+
+describe('method appendChild', function () {
+    var document = htmlparser2.parseDOM(
+        '<document><html><body>' +
+        '<a>' +
+        '<img id="c1" class="cls">' +
+        '<span id="c2" class="cls"></span>' +
+        '</a>' +
+        '</body></html></document>'
+    )[0];
+
+    var p = htmlparser2.parseDOM('<p></p>')[0];
+
+    transformRecursively(document);
+    transformRecursively(p);
+
+    var body = document.querySelector('body');
+    var a = body.querySelector('a');
+    var img = a.firstChild;
+    var span = a.lastChild;
+
+    it('should works well', function () {
+        a.appendChild(img);
+        expect(a.firstChild).toBe(span);
+        expect(a.lastChild).toBe(img);
+        expect(span.previousSibling).toBe(null);
+        expect(span.nextSibling).toBe(img);
+        expect(img.previousSibling).toBe(span);
+        expect(img.nextSibling).toBe(null);
+
+        a.appendChild(p);
+        expect(a.childNodes.length).toBe(3);
+        expect(a.lastChild).toBe(p);
+        expect(p.parentNode).toBe(a);
+        expect(p.ownerDocument).toBe(document);
+        expect(p.previousSibling).toBe(img);
+        expect(p.nextSibling).toBe(null);
+        expect(img.nextSibling).toBe(p);
+    });
+});
+
+describe('method replaceChild', function () {
+    var document = htmlparser2.parseDOM(
+        '<document><html><body>' +
+        '<a>' +
+        '<img id="c1" class="cls">' +
+        '<span id="c2" class="cls"></span>' +
+        '<i></i>' +
+        '</a>' +
+        '</body></html></document>'
+    )[0];
+
+    var p = htmlparser2.parseDOM('<p></p>')[0];
+
+    transformRecursively(document);
+    transformRecursively(p);
+
+    var body = document.querySelector('body');
+    var a = body.querySelector('a');
+    var img = a.firstChild;
+    var span = a.childNodes[1];
+    var i = a.lastChild;
+
+    it('should works well', function () {
+        a.replaceChild(img, i);
+        expect(a.childNodes.length).toBe(2);
+        expect(a.firstChild).toBe(span);
+        expect(a.lastChild).toBe(img);
+        expect(span.previousSibling).toBe(null);
+        expect(span.nextSibling).toBe(img);
+        expect(img.previousSibling).toBe(span);
+        expect(img.nextSibling).toBe(null);
+
+        a.replaceChild(p, span);
+        expect(a.childNodes.length).toBe(2);
+        expect(a.firstChild).toBe(p);
+        expect(p.parentNode).toBe(a);
+        expect(p.ownerDocument).toBe(document);
+        expect(p.previousSibling).toBe(null);
+        expect(p.nextSibling).toBe(img);
+        expect(img.previousSibling).toBe(p);
+        expect(img.nextSibling).toBe(null);
+    });
+});
+
+describe('method removeChild', function () {
+    var document = htmlparser2.parseDOM(
+        '<document><html><body>' +
+        '<a>' +
+        '<img id="c1" class="cls">' +
+        '<i></i>' +
+        '<span id="c2" class="cls"></span>' +
+        '</a>' +
+        '</body></html></document>'
+    )[0];
+
+    transformRecursively(document);
+
+    var body = document.querySelector('body');
+    var a = body.querySelector('a');
+    var img = a.firstChild;
+    var span = a.childNodes[1];
+    var i = a.lastChild;
+
+    it('should works well', function () {
+        a.removeChild(i);
+        expect(a.childNodes.length).toBe(2);
+        expect(a.firstChild).toBe(img);
+        expect(a.lastChild).toBe(span);
+        expect(img.previousSibling).toBe(null);
+        expect(img.nextSibling).toBe(span);
+        expect(span.previousSibling).toBe(img);
+        expect(span.nextSibling).toBe(null);
+        expect(i.ownerDocument).toBe(null);
+        expect(i.parentNode).toBe(null);
+        expect(i.previousSibling).toBe(null);
+        expect(i.nextSibling).toBe(null);
+
+        a.removeChild(span);
+        expect(a.childNodes.length).toBe(1);
+        expect(a.firstChild).toBe(img);
+        expect(a.lastChild).toBe(img);
+        expect(img.previousSibling).toBe(null);
+        expect(img.nextSibling).toBe(null);
+        expect(span.previousSibling).toBe(null);
+        expect(span.nextSibling).toBe(null);
     });
 });
 
