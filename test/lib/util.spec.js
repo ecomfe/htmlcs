@@ -80,6 +80,43 @@ describe('extend', function () {
     });
 });
 
+describe('extendAttribute', function () {
+    var extendAttribute = util.extendAttribute;
+
+    describe('extend attributes', function () {
+        var result = extendAttribute(
+            {
+                a: 1,
+                b: 1
+            },
+            {
+                b: {
+                    get: function () {
+                        return 2;
+                    }
+                },
+                c: {
+                    get: function () {
+                        return this.b + 1;
+                    },
+                    set: function (c) {
+                        this.a = c - 2;
+                    }
+                }
+            }
+        );
+
+        it('should return right result', function () {
+            expect(result.a).toBe(1);
+            expect(result.b).toBe(2);
+            expect(result.c).toBe(3);
+
+            result.c = 4;
+            expect(result.a).toBe(2);
+        });
+    });
+});
+
 describe('cachable', function () {
     var cachable = util.cachable;
 
