@@ -353,6 +353,7 @@ describe('doctype node', function () {
     it('should behave like a doctype node', function () {
         node = Node.init(node);
 
+        expect(node.name).toBe('html');
         expect(node.nodeName).toBe('html');
         expect(node.nodeType).toBe(NodeType.DOCUMENT_TYPE_NODE);
     });
