@@ -57,7 +57,10 @@ var hintDocument = function (document, cfg) {
 
     rules.every(function (rule) {
         reporter.setRule(rule.name);
-        rule.lint(cfg[rule.name], document, reporter);
+        try {
+            rule.lint(cfg[rule.name], document, reporter);
+        }
+        catch (e) {}
 
         return !(maxError && reporter.num() >= maxError);
     });
@@ -97,7 +100,10 @@ var formatDocument = function (document, cfg) {
 
     rules.forEach(function (rule) {
         if (rule.format) {
-            rule.format(cfg[rule.name], document, options)
+            try {
+                rule.format(cfg[rule.name], document, options)
+            }
+            catch (e) {}
         }
     });
 
