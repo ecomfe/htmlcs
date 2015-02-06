@@ -96,6 +96,16 @@ describe('element', function () {
         expect(node.hasAttribute('disabled')).toBe(true);
         expect(node.hasAttribute('disabledddd')).toBe(false);
 
+        expect(node.matches('p a')).toBe(true);
+        expect(node.matches('p span')).toBe(false);
+        expect(node.matches('p #x')).toBe(true);
+        expect(node.matches('.y')).toBe(true);
+        expect(node.matches('.y.z')).toBe(true);
+        expect(node.firstElementChild.matches('a img')).toBe(true);
+        expect(node.firstElementChild.matches('#x #c1')).toBe(true);
+        expect(node.firstElementChild.matches('.y.z .cls')).toBe(true);
+        expect(node.firstElementChild.matches('.y.z #c2')).toBe(false);
+
         var elementsOfTagNameImg = node.getElementsByTagName('img');
         expect(elementsOfTagNameImg.length).toBe(1);
         expect(elementsOfTagNameImg[0].id).toBe('c1');
