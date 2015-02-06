@@ -4,12 +4,12 @@
  */
 
 var path = require('path');
-var hinter = require('../../../../');
+var htmlcs = require('../../../../');
 
 var rule = path.basename(__dirname);
 
 describe('rule ' + rule, function () {
-    var result = hinter.hintFile(path.join(__dirname, 'case.html'));
+    var result = htmlcs.hintFile(path.join(__dirname, 'case.html'));
 
     it('should return right result', function () {
         expect(result.length).toBe(6);
@@ -43,5 +43,18 @@ describe('rule ' + rule, function () {
         expect(result[5].code).toBe('003');
         expect(result[5].line).toBe(21);
         expect(result[5].col).toBe(5);
+    });
+});
+
+describe('format rule ' + rule, function () {
+    var result = htmlcs.formatFile(path.join(__dirname, 'case.html'));
+
+    it('should format well', function () {
+        expect(/\sasync\=/.test(result)).toBe(false);
+        expect(/\schecked\=/.test(result)).toBe(false);
+        expect(/\sdefer\=/.test(result)).toBe(false);
+        expect(/\sdisabled\=/.test(result)).toBe(false);
+        expect(/\sreadonly\=/.test(result)).toBe(false);
+        expect(/\srequired\=/.test(result)).toBe(false);
     });
 });
