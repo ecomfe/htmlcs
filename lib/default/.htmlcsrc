@@ -23,5 +23,6 @@
     "viewport": true,                       // true: <meta name="viewport" content="..."> required
 
     "max-error": 0,                         // max num of errors, 0 means no limit
+    "format": {},                           // basic options for format
     "default": true                         // flag for unit test
 }

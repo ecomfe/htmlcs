@@ -5,6 +5,7 @@
 
 var fs = require('fs');
 
+var util = require('./lib/util');
 var parse = require('./lib/parse');
 var Reporter = require('./lib/reporter');
 var config = require('./lib/config');
@@ -86,7 +87,21 @@ var hintFile = function (filePath, options) {
 
 // format document
 var formatDocument = function (document, cfg) {
-    return htmlGenner.print(document, cfg);
+    // format options
+    var options = util.extend({
+        'indent-size': 4,
+        'indent-char': 'space',
+        'max-char': 80,
+        'formatter': {}
+    }, cfg['format']);
+
+    rules.forEach(function (rule) {
+        if (rule.format) {
+            rule.format(cfg[rule.name], document, options)
+        }
+    });
+
+    return htmlGenner.print(document, options);
 };
 
 // format code
