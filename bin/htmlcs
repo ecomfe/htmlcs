@@ -5,15 +5,43 @@ var info = require('../package.json');
 
 var path = process.argv[2];
 
-if (path) {
-    htmlcs.hintFile(path).forEach(function (item) {
-        console.log('[%s] line %d, col %d: %s (%s, %s)', item.type, item.line, item.col, item.message, item.rule, item.code);
-    });
-} else {
-    console.log([
-        ['htmlcs', 'v' + info.version],
-        ['Usage:', 'htmlcs', '<file>']
-    ].map(function (line) {
-        return line.join(' ');
-    }).join('\n'));
+var op = 'help';
+var path = '';
+
+var defaultOp = 'hint';
+
+if (process.argv.length > 3) {
+    op = process.argv[2];
+    path = process.argv[3];
+} else if (process.argv.length > 2) {
+    op = defaultOp;
+    path = process.argv[2];
+}
+
+switch (op) {
+
+    case 'hint':
+
+        htmlcs.hintFile(path).forEach(function (item) {
+            console.log('[%s] line %d, col %d: %s (%s, %s)', item.type, item.line, item.col, item.message, item.rule, item.code);
+        });
+        break;
+
+    case 'format':
+
+        console.log(htmlcs.formatFile(path));
+        break;
+
+    case 'help':
+    default:
+
+        console.log([
+            ['htmlcs', 'v' + info.version],
+            ['Usage:'],
+            ['\thtmlcs', 'hint', '<file>'],
+            ['\thtmlcs', 'format', '<file>']
+        ].map(function (line) {
+            return line.join(' ');
+        }).join('\n'));
+        break;
 }
