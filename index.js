@@ -94,7 +94,7 @@ var formatDocument = function (document, cfg) {
     var options = util.extend({
         'indent-size': 4,
         'indent-char': 'space',
-        'max-char': 80,
+        'max-char': 120,
         'formatter': {}
     }, cfg['format']);
 
