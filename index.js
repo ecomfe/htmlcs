@@ -9,6 +9,7 @@ var util = require('./lib/util');
 var parse = require('./lib/parse');
 var Reporter = require('./lib/reporter');
 var config = require('./lib/config');
+var otherFormatters = require('./lib/other-formatter');
 
 var htmlGenner = require('html-code-gen');
 
@@ -95,7 +96,7 @@ var formatDocument = function (document, cfg) {
         'indent-size': 4,
         'indent-char': 'space',
         'max-char': 120,
-        'formatter': {}
+        'formatter': otherFormatters
     }, cfg['format']);
 
     rules.forEach(function (rule) {
