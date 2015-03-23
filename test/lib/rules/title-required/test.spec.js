@@ -73,5 +73,7 @@ describe('format rule ' + rule, function () {
         title = head4.querySelector('title');
         charsetMeta = head4.querySelector('meta[charset]');
         expect(title.previousElementSibling).toBe(charsetMeta);
+
+        expect(!head5).toBe(true);
     });
 });
