@@ -4,12 +4,13 @@
  */
 
 var path = require('path');
-var hinter = require('../../../../');
+var htmlcs = require('../../../../');
+var parse = require('../../../../lib/parse');
 
 var rule = path.basename(__dirname);
 
 describe('rule ' + rule, function () {
-    var result = hinter.hintFile(path.join(__dirname, 'case.html'));
+    var result = htmlcs.hintFile(path.join(__dirname, 'case.html'));
 
     it('should return right result', function () {
         expect(result.length).toBe(2);
@@ -24,5 +25,15 @@ describe('rule ' + rule, function () {
         expect(result[1].line).toBe(9);
         expect(result[1].col).toBe(5);
 
+    });
+});
+
+describe('format rule ' + rule, function () {
+    var document = parse(htmlcs.formatFile(path.join(__dirname, 'case.html')));
+
+    it('should format well', function () {
+        document.querySelectorAll('link').forEach(function (element) {
+            expect(!element.getAttribute('rel')).toBe(false);
+        });
     });
 });
