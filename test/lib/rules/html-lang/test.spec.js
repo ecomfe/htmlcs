@@ -32,7 +32,7 @@ describe('format rule ' + rule, function () {
     var html2 = parse(htmlcs.formatFile(path.join(__dirname, 'case2.html'))).querySelector('html');
 
     it('should format well', function () {
-        expect(html1.getAttribute('lang')).toBe('zh-cmn-Hans');
+        expect(html1.getAttribute('lang')).toBe('zh-CN');
         expect(!html2).toBe(true);
     });
 });
