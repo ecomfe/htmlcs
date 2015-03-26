@@ -14,6 +14,10 @@ var indent = function (opt) {
     return repeat(opt['indent-char'] === 'tab' ? '\t' : repeat(' ', opt['indent-size']), opt.level);
 };
 
+var trim = function (content) {
+    return content.replace(/(^([\s\t]*\n)+)|((\n[\s\t]*)+$)/g, '');
+};
+
 describe('formatter', function () {
 
     describe('for script', function () {
@@ -32,7 +36,8 @@ describe('formatter', function () {
                     'indent-size': 4
                 },
                 {
-                    indent: indent
+                    indent: indent,
+                    trim: trim
                 }
             );
 
@@ -56,7 +61,8 @@ describe('formatter', function () {
                     'indent-size': 4
                 },
                 {
-                    indent: indent
+                    indent: indent,
+                    trim: trim
                 }
             );
 
