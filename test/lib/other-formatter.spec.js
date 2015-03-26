@@ -14,11 +14,11 @@ var indent = function (opt) {
     return repeat(opt['indent-char'] === 'tab' ? '\t' : repeat(' ', opt['indent-size']), opt.level);
 };
 
-var trim = function (content) {
+var removeBlankLineAround = function (content) {
     return content.replace(/(^([\s\t]*\n)+)|((\n[\s\t]*)+$)/g, '');
 };
 
-describe('formatter', function () {
+var testFormatter = function () {
 
     describe('for script', function () {
         var scriptFormatter = formatters.script;
@@ -29,15 +29,24 @@ describe('formatter', function () {
 
         it('should format jvascript', function () {
             var node = parse('<script>var a=0;\nvar b=1;</script>').querySelector('script');
-            var newContent = scriptFormatter(node.childNodes[0].textContent, node,
+            var content = node.childNodes[0].textContent;
+            var opt = {
+                'level': 0,
+                'indent-char': 'space',
+                'indent-size': 4
+            };
+            var indentContent = function (content) {
+                opt.level++;
+
+                return content.split('\n').map(function (line) {
+                    return line ? (indent(opt) + line) : line;
+                }).join('\n');
+            };
+
+            var newContent = scriptFormatter(content, node, opt,
                 {
-                    'level': 0,
-                    'indent-char': 'space',
-                    'indent-size': 4
-                },
-                {
-                    indent: indent,
-                    trim: trim
+                    indent: indentContent,
+                    trim: removeBlankLineAround
                 }
             );
 
@@ -54,15 +63,24 @@ describe('formatter', function () {
 
         it('should format css', function () {
             var node = parse('<style>body{margin:0;}</style>').querySelector('style');
-            var newContent = styleFormatter(node.childNodes[0].textContent, node,
+            var content = node.childNodes[0].textContent;
+            var opt = {
+                'level': 0,
+                'indent-char': 'space',
+                'indent-size': 4
+            };
+            var indentContent = function (content) {
+                opt.level++;
+
+                return content.split('\n').map(function (line) {
+                    return line ? (indent(opt) + line) : line;
+                }).join('\n');
+            };
+
+            var newContent = styleFormatter(content, node, opt,
                 {
-                    'level': 0,
-                    'indent-char': 'space',
-                    'indent-size': 4
-                },
-                {
-                    indent: indent,
-                    trim: trim
+                    indent: indentContent,
+                    trim: removeBlankLineAround
                 }
             );
 
@@ -70,4 +88,6 @@ describe('formatter', function () {
         });
     });
 
-});
+};
+
+describe('formatter', testFormatter);
