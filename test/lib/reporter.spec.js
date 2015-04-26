@@ -126,31 +126,7 @@ describe('report', function () {
         });
     });
 
-    describe('with element', function () {
-        it('should record the right item', function () {
-            var reporter = new Reporter();
-            var report = {
-                elem: {
-                    startIndex: 1
-                },
-                type: 'INFO',
-                code: '001',
-                message: 'test report'
-            };
-            reporter.report(report);
-            var num = reporter.num();
-            var result = reporter.result();
-
-            expect(num).toBe(1);
-            expect(result.length).toBe(1);
-            expect(result[0].pos).toBe(report.elem.startIndex);
-            expect(result[0].type).toBe(report.type);
-            expect(result[0].code).toBe(report.code);
-            expect(result[0].message).toBe(report.message);
-        });
-    });
-
-    describe('without pos nor element', function () {
+    describe('without pos', function () {
         it('should record the right item (pos: 0)', function () {
             var reporter = new Reporter();
             var report = {
@@ -175,12 +151,10 @@ describe('report', function () {
 describe('info', function () {
     it('should record the right item (type "INFO")', function () {
         var reporter = new Reporter();
-        var element = {
-            startIndex: 1
-        };
+        var startIndex = 1;
         var code = '001';
         var message = 'test info';
-        reporter.info(element, code, message);
+        reporter.info(startIndex, code, message);
         var num = reporter.num();
         var result = reporter.result();
 
@@ -188,7 +162,7 @@ describe('info', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('INFO');
         expect(result[0].code).toBe(code);
-        expect(result[0].pos).toBe(element.startIndex);
+        expect(result[0].pos).toBe(startIndex);
         expect(result[0].message).toBe(message);
     });
 });
@@ -196,12 +170,10 @@ describe('info', function () {
 describe('warn', function () {
     it('should record the right item (type "WARN")', function () {
         var reporter = new Reporter();
-        var element = {
-            startIndex: 1
-        };
+        var startIndex = 1;
         var code = '001';
         var message = 'test warn';
-        reporter.warn(element, code, message);
+        reporter.warn(startIndex, code, message);
         var num = reporter.num();
         var result = reporter.result();
 
@@ -209,7 +181,7 @@ describe('warn', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('WARN');
         expect(result[0].code).toBe(code);
-        expect(result[0].pos).toBe(element.startIndex);
+        expect(result[0].pos).toBe(startIndex);
         expect(result[0].message).toBe(message);
     });
 });
@@ -217,12 +189,10 @@ describe('warn', function () {
 describe('error', function () {
     it('should record the right item (type "ERROR")', function () {
         var reporter = new Reporter();
-        var element = {
-            startIndex: 1
-        };
+        var startIndex = 1;
         var code = '001';
         var message = 'test error';
-        reporter.error(element, code, message);
+        reporter.error(startIndex, code, message);
         var num = reporter.num();
         var result = reporter.result();
 
@@ -230,7 +200,7 @@ describe('error', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('ERROR');
         expect(result[0].code).toBe(code);
-        expect(result[0].pos).toBe(element.startIndex);
+        expect(result[0].pos).toBe(startIndex);
         expect(result[0].message).toBe(message);
     });
 });
