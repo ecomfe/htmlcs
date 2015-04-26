@@ -22,10 +22,7 @@ describe('result', function () {
         it('should return list with this report', function () {
             var reporter = new Reporter();
             var report = {
-                pos: {
-                    line: 1,
-                    col: 1
-                },
+                pos: 1,
                 type: 'INFO',
                 code: '001',
                 message: 'test report'
@@ -36,8 +33,7 @@ describe('result', function () {
 
             expect(num).toBe(1);
             expect(result.length).toBe(1);
-            expect(result[0].line).toBe(report.pos.line);
-            expect(result[0].col).toBe(report.pos.col);
+            expect(result[0].pos).toBe(report.pos);
             expect(result[0].type).toBe(report.type);
             expect(result[0].code).toBe(report.code);
             expect(result[0].message).toBe(report.message);
@@ -49,37 +45,25 @@ describe('result', function () {
             var reporter = new Reporter();
 
             var report1 = {
-                pos: {
-                    line: 1,
-                    col: 1
-                },
+                pos: 1,
                 type: 'INFO',
                 code: '001',
                 message: 'test report1'
             };
             var report2 = {
-                pos: {
-                    line: 2,
-                    col: 2
-                },
+                pos: 2,
                 type: 'WARN',
                 code: '002',
                 message: 'test report2'
             };
             var report3 = {
-                pos: {
-                    line: 3,
-                    col: 3
-                },
+                pos: 3,
                 type: 'ERROR',
                 code: '003',
                 message: 'test report3'
             };
             var report4 = {
-                pos: {
-                    line: 3,
-                    col: 4
-                },
+                pos: 4,
                 type: 'ERROR',
                 code: '004',
                 message: 'test report4'
@@ -96,26 +80,22 @@ describe('result', function () {
             expect(num).toBe(4);
             expect(result.length).toBe(4);
 
-            expect(result[0].line).toBe(report1.pos.line);
-            expect(result[0].col).toBe(report1.pos.col);
+            expect(result[0].pos).toBe(report1.pos);
             expect(result[0].type).toBe(report1.type);
             expect(result[0].code).toBe(report1.code);
             expect(result[0].message).toBe(report1.message);
 
-            expect(result[1].line).toBe(report2.pos.line);
-            expect(result[1].col).toBe(report2.pos.col);
+            expect(result[1].pos).toBe(report2.pos);
             expect(result[1].type).toBe(report2.type);
             expect(result[1].code).toBe(report2.code);
             expect(result[1].message).toBe(report2.message);
 
-            expect(result[2].line).toBe(report3.pos.line);
-            expect(result[2].col).toBe(report3.pos.col);
+            expect(result[2].pos).toBe(report3.pos);
             expect(result[2].type).toBe(report3.type);
             expect(result[2].code).toBe(report3.code);
             expect(result[2].message).toBe(report3.message);
 
-            expect(result[3].line).toBe(report4.pos.line);
-            expect(result[3].col).toBe(report4.pos.col);
+            expect(result[3].pos).toBe(report4.pos);
             expect(result[3].type).toBe(report4.type);
             expect(result[3].code).toBe(report4.code);
             expect(result[3].message).toBe(report4.message);
@@ -128,10 +108,7 @@ describe('report', function () {
         it('should record the right item', function () {
             var reporter = new Reporter();
             var report = {
-                pos: {
-                    line: 1,
-                    col: 1
-                },
+                pos: 1,
                 type: 'INFO',
                 code: '001',
                 message: 'test report'
@@ -142,8 +119,7 @@ describe('report', function () {
 
             expect(num).toBe(1);
             expect(result.length).toBe(1);
-            expect(result[0].line).toBe(report.pos.line);
-            expect(result[0].col).toBe(report.pos.col);
+            expect(result[0].pos).toBe(report.pos);
             expect(result[0].type).toBe(report.type);
             expect(result[0].code).toBe(report.code);
             expect(result[0].message).toBe(report.message);
@@ -155,10 +131,7 @@ describe('report', function () {
             var reporter = new Reporter();
             var report = {
                 elem: {
-                    startPos: {
-                        line: 1,
-                        col: 1
-                    }
+                    startIndex: 1
                 },
                 type: 'INFO',
                 code: '001',
@@ -170,8 +143,7 @@ describe('report', function () {
 
             expect(num).toBe(1);
             expect(result.length).toBe(1);
-            expect(result[0].line).toBe(report.elem.startPos.line);
-            expect(result[0].col).toBe(report.elem.startPos.col);
+            expect(result[0].pos).toBe(report.elem.startIndex);
             expect(result[0].type).toBe(report.type);
             expect(result[0].code).toBe(report.code);
             expect(result[0].message).toBe(report.message);
@@ -179,7 +151,7 @@ describe('report', function () {
     });
 
     describe('without pos nor element', function () {
-        it('should record the right item (pos 0,0)', function () {
+        it('should record the right item (pos: 0)', function () {
             var reporter = new Reporter();
             var report = {
                 type: 'INFO',
@@ -192,8 +164,7 @@ describe('report', function () {
 
             expect(num).toBe(1);
             expect(result.length).toBe(1);
-            expect(result[0].line).toBe(0);
-            expect(result[0].col).toBe(0);
+            expect(result[0].pos).toBe(0);
             expect(result[0].type).toBe(report.type);
             expect(result[0].code).toBe(report.code);
             expect(result[0].message).toBe(report.message);
@@ -205,10 +176,7 @@ describe('info', function () {
     it('should record the right item (type "INFO")', function () {
         var reporter = new Reporter();
         var element = {
-            startPos: {
-                line: 1,
-                col: 1
-            }
+            startIndex: 1
         };
         var code = '001';
         var message = 'test info';
@@ -220,8 +188,7 @@ describe('info', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('INFO');
         expect(result[0].code).toBe(code);
-        expect(result[0].line).toBe(element.startPos.line);
-        expect(result[0].col).toBe(element.startPos.col);
+        expect(result[0].pos).toBe(element.startIndex);
         expect(result[0].message).toBe(message);
     });
 });
@@ -230,10 +197,7 @@ describe('warn', function () {
     it('should record the right item (type "WARN")', function () {
         var reporter = new Reporter();
         var element = {
-            startPos: {
-                line: 1,
-                col: 1
-            }
+            startIndex: 1
         };
         var code = '001';
         var message = 'test warn';
@@ -245,8 +209,7 @@ describe('warn', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('WARN');
         expect(result[0].code).toBe(code);
-        expect(result[0].line).toBe(element.startPos.line);
-        expect(result[0].col).toBe(element.startPos.col);
+        expect(result[0].pos).toBe(element.startIndex);
         expect(result[0].message).toBe(message);
     });
 });
@@ -255,10 +218,7 @@ describe('error', function () {
     it('should record the right item (type "ERROR")', function () {
         var reporter = new Reporter();
         var element = {
-            startPos: {
-                line: 1,
-                col: 1
-            }
+            startIndex: 1
         };
         var code = '001';
         var message = 'test error';
@@ -270,8 +230,7 @@ describe('error', function () {
         expect(result.length).toBe(1);
         expect(result[0].type).toBe('ERROR');
         expect(result[0].code).toBe(code);
-        expect(result[0].line).toBe(element.startPos.line);
-        expect(result[0].col).toBe(element.startPos.col);
+        expect(result[0].pos).toBe(element.startIndex);
         expect(result[0].message).toBe(message);
     });
 });
