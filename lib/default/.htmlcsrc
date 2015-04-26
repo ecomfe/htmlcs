@@ -2,6 +2,7 @@
     // Htmlcs Default Configuration File
 
     "asset-type": true,                     // true: Default value of attribute "type" (<link>/<script>) should not be set
+    "attr-value-double-quotes": true,       // true: Attribute value must be closed by double quotes
     "bool-attribute-value": true,           // true: Value of boolean attributes (allowfullscreen, async, autofocus, ...) should not be set
     "button-name": true,                    // true: Attribute "name" of <button> should not be set
     "button-type": true,                    // true: Attribute "type" of <button> should be set

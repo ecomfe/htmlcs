@@ -1,6 +1,8 @@
 {
     "asset-type": "001,002",
 
+    "attr-value-double-quotes": "028",
+
     "bool-attribute-value": "003",
 
     "button-name": "004",
