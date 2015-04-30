@@ -24,6 +24,8 @@ var addRule = function (rule) {
 // pre-set rules based on [here](http://gitlab.baidu.com/fe/spec/blob/master/html.md)
 [
     'asset-type',
+    'attr-lowercase',
+    'attr-no-duplication',
     'attr-value-double-quotes',
     'bool-attribute-value',
     'button-name',
@@ -32,6 +34,7 @@ var addRule = function (rule) {
     'css-in-head',
     'doctype',
     'html-lang',
+    'id-class-ad-disabled',
     'ie-edge',
     'img-alt',
     'img-src',
@@ -41,6 +44,11 @@ var addRule = function (rule) {
     'lowercase-id-with-hyphen',
     'rel-stylesheet',
     'script-in-tail',
+    'space-tab-mixed-disabled',
+    'spec-char-escape',
+    'style-disabled',
+    'tag-pair',
+    'tagname-lowercase',
     'title-required',
     'unique-id',
     'viewport'
@@ -79,36 +87,55 @@ var getPosition = function (content) {
     };
 };
 
+// separate rules into parser-linters & document-linters ( depends on lint target )
+var separateLinters = function (rules) {
+    var linters = {
+        parserLinters: [],
+        docLinters: []
+    };
+
+    rules.forEach(function (rule) {
+        if (!rule.lint) {
+            return;
+        }
+
+        if (rule.target === 'parser') {
+            linters.parserLinters.push(rule);
+        }
+        else {
+            linters.docLinters.push(rule);
+        }
+    });
+
+    return linters;
+};
+
 // hint code
 var hint = function (code, cfg) {
     // max error num
     var maxError = cfg['max-error'];
     delete cfg['max-error'];
 
+    var linters = separateLinters(rules);
     var reporter = new Reporter();
     var parser = parse.getParser();
 
-    rules.forEach(function (rule) {
-        if (rule.listen) {
-            rule.listen(cfg[rule.name], parser, reporter.bindRule(rule.name));
-        }
+    // parser-linters
+    linters.parserLinters.forEach(function (rule) {
+        rule.lint(cfg[rule.name], parser, reporter.bindRule(rule.name));
     });
 
+    // do parse
     var document = parse(code, parser);
 
-    // do hint one by one
-    rules.every(function (rule) {
-        if (rule.lint) {
-            reporter.setRule(rule.name);
-            try {
-                rule.lint(cfg[rule.name], document, reporter);
-            }
-            catch (e) {}
-
-            return !(maxError && reporter.num() >= maxError);
+    // document-linters
+    linters.docLinters.every(function (rule) {
+        try {
+            rule.lint(cfg[rule.name], document, reporter.setRule(rule.name));
         }
-
-        return true;
+        catch (e) {}
+        // num control
+        return !(maxError && reporter.num() >= maxError);
     });
 
     var result = reporter.result();
