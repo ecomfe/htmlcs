@@ -27,7 +27,7 @@ var testFormatter = function () {
             expect(typeof scriptFormatter).toBe('function');
         });
 
-        it('should format jvascript', function () {
+        it('should format javascript', function () {
             var node = parse('<script>var a=0;\nvar b=1;</script>').querySelector('script');
             var content = node.childNodes[0].textContent;
             var opt = {
