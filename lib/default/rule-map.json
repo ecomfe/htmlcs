@@ -1,6 +1,12 @@
 {
     "asset-type": "001,002",
 
+    "attr-lowercase": "029",
+
+    "attr-no-duplication": "030",
+
+    "attr-value-double-quotes": "028",
+
     "bool-attribute-value": "003",
 
     "button-name": "004",
@@ -14,6 +20,8 @@
     "doctype": "009",
 
     "html-lang": "010",
+
+    "id-class-ad-disabled": "031",
 
     "ie-edge": "011",
 
@@ -32,6 +40,16 @@
     "rel-stylesheet": "022",
 
     "script-in-tail": "023",
+
+    "space-tab-mixed-disabled": "032",
+
+    "spec-char-escape": "033",
+
+    "style-disabled": "034",
+
+    "tag-pair": "035",
+
+    "tagname-lowercase": "036",
 
     "title-required": "024,025",
 

@@ -23,23 +23,49 @@ html hint tool, focused on semantic code style.
 
 * in Node.js
 
-	```javascript
-	var htmlcs = require('htmlcs');
+	* hint file
 
-	var result = htmlcs.hintFile(filePath);
+		```javascript
+		var htmlcs = require('htmlcs');
+		var result = htmlcs.hintFile(filePath);
+		```
 
-	result.forEach(function(item){
-	    console.log(
-	        '[%s] line %d, col %d: %s (%s, %s)',
-	        item.type,
-	        item.pos.line,
-	        item.pos.col,
-	        item.message,
-	        item.rule,
-	        item.code
-	    );
-	});
-	```
+	* hint code (string)
+
+		```javascript
+		var htmlcs = require('htmlcs');
+		var result = htmlcs.hint(code);
+		```
+
+	* use hint result
+
+		```javascript
+		result.forEach(function(item){
+		    console.log(
+		        '[%s] line %d, col %d: %s (%s, %s)',
+		        item.type,
+		        item.pos.line,
+		        item.pos.col,
+		        item.message,
+		        item.rule,
+		        item.code
+		    );
+		});
+		```
+
+	* format file
+
+		```javascript
+		var htmlcs = require('htmlcs');
+		console.log(htmlcs.formatFile(filePath))
+		```
+
+	* format code (string)
+
+		```javascript
+		var htmlcs = require('htmlcs');
+		console.log(htmlcs.format(code))
+		```
 
 ### Rules & Codes
 

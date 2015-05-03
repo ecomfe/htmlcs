@@ -31,16 +31,13 @@ describe('parse', function () {
     });
 
     it('should record positions', function () {
-        var titlePos = document.querySelector('title').startPos;
-        expect(titlePos.line).toBe(5);
-        expect(titlePos.col).toBe(5);
+        var titlePos = document.querySelector('title').startIndex;
+        expect(titlePos).toBe(61);
 
-        var divPos = document.querySelector('#div').startPos;
-        expect(divPos.line).toBe(27);
-        expect(divPos.col).toBe(9);
+        var divPos = document.querySelector('#div').startIndex;
+        expect(divPos).toBe(751);
 
-        var img1Pos = document.querySelector('#img1').startPos;
-        expect(img1Pos.line).toBe(36);
-        expect(img1Pos.col).toBe(5);
+        var img1Pos = document.querySelector('#img1').startIndex;
+        expect(img1Pos).toBe(999);
     });
 });

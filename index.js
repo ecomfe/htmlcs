@@ -24,6 +24,9 @@ var addRule = function (rule) {
 // pre-set rules based on [here](http://gitlab.baidu.com/fe/spec/blob/master/html.md)
 [
     'asset-type',
+    'attr-lowercase',
+    'attr-no-duplication',
+    'attr-value-double-quotes',
     'bool-attribute-value',
     'button-name',
     'button-type',
@@ -31,6 +34,7 @@ var addRule = function (rule) {
     'css-in-head',
     'doctype',
     'html-lang',
+    'id-class-ad-disabled',
     'ie-edge',
     'img-alt',
     'img-src',
@@ -40,6 +44,11 @@ var addRule = function (rule) {
     'lowercase-id-with-hyphen',
     'rel-stylesheet',
     'script-in-tail',
+    'space-tab-mixed-disabled',
+    'spec-char-escape',
+    'style-disabled',
+    'tag-pair',
+    'tagname-lowercase',
     'title-required',
     'unique-id',
     'viewport'
@@ -48,33 +57,98 @@ var addRule = function (rule) {
     addRule(rule);
 });
 
-// hint document
-var hintDocument = function (document, cfg) {
-    var reporter = new Reporter();
+// gen a position method with given content
+var getPosition = function (content) {
+    var start = 0;
+    var line = 0;
+    var col = 0;
 
+    // the position method
+    // items should be passed with pos-low-to-high
+    return function (item) {
+        var index = item.pos;
+
+        for (; start < index; start++) {
+            switch (content[start]) {
+
+                case '\n':
+                    col = 0;
+                    line++;
+                    break;
+
+                default:
+                    col++;
+
+            }
+        }
+
+        item.line = line + 1;
+        item.col = col + 1;
+    };
+};
+
+// separate rules into parser-linters & document-linters ( depends on lint target )
+var separateLinters = function (rules) {
+    var linters = {
+        parserLinters: [],
+        docLinters: []
+    };
+
+    rules.forEach(function (rule) {
+        if (!rule.lint) {
+            return;
+        }
+
+        if (rule.target === 'parser') {
+            linters.parserLinters.push(rule);
+        }
+        else {
+            linters.docLinters.push(rule);
+        }
+    });
+
+    return linters;
+};
+
+// hint code
+var hint = function (code, cfg) {
     // max error num
     var maxError = cfg['max-error'];
     delete cfg['max-error'];
 
-    rules.every(function (rule) {
-        reporter.setRule(rule.name);
+    var linters = separateLinters(rules);
+    var reporter = new Reporter();
+    var parser = parse.getParser();
+
+    // parser-linters
+    linters.parserLinters.forEach(function (rule) {
+        rule.lint(cfg[rule.name], parser, reporter.bindRule(rule.name));
+    });
+
+    // do parse
+    var document = parse(code, parser);
+
+    // document-linters
+    linters.docLinters.every(function (rule) {
         try {
-            rule.lint(cfg[rule.name], document, reporter);
+            rule.lint(cfg[rule.name], document, reporter.setRule(rule.name));
         }
         catch (e) {}
-
+        // num control
         return !(maxError && reporter.num() >= maxError);
     });
 
     var result = reporter.result();
-    return maxError ? result.slice(0, maxError) : result;
-};
 
-// hint code
-var hintCode = function (code, cfg) {
-    var document = parse(code);
-    
-    return hintDocument(document, cfg);
+    // num control
+    if (maxError) {
+        result = result.slice(0, maxError);
+    }
+
+    // do position ( pos -> line & col )
+    result.forEach(getPosition(code));
+
+    return result;
 };
 
 // hint file
@@ -86,11 +160,13 @@ var hintFile = function (filePath, options) {
     var cnt = fs.readFileSync(filePath, options);
     var cfg = config.load(filePath);
 
-    return hintCode(cnt, cfg);
+    return hint(cnt, cfg);
 };
 
-// format document
-var formatDocument = function (document, cfg) {
+// format code
+var format = function (code, cfg) {
+    var document = parse(code);
+
     // format options
     var options = util.extend({
         'indent-size': 4,
@@ -99,6 +175,7 @@ var formatDocument = function (document, cfg) {
         'formatter': otherFormatters
     }, cfg['format']);
 
+    // do format one by one
     rules.forEach(function (rule) {
         if (rule.format) {
             try {
@@ -111,13 +188,6 @@ var formatDocument = function (document, cfg) {
     return htmlGenner.print(document, options);
 };
 
-// format code
-var formatCode = function (code, cfg) {
-    var document = parse(code);
-
-    return formatDocument(document, cfg);
-};
-
 // format file
 var formatFile = function (filePath, options) {
     options = options || {
@@ -127,13 +197,13 @@ var formatFile = function (filePath, options) {
     var cnt = fs.readFileSync(filePath, options);
     var cfg = config.load(filePath);
 
-    return formatCode(cnt, cfg);
+    return format(cnt, cfg);
 };
 
 module.exports = {
     addRule: addRule,
-    hint: hintCode,
+    hint: hint,
     hintFile: hintFile,
-    format: formatCode,
+    format: format,
     formatFile: formatFile
 };
