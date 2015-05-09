@@ -63,7 +63,7 @@ var getPosition = function (content) {
     var line = 0;
     var col = 0;
 
-    // the position method
+    // the position method (item.pos -> item.line & line.col)
     // items should be passed with pos-low-to-high
     return function (item) {
         var index = item.pos;
