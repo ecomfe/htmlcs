@@ -178,12 +178,12 @@ describe('getPosition', function () {
         expect(pos0.line).toBe(1);
         expect(pos0.col).toBe(1);
 
-        var pos0 = position(content.indexOf('written'));
-        expect(pos0.line).toBe(2);
-        expect(pos0.col).toBe(7);
+        var posOfWrittern = position(content.indexOf('written'));
+        expect(posOfWrittern.line).toBe(2);
+        expect(posOfWrittern.col).toBe(7);
 
-        var pos0 = position(content.indexOf('The end.') + 2);
-        expect(pos0.line).toBe(3);
-        expect(pos0.col).toBe(3);
+        var posOfTheEndPlus2 = position(content.indexOf('The end.') + 2);
+        expect(posOfTheEndPlus2.line).toBe(3);
+        expect(posOfTheEndPlus2.col).toBe(3);
     });
 });

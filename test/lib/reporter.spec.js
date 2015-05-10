@@ -204,3 +204,61 @@ describe('error', function () {
         expect(result[0].message).toBe(message);
     });
 });
+
+describe('bindRule', function () {
+    var reporter = new Reporter();
+
+    reporter.report({
+        message: 'test1'
+    });
+
+    var reporterForRuleA = reporter.bindRule('A');
+
+    reporterForRuleA.report({
+        message: 'test2'
+    });
+
+    reporterForRuleA.warn(0, '001', 'test3', 'B');
+
+    it('should keep list while binding', function () {
+        expect(reporterForRuleA.num()).toBe(reporter.num());
+        expect(reporterForRuleA.result()[0].message).toBe('test1');
+        expect(reporterForRuleA.result()[1].message).toBe('test2');
+        expect(reporterForRuleA.result()[2].message).toBe('test3');
+        expect(reporter.result()[1].message).toBe('test2');
+        expect(reporter.result()[2].message).toBe('test3');
+    });
+
+    it('should use bound rule as default', function () {
+        expect(reporterForRuleA.result()[1].rule).toBe('A');
+    });
+
+    it('should prefer given rule than bound rule', function () {
+        expect(reporterForRuleA.result()[2].rule).toBe('B');
+    });
+});
+
+describe('disable & enable', function () {
+    var reporter = new Reporter();
+
+    reporter.report({
+        message: 'test1'
+    });
+
+    reporter.disable();
+    reporter.report({
+        message: 'test2'
+    });
+
+    reporter.enable();
+    reporter.warn(0, '001', 'test3');
+
+    reporter.disable();
+    reporter.error(0, '002', 'test4');
+
+    it('should disable & enable correctly', function () {
+        expect(reporter.num()).toBe(2);
+        expect(reporter.result()[0].message).toBe('test1');
+        expect(reporter.result()[1].message).toBe('test3');
+    });
+});
