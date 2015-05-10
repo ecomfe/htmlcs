@@ -43,7 +43,10 @@ var hint = function (code, cfg) {
     }
 
     // do position ( pos -> line & col )
-    result.forEach(util.getPosition(code));
+    var position = util.getPosition(code);
+    result.forEach(function (item) {
+        util.extend(item, position(item.pos));
+    });
 
     return result;
 };

@@ -158,3 +158,32 @@ describe('getHomePath', function () {
         expect(typeof getHomePath()).toBe('string');
     });
 });
+
+
+describe('getPosition', function () {
+    var getPosition = util.getPosition;
+    var content = [
+        'This is content for test getPosition.',
+        'Words written here may make no sense.',
+        'The end.'
+    ].join('\n');
+    var position = getPosition(content);
+
+    it('should return a function', function () {
+        expect(typeof position).toBe('function');
+    });
+
+    it('should position right', function () {
+        var pos0 = position(0);
+        expect(pos0.line).toBe(1);
+        expect(pos0.col).toBe(1);
+
+        var pos0 = position(content.indexOf('written'));
+        expect(pos0.line).toBe(2);
+        expect(pos0.col).toBe(7);
+
+        var pos0 = position(content.indexOf('The end.') + 2);
+        expect(pos0.line).toBe(3);
+        expect(pos0.col).toBe(3);
+    });
+});
