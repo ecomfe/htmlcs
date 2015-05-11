@@ -29,7 +29,9 @@ var testFormatter = function () {
 
         it('should format javascript', function () {
             var node = parse('<script>var a=0;\nvar b=1;</script>').querySelector('script');
+            var node2 = parse('<script type="text/javascript">var a=0;</script>').querySelector('script');
             var content = node.childNodes[0].textContent;
+            var content2 = node2.childNodes[0].textContent;
             var opt = {
                 'level': 0,
                 'indent-char': 'space',
@@ -50,7 +52,15 @@ var testFormatter = function () {
                 }
             );
 
+            var newContent2 = scriptFormatter(content2, node2, opt,
+                {
+                    indent: indentContent,
+                    trim: removeBlankLineAround
+                }
+            );
+
             expect(typeof newContent).toBe('string');
+            expect(typeof newContent2).toBe('string');
         });
     });
 
