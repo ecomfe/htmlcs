@@ -23,9 +23,9 @@ describe('do config in comment', function () {
         expect(result2[0].line).toBe(2);
         expect(result2[0].col).toBe(1);
         expect(result2[1].type).toBe('WARN');
-        expect(result2[1].code).toBe('014');
+        expect(result2[1].code).toBe('028');
         expect(result2[1].line).toBe(5);
-        expect(result2[1].col).toBe(1);
+        expect(result2[1].col).toBe(25);
 
         expect(result3.length).toBe(1);
         expect(result3[0].type).toBe('WARN');
@@ -49,9 +49,9 @@ describe('do config in comment', function () {
         expect(result4[2].line).toBe(4);
         expect(result4[2].col).toBe(1);
         expect(result4[3].type).toBe('WARN');
-        expect(result4[3].code).toBe('014');
+        expect(result4[3].code).toBe('028');
         expect(result4[3].line).toBe(6);
-        expect(result4[3].col).toBe(1);
+        expect(result4[3].col).toBe(25);
 
         expect(result5.length).toBe(2);
         expect(result5[0].type).toBe('WARN');
@@ -73,8 +73,8 @@ describe('do config in comment', function () {
         expect(result6[1].line).toBe(4);
         expect(result6[1].col).toBe(1);
         expect(result6[2].type).toBe('WARN');
-        expect(result6[2].code).toBe('014');
+        expect(result6[2].code).toBe('028');
         expect(result6[2].line).toBe(6);
-        expect(result6[2].col).toBe(1);
+        expect(result6[2].col).toBe(25);
     });
 });

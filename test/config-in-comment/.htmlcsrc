@@ -1,5 +1,5 @@
 {
     "img-alt": true,
     "img-src": true,
-    "img-title": true
+    "attr-value-double-quotes": true
 }
