@@ -28,11 +28,11 @@ var hint = function (code, cfg) {
 
     // get & lint parser
     var parser = parse.getParser();
-    rules.lintParser(parser, cfg, reporter);
+    rules.lintParser(parser, reporter, cfg, code);
 
     // parse & lint document
     var document = parse(code, parser);
-    rules.lintDocument(document, cfg, reporter);
+    rules.lintDocument(document, reporter, cfg, code);
 
     // get result
     var result = reporter.result();
