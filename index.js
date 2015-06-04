@@ -23,17 +23,16 @@ var hint = function (code, cfg) {
     // init rules
     rules.init();
 
-    // bind reporter
+    // reporter
     var reporter = new Reporter();
-    rules.bindReporter(reporter);
 
     // get & lint parser
     var parser = parse.getParser();
-    rules.lintParser(parser, cfg);
+    rules.lintParser(parser, cfg, reporter);
 
     // parse & lint document
     var document = parse(code, parser);
-    rules.lintDocument(document, cfg);
+    rules.lintDocument(document, cfg, reporter);
 
     // get result
     var result = reporter.result();
