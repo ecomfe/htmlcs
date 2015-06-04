@@ -41,7 +41,7 @@
 
     "script-in-tail": "023",
 
-    "space-tab-mixed-disabled": "032",
+    "indent-char": "032",
 
     "spec-char-escape": "033",
 
