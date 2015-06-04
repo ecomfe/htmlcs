@@ -32,7 +32,7 @@ describe('hint rule ' + rule, function () {
     });
 
     htmlcs.hint(code, {
-        'linters': {
+        linters: {
             style: styleLinter
         }
     });
