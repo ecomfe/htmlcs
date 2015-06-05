@@ -17,7 +17,7 @@ var htmlGenner = require('html-code-gen');
 // hint code
 var hint = function (code, cfg) {
     // get rid of \r
-    code = code.replace(/\r\n/g, '\n');
+    code = code.replace(/\r\n?/g, '\n');
 
     // max error num
     var maxError = cfg['max-error'];
