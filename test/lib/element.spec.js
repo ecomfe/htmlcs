@@ -35,12 +35,12 @@ var transformRecursively = function (node, root) {
 
 describe('element', function () {
     var p = htmlparser2.parseDOM(
-        '<p><span></span>' +
-        '<a id="x" class="y z" href="#" data-role="test" disabled>' +
-        '<img id="c1" class="cls cls2">' +
-        '<span id="c2" class="cls"></span>' +
-        '</a>' +
-        '<i></i></p>'
+        '<p><span></span>'
+        + '<a id="x" class="y z" href="#" data-role="test" disabled>'
+        + '<img id="c1" class="cls cls2">'
+        + '<span id="c2" class="cls"></span>'
+        + '</a>'
+        + '<i></i></p>'
     )[0];
 
     /* eslint-disable fecs-max-statements */
