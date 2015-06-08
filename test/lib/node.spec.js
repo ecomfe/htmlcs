@@ -121,12 +121,12 @@ describe('node properties', function () {
 
 describe('node methods (read ops)', function () {
     var p = htmlparser2.parseDOM(
-        '<p><span></span>' +
-        '<a id="x" class="y z" href="#" data-role="test" disabled>' +
-        '<img id="c1" class="cls">' +
-        '<span id="c2" class="cls"></span>' +
-        '</a>' +
-        '<i></i></p>'
+        '<p><span></span>'
+        + '<a id="x" class="y z" href="#" data-role="test" disabled>'
+        + '<img id="c1" class="cls">'
+        + '<span id="c2" class="cls"></span>'
+        + '</a>'
+        + '<i></i></p>'
     )[0];
 
     var p2 = htmlparser2.parseDOM('<p></p>')[0];
@@ -161,12 +161,12 @@ describe('node methods (read ops)', function () {
 
 describe('method insertBefore', function () {
     var document = htmlparser2.parseDOM(
-        '<document><html><body>' +
-        '<a>' +
-        '<img id="c1" class="cls">' +
-        '<span id="c2" class="cls"></span>' +
-        '</a>' +
-        '</body></html></document>'
+        '<document><html><body>'
+        + '<a>'
+        + '<img id="c1" class="cls">'
+        + '<span id="c2" class="cls"></span>'
+        + '</a>'
+        + '</body></html></document>'
     )[0];
 
     var p = htmlparser2.parseDOM('<p></p>')[0];
@@ -202,12 +202,12 @@ describe('method insertBefore', function () {
 
 describe('method appendChild', function () {
     var document = htmlparser2.parseDOM(
-        '<document><html><body>' +
-        '<a>' +
-        '<img id="c1" class="cls">' +
-        '<span id="c2" class="cls"></span>' +
-        '</a>' +
-        '</body></html></document>'
+        '<document><html><body>'
+        + '<a>'
+        + '<img id="c1" class="cls">'
+        + '<span id="c2" class="cls"></span>'
+        + '</a>'
+        + '</body></html></document>'
     )[0];
 
     var p = htmlparser2.parseDOM('<p></p>')[0];
@@ -242,13 +242,13 @@ describe('method appendChild', function () {
 
 describe('method replaceChild', function () {
     var document = htmlparser2.parseDOM(
-        '<document><html><body>' +
-        '<a>' +
-        '<img id="c1" class="cls">' +
-        '<span id="c2" class="cls"></span>' +
-        '<i></i>' +
-        '</a>' +
-        '</body></html></document>'
+        '<document><html><body>'
+        + '<a>'
+        + '<img id="c1" class="cls">'
+        + '<span id="c2" class="cls"></span>'
+        + '<i></i>'
+        + '</a>'
+        + '</body></html></document>'
     )[0];
 
     var p = htmlparser2.parseDOM('<p></p>')[0];
@@ -286,13 +286,13 @@ describe('method replaceChild', function () {
 
 describe('method removeChild', function () {
     var document = htmlparser2.parseDOM(
-        '<document><html><body>' +
-        '<a>' +
-        '<img id="c1" class="cls">' +
-        '<i></i>' +
-        '<span id="c2" class="cls"></span>' +
-        '</a>' +
-        '</body></html></document>'
+        '<document><html><body>'
+        + '<a>'
+        + '<img id="c1" class="cls">'
+        + '<i></i>'
+        + '<span id="c2" class="cls"></span>'
+        + '</a>'
+        + '</body></html></document>'
     )[0];
 
     transformRecursively(document);
@@ -394,10 +394,10 @@ describe('comment node', function () {
 
 describe('document node', function () {
     var node = htmlparser2.parseDOM(
-        '<document>' +
-        '<!DOCTYPE html>' +
-        '<html><head></head><body></body></html>' +
-        '</document>'
+        '<document>'
+        + '<!DOCTYPE html>'
+        + '<html><head></head><body></body></html>'
+        + '</document>'
     )[0];
 
     it('should behave like a document node', function () {

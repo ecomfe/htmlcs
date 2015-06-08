@@ -237,28 +237,3 @@ describe('bindRule', function () {
         expect(reporterForRuleA.result()[2].rule).toBe('B');
     });
 });
-
-describe('disable & enable', function () {
-    var reporter = new Reporter();
-
-    reporter.report({
-        message: 'test1'
-    });
-
-    reporter.disable();
-    reporter.report({
-        message: 'test2'
-    });
-
-    reporter.enable();
-    reporter.warn(0, '001', 'test3');
-
-    reporter.disable();
-    reporter.error(0, '002', 'test4');
-
-    it('should disable & enable correctly', function () {
-        expect(reporter.num()).toBe(2);
-        expect(reporter.result()[0].message).toBe('test1');
-        expect(reporter.result()[1].message).toBe('test3');
-    });
-});

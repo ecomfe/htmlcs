@@ -16,6 +16,9 @@ var htmlGenner = require('html-code-gen');
 
 // hint code
 var hint = function (code, cfg) {
+    // get rid of \r
+    code = code.replace(/\r\n?/g, '\n');
+
     // max error num
     var maxError = cfg['max-error'];
     delete cfg['max-error'];
@@ -23,17 +26,16 @@ var hint = function (code, cfg) {
     // init rules
     rules.init();
 
-    // bind reporter
+    // reporter
     var reporter = new Reporter();
-    rules.bindReporter(reporter);
 
     // get & lint parser
     var parser = parse.getParser();
-    rules.lintParser(parser, cfg);
+    rules.lintParser(parser, reporter, cfg, code);
 
     // parse & lint document
     var document = parse(code, parser);
-    rules.lintDocument(document, cfg);
+    rules.lintDocument(document, reporter, cfg, code);
 
     // get result
     var result = reporter.result();

@@ -168,9 +168,14 @@ describe('getPosition', function () {
         'The end.'
     ].join('\n');
     var position = getPosition(content);
+    var pos = getPosition(content, content.indexOf('The end.') + 2);
 
-    it('should return a function', function () {
+    it('should return a function given one argument', function () {
         expect(typeof position).toBe('function');
+    });
+
+    it('should return position info given two argument', function () {
+        expect(typeof pos).toBe('object');
     });
 
     it('should position right', function () {
@@ -185,5 +190,8 @@ describe('getPosition', function () {
         var posOfTheEndPlus2 = position(content.indexOf('The end.') + 2);
         expect(posOfTheEndPlus2.line).toBe(3);
         expect(posOfTheEndPlus2.col).toBe(3);
+
+        expect(pos.line).toBe(3);
+        expect(pos.col).toBe(3);
     });
 });

@@ -18,12 +18,14 @@
     "img-src": true,                        // true: Attribute "src" of <img> should not be empty
     "img-title": true,                      // true: Attribute "title" of <img> should not be set
     "img-width-height": true,               // true: Attribute "width" & "height" of <img> should be set
+    "indent-char": "space-4",               // "space-4": Line should indent with 4 spaces.
     "lowercase-class-with-hyphen": true,    // true: ClassName should be lowercase words connected with hyphens
     "lowercase-id-with-hyphen": true,       // true: Id should be lowercase words connected with hyphens
     "rel-stylesheet": true,                 // true: Attribute "rel" of imported css (<link>) should be set as "stylesheet"
+    "script-content": true,                 // true: Content of <script> must meet standard
     "script-in-tail": true,                 // true: Js contents (script:not([type]), script[type="text/javascript"]) should be in the tail of <body>
-    "space-tab-mixed-disabled": true,       // true: Spaces and tabs can not mixed in front of line
     "spec-char-escape": true,               // true: Special characters must be escaped
+    "style-content": true,                  // true: Content of <style> must meet standard
     "style-disabled": true,                 // true: Style tag can not be used
     "tag-pair": true,                       // true: Tag must be paired
     "tagname-lowercase": true,              // true: Tagname must be lowercase
@@ -33,5 +35,6 @@
 
     "max-error": 0,                         // max num of errors, 0 means no limit
     "format": {},                           // basic options for format
+    "linters": {},                          // extra linters ('scipt', 'style')
     "default": true                         // flag for unit test
 }

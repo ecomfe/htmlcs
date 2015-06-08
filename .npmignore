@@ -1,2 +1,5 @@
 test
-.*
+.editorconfig
+.fecsrc
+.gitignore
+.travis.yml

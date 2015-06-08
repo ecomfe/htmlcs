@@ -39,11 +39,15 @@
 
     "rel-stylesheet": "022",
 
+    "script-content": "037",
+
     "script-in-tail": "023",
 
-    "space-tab-mixed-disabled": "032",
+    "indent-char": "032",
 
     "spec-char-escape": "033",
+
+    "style-content": "038",
 
     "style-disabled": "034",
 
