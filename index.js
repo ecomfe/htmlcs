@@ -14,7 +14,24 @@ var otherFormatters = require('./lib/other-formatter');
 
 var htmlGenner = require('html-code-gen');
 
-// hint code
+/**
+ * The report item.
+ * @typedef {Object} Report
+ * @property {string} type - typeof the message, one of "info", "warn", "error"
+ * @property {number} line - line number of the report
+ * @property {number} col - col number of the report
+ * @property {string} code - code of the report
+ * @property {string} message - message of the report
+ * @property {string} rule - name of the report's rule
+ */
+
+/**
+ * Do hint with given code & config.
+ *
+ * @param {string} code - given code
+ * @param {Object} cfg - given config
+ * @return {Report[]} the hint result, list of reports
+ */
 var hint = function (code, cfg) {
     // get rid of \r
     code = code.replace(/\r\n?/g, '\n');
@@ -53,7 +70,13 @@ var hint = function (code, cfg) {
     return result;
 };
 
-// hint file
+/**
+ * Do hint with given filePath & option for readFile.
+ *
+ * @param {string} filePath - path of the target file
+ * @param {Object=} options - option for readFile
+ * @return {Report[]} the hint result, list of reports
+ */
 var hintFile = function (filePath, options) {
     options = options || {
         encoding: 'utf-8'
@@ -65,7 +88,13 @@ var hintFile = function (filePath, options) {
     return hint(cnt, cfg);
 };
 
-// format code
+/**
+ * Do format with given code & config.
+ *
+ * @param {string} code - given code
+ * @param {Object} cfg - given config
+ * @return {string} the formatted code
+ */
 var format = function (code, cfg) {
     var document = parse(code);
 
@@ -82,7 +111,13 @@ var format = function (code, cfg) {
     return htmlGenner.print(document, options);
 };
 
-// format file
+/**
+ * Do format with given filePath & option for readFile
+ *
+ * @param {string} filePath - path of the target file
+ * @param {Object=} options - option for readFile
+ * @return {string} the formatted code
+ */
 var formatFile = function (filePath, options) {
     options = options || {
         encoding: 'utf-8'
