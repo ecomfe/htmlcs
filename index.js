@@ -16,6 +16,7 @@ var htmlGenner = require('html-code-gen');
 
 /**
  * The report item.
+ *
  * @typedef {Object} Report
  * @property {string} type - typeof the message, one of "info", "warn", "error"
  * @property {number} line - line number of the report
