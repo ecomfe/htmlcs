@@ -76,7 +76,7 @@ html hint tool, focused on semantic code style.
 
 ### Config
 
-* default: [lib/default/.htmlcsrc](./lib/default/.htmlcsrc)
+* default: [lib/default/.htmlcsrc](./lib/default/htmlcsrc)
 
 * custom:
 
