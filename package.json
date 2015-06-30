@@ -21,7 +21,8 @@
     "fecs": "*",
     "istanbul": "^0.3.2",
     "jasmine-node": "^1.14.5",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "walk": "^2.3.9"
   },
   "scripts": {
     "lint": "fecs -v && fecs lib cli test index.js --type=js",
