@@ -20,6 +20,10 @@ html hint tool, focused on semantic code style.
 
 	```shell
 	htmlcs <file>
+
+	htmlcs <folder>
+
+	htmlcs format <file>
 	```
 
 * in Node.js

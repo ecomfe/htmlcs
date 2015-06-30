@@ -1,47 +1,82 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
+var path = require('path');
+var walk = require('walk');
 var htmlcs = require('../');
 var info = require('../package.json');
 
-var path = process.argv[2];
-
 var op = 'help';
-var path = '';
+var target = '';
 
 var defaultOp = 'hint';
 
 if (process.argv.length > 3) {
     op = process.argv[2];
-    path = process.argv[3];
-} else if (process.argv.length > 2) {
+    target = process.argv[3];
+}
+else {
     op = defaultOp;
-    path = process.argv[2];
+    target = process.argv[2] || './';
 }
 
-switch (op) {
+var hintFile = function (filePath) {
+    htmlcs.hintFile(filePath).forEach(function (item) {
+        console.log('[%s] line %d, col %d: %s (%s, %s)', item.type, item.line, item.col, item.message, item.rule, item.code);
+    });
+};
 
-    case 'hint':
+try {
+    switch (op) {
 
-        htmlcs.hintFile(path).forEach(function (item) {
-            console.log('[%s] line %d, col %d: %s (%s, %s)', item.type, item.line, item.col, item.message, item.rule, item.code);
-        });
-        break;
+        case 'hint':
 
-    case 'format':
+            var stat = fs.statSync(target);
 
-        console.log(htmlcs.formatFile(path));
-        break;
+            if (stat.isFile()) {
+                hintFile(target);
+                return;
+            }
 
-    case 'help':
-    default:
+            if (stat.isDirectory()) {
+                var walker = walk.walk(target);
 
-        console.log([
-            ['htmlcs', 'v' + info.version],
-            ['Usage:'],
-            ['\thtmlcs', 'hint', '<file>'],
-            ['\thtmlcs', 'format', '<file>']
-        ].map(function (line) {
-            return line.join(' ');
-        }).join('\n'));
-        break;
+                walker.on('file', function (root, fileStat, next) {
+                    var filePath = path.join(root, fileStat.name);
+
+                    if (filePath.slice(-5) !== '.html') {
+                        next();
+                        return;
+                    }
+
+                    console.log('*', filePath + ':\n');
+                    hintFile(filePath);
+                    console.log('\n');
+                    next();
+                });
+
+                return;
+            }
+
+            return;
+
+        case 'format':
+
+            console.log(htmlcs.formatFile(target));
+            return;
+
+        default:
+    }
+}
+catch (e) {
+    console.log('Error:', e.message || e);
+    console.log([
+        '',
+        ['Usage:'],
+        ['\thtmlcs', 'hint', '<file>'],
+        ['\thtmlcs', 'hint', '<folder>'],
+        ['\thtmlcs', 'format', '<file>']
+    ].map(function (line) {
+        return line && line.join(' ');
+    }).join('\n'));
 }
