@@ -107,6 +107,9 @@ var format = function (code, cfg) {
         'formatter': otherFormatters
     }, cfg.format);
 
+    // init rules
+    rules.init();
+
     rules.format(document, cfg, options);
 
     return htmlGenner.print(document, options);
