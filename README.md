@@ -87,3 +87,20 @@ html hint tool, focused on semantic code style.
 	Custom rule file (.htmlcsrc) can be placed in the same/parent directory of target file, or the `~/` directory.
 
 	If found in neither paths, the default config will be used.
+
+* inline:
+
+	- disable
+
+		```html
+		<!-- htmlcs-disable -->
+		<!-- htmlcs-disable img-alt -->
+		<!-- htmlcs-disable img-alt, img-src, attr-value-double-quotes -->
+		```
+
+	- config
+
+		```html
+		<!-- htmlcs img-width-height: true -->
+		<!-- htmlcs img-width-height: true, indent-char: "tab" -->
+		```
