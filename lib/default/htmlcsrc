@@ -1,7 +1,7 @@
 {
     // Htmlcs Default Configuration File
 
-    "asset-type": true,                     // true: Default value of attribute "type" (<link>/<script>) should not be set
+    "asset-type": true,                     // true: Default value of attribute "type" (<link>/<style>/<script>) should not be set
     "attr-lowercase": true,                 // true: Attribute name must be lowercase
     "attr-no-duplication": true,            // true: Attribute name can not been duplication
     "attr-value-double-quotes": true,       // true: Attribute value must be closed by double quotes
