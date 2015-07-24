@@ -58,17 +58,6 @@ describe('load', function () {
         });
     });
 
-    // HELP! how to test config file under '/'? >_<
-    /*describe('config file in root', function () {
-        it('should return right config', function () {
-            createConfigFile(path.resolve('/'));
-
-            expect(config.load(__filename).test).toBe(true);
-
-            removeConfigFile();
-        });
-    });*/
-
     describe('config file in home path', function () {
         it('should return right config', function () {
             createConfigFile(util.getHomePath());
