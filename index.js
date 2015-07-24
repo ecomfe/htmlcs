@@ -47,13 +47,18 @@ var hint = function (code, cfg) {
     // reporter
     var reporter = new Reporter();
 
-    // get & lint parser
+    // get parser
     var parser = parse.getParser();
-    rules.lintParser(parser, reporter, cfg, code);
+
+    // collect inline configs
+    var inlineCfg = rules.collectInlineCfg(parser);
+
+    // lint parser
+    rules.lintParser(parser, reporter, cfg, inlineCfg, code);
 
     // parse & lint document
     var document = parse(code, parser);
-    rules.lintDocument(document, reporter, cfg, code);
+    rules.lintDocument(document, reporter, cfg, inlineCfg, code);
 
     // get result
     var result = reporter.result();
