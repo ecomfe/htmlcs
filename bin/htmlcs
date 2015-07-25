@@ -22,7 +22,7 @@ else {
 
 var hintFile = function (filePath) {
     htmlcs.hintFile(filePath).forEach(function (item) {
-        console.log('[%s] line %d, col %d: %s (%s, %s)', item.type, item.line, item.col, item.message, item.rule, item.code);
+        console.log('[%s] line %d, column %d: %s (%s, %s)', item.type, item.line, item.column, item.message, item.rule, item.code);
     });
 };
 

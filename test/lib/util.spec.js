@@ -156,17 +156,17 @@ describe('getPosition', function () {
     it('should position right', function () {
         var pos0 = position(0);
         expect(pos0.line).toBe(1);
-        expect(pos0.col).toBe(1);
+        expect(pos0.column).toBe(1);
 
         var posOfWrittern = position(content.indexOf('written'));
         expect(posOfWrittern.line).toBe(2);
-        expect(posOfWrittern.col).toBe(7);
+        expect(posOfWrittern.column).toBe(7);
 
         var posOfTheEndPlus2 = position(content.indexOf('The end.') + 2);
         expect(posOfTheEndPlus2.line).toBe(3);
-        expect(posOfTheEndPlus2.col).toBe(3);
+        expect(posOfTheEndPlus2.column).toBe(3);
 
         expect(pos.line).toBe(3);
-        expect(pos.col).toBe(3);
+        expect(pos.column).toBe(3);
     });
 });
