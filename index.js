@@ -46,8 +46,10 @@ var formatFile = function (filePath, options) {
 
 module.exports = {
     addRule: htmlcs.addRule,
+
     hint: htmlcs.hint,
-    hintFile: hintFile,
     format: htmlcs.format,
+
+    hintFile: hintFile,
     formatFile: formatFile
 };
