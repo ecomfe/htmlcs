@@ -26,7 +26,7 @@ html hint tool, focused on semantic code style.
 	htmlcs format <file>
 	```
 
-* in Node.js
+* in Node.js / browser (with [browserify](https://github.com/substack/node-browserify))
 
 	* hint file
 
