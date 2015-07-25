@@ -25,17 +25,17 @@ describe('do config in comment', function () {
         expect(result2[0].type).toBe('WARN');
         expect(result2[0].code).toBe('013');
         expect(result2[0].line).toBe(2);
-        expect(result2[0].col).toBe(1);
+        expect(result2[0].column).toBe(1);
         expect(result2[1].type).toBe('WARN');
         expect(result2[1].code).toBe('028');
         expect(result2[1].line).toBe(5);
-        expect(result2[1].col).toBe(25);
+        expect(result2[1].column).toBe(25);
 
         expect(result3.length).toBe(1);
         expect(result3[0].type).toBe('WARN');
         expect(result3[0].code).toBe('013');
         expect(result3[0].line).toBe(2);
-        expect(result3[0].col).toBe(1);
+        expect(result3[0].column).toBe(1);
     });
 
     it('should return right result while do enable', function () {
@@ -43,43 +43,43 @@ describe('do config in comment', function () {
         expect(result4[0].type).toBe('WARN');
         expect(result4[0].code).toBe('012');
         expect(result4[0].line).toBe(3);
-        expect(result4[0].col).toBe(1);
+        expect(result4[0].column).toBe(1);
         expect(result4[1].type).toBe('WARN');
         expect(result4[1].code).toBe('013');
         expect(result4[1].line).toBe(3);
-        expect(result4[1].col).toBe(1);
+        expect(result4[1].column).toBe(1);
         expect(result4[2].type).toBe('WARN');
         expect(result4[2].code).toBe('012');
         expect(result4[2].line).toBe(4);
-        expect(result4[2].col).toBe(1);
+        expect(result4[2].column).toBe(1);
         expect(result4[3].type).toBe('WARN');
         expect(result4[3].code).toBe('028');
         expect(result4[3].line).toBe(6);
-        expect(result4[3].col).toBe(25);
+        expect(result4[3].column).toBe(25);
 
         expect(result5.length).toBe(2);
         expect(result5[0].type).toBe('WARN');
         expect(result5[0].code).toBe('012');
         expect(result5[0].line).toBe(3);
-        expect(result5[0].col).toBe(1);
+        expect(result5[0].column).toBe(1);
         expect(result5[1].type).toBe('WARN');
         expect(result5[1].code).toBe('012');
         expect(result5[1].line).toBe(4);
-        expect(result5[1].col).toBe(1);
+        expect(result5[1].column).toBe(1);
 
         expect(result6.length).toBe(3);
         expect(result6[0].type).toBe('WARN');
         expect(result6[0].code).toBe('012');
         expect(result6[0].line).toBe(3);
-        expect(result6[0].col).toBe(1);
+        expect(result6[0].column).toBe(1);
         expect(result6[1].type).toBe('WARN');
         expect(result6[1].code).toBe('012');
         expect(result6[1].line).toBe(4);
-        expect(result6[1].col).toBe(1);
+        expect(result6[1].column).toBe(1);
         expect(result6[2].type).toBe('WARN');
         expect(result6[2].code).toBe('028');
         expect(result6[2].line).toBe(6);
-        expect(result6[2].col).toBe(25);
+        expect(result6[2].column).toBe(25);
     });
 
     it('should return right result while do config', function () {
@@ -87,52 +87,52 @@ describe('do config in comment', function () {
         expect(result7[0].type).toBe('WARN');
         expect(result7[0].code).toBe('013');
         expect(result7[0].line).toBe(2);
-        expect(result7[0].col).toBe(1);
+        expect(result7[0].column).toBe(1);
         expect(result7[1].type).toBe('WARN');
         expect(result7[1].code).toBe('028');
         expect(result7[1].line).toBe(5);
-        expect(result7[1].col).toBe(25);
+        expect(result7[1].column).toBe(25);
 
         expect(result8.length).toBe(1);
         expect(result8[0].type).toBe('WARN');
         expect(result8[0].code).toBe('013');
         expect(result8[0].line).toBe(3);
-        expect(result8[0].col).toBe(1);
+        expect(result8[0].column).toBe(1);
 
         expect(result9.length).toBe(4);
         expect(result9[0].type).toBe('WARN');
         expect(result9[0].code).toBe('012');
         expect(result9[0].line).toBe(3);
-        expect(result9[0].col).toBe(1);
+        expect(result9[0].column).toBe(1);
         expect(result9[1].type).toBe('WARN');
         expect(result9[1].code).toBe('013');
         expect(result9[1].line).toBe(3);
-        expect(result9[1].col).toBe(1);
+        expect(result9[1].column).toBe(1);
         expect(result9[2].type).toBe('WARN');
         expect(result9[2].code).toBe('012');
         expect(result9[2].line).toBe(4);
-        expect(result9[2].col).toBe(1);
+        expect(result9[2].column).toBe(1);
         expect(result9[3].type).toBe('WARN');
         expect(result9[3].code).toBe('028');
         expect(result9[3].line).toBe(6);
-        expect(result9[3].col).toBe(25);
+        expect(result9[3].column).toBe(25);
 
         expect(result10.length).toBe(4);
         expect(result10[0].type).toBe('WARN');
         expect(result10[0].code).toBe('015');
         expect(result10[0].line).toBe(3);
-        expect(result10[0].col).toBe(1);
+        expect(result10[0].column).toBe(1);
         expect(result10[1].type).toBe('WARN');
         expect(result10[1].code).toBe('015');
         expect(result10[1].line).toBe(4);
-        expect(result10[1].col).toBe(1);
+        expect(result10[1].column).toBe(1);
         expect(result10[2].type).toBe('WARN');
         expect(result10[2].code).toBe('015');
         expect(result10[2].line).toBe(5);
-        expect(result10[2].col).toBe(1);
+        expect(result10[2].column).toBe(1);
         expect(result10[3].type).toBe('WARN');
         expect(result10[3].code).toBe('015');
         expect(result10[3].line).toBe(6);
-        expect(result10[3].col).toBe(1);
+        expect(result10[3].column).toBe(1);
     });
 });

@@ -20,7 +20,7 @@ describe('rule ' + rule, function () {
         expect(result1[0].type).toBe('WARN');
         expect(result1[0].code).toBe('010');
         expect(result1[0].line).toBe(2);
-        expect(result1[0].col).toBe(1);
+        expect(result1[0].column).toBe(1);
 
         expect(result2.length).toBe(0);
         expect(result3.length).toBe(0);
