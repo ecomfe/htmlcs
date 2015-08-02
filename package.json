@@ -3,6 +3,7 @@
   "version": "0.0.12",
   "description": "html hint tool, focused on semantic code style.",
   "main": "index.js",
+  "browser": "browser.js",
   "bin": {
     "htmlcs": "./bin/htmlcs"
   },

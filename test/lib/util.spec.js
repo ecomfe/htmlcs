@@ -3,23 +3,7 @@
  * @author nighca<nighca@live.cn>
  */
 
-var path = require('path');
 var util = require('../../lib/util');
-var packageInfo = require('../../package.json');
-
-describe('app', function () {
-    var app = util.app;
-
-    describe('root', function () {
-        it('should be a string', function () {
-            expect(typeof app.root).toBe('string');
-        });
-
-        it('should be the dir path where package.json locates', function () {
-            expect(require(path.join(app.root, 'package.json'))).toBe(packageInfo);
-        });
-    });
-});
 
 describe('nodeType', function () {
     var nodeType = util.nodeType;
@@ -151,15 +135,6 @@ describe('cachable', function () {
     });
 });
 
-describe('getHomePath', function () {
-    var getHomePath = util.getHomePath;
-
-    it('should return a path', function () {
-        expect(typeof getHomePath()).toBe('string');
-    });
-});
-
-
 describe('getPosition', function () {
     var getPosition = util.getPosition;
     var content = [
@@ -181,17 +156,17 @@ describe('getPosition', function () {
     it('should position right', function () {
         var pos0 = position(0);
         expect(pos0.line).toBe(1);
-        expect(pos0.col).toBe(1);
+        expect(pos0.column).toBe(1);
 
         var posOfWrittern = position(content.indexOf('written'));
         expect(posOfWrittern.line).toBe(2);
-        expect(posOfWrittern.col).toBe(7);
+        expect(posOfWrittern.column).toBe(7);
 
         var posOfTheEndPlus2 = position(content.indexOf('The end.') + 2);
         expect(posOfTheEndPlus2.line).toBe(3);
-        expect(posOfTheEndPlus2.col).toBe(3);
+        expect(posOfTheEndPlus2.column).toBe(3);
 
         expect(pos.line).toBe(3);
-        expect(pos.col).toBe(3);
+        expect(pos.column).toBe(3);
     });
 });

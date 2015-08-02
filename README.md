@@ -26,7 +26,7 @@ html hint tool, focused on semantic code style.
 	htmlcs format <file>
 	```
 
-* in Node.js
+* in Node.js / browser (with [browserify](https://github.com/substack/node-browserify))
 
 	* hint file
 
@@ -47,10 +47,10 @@ html hint tool, focused on semantic code style.
 		```javascript
 		result.forEach(function(item){
 		    console.log(
-		        '[%s] line %d, col %d: %s (%s, %s)',
+		        '[%s] line %d, column %d: %s (%s, %s)',
 		        item.type,
 		        item.pos.line,
-		        item.pos.col,
+		        item.pos.column,
 		        item.message,
 		        item.rule,
 		        item.code

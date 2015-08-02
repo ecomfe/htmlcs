@@ -6,7 +6,7 @@
 var sh = require('shelljs');
 var fs = require('fs');
 var path = require('path');
-var util = require('../../lib/util');
+var fsUtil = require('../../lib/fs-util');
 var config = require('../../lib/config');
 
 describe('load', function () {
@@ -58,20 +58,9 @@ describe('load', function () {
         });
     });
 
-    // HELP! how to test config file under '/'? >_<
-    /*describe('config file in root', function () {
-        it('should return right config', function () {
-            createConfigFile(path.resolve('/'));
-
-            expect(config.load(__filename).test).toBe(true);
-
-            removeConfigFile();
-        });
-    });*/
-
     describe('config file in home path', function () {
         it('should return right config', function () {
-            createConfigFile(util.getHomePath());
+            createConfigFile(fsUtil.getHomePath());
 
             expect(config.load(__filename, true).test).toBe(true);
 

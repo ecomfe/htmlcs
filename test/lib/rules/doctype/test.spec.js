@@ -20,14 +20,14 @@ describe('rule ' + rule, function () {
         expect(result1[0].type).toBe('WARN');
         expect(result1[0].code).toBe('009');
         expect(result1[0].line).toBe(1);
-        expect(result1[0].col).toBe(1);
+        expect(result1[0].column).toBe(1);
 
         expect(result2.length).toBe(0);
 
         expect(result3[0].type).toBe('WARN');
         expect(result3[0].code).toBe('028');
         expect(result3[0].line).toBe(1);
-        expect(result3[0].col).toBe(1);
+        expect(result3[0].column).toBe(1);
     });
 });
 

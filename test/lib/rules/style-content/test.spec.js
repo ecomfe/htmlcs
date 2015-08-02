@@ -16,11 +16,12 @@ describe('hint rule ' + rule, function () {
 
     var result = [];
 
-    var styleLinter = function (content, pos, element) {
+    var styleLinter = function (content, pos, element, indent) {
         result.push({
             content: content,
             pos: pos,
-            element: element
+            element: element,
+            indent: indent
         });
     };
 
@@ -44,17 +45,20 @@ describe('hint rule ' + rule, function () {
 
         expect(result[0].content).toBe('body {}');
         expect(result[0].pos.line).toBe(1);
-        expect(result[0].pos.col).toBe(1);
+        expect(result[0].pos.column).toBe(8);
         expect(result[0].element.tagName).toBe('STYLE');
+        expect(result[0].indent).toBe('');
 
-        expect(result[1].content).toBe('\n    body {}\n');
+        expect(result[1].content).toBe('\n\t    body {}\n\t');
         expect(result[1].pos.line).toBe(2);
-        expect(result[1].pos.col).toBe(1);
+        expect(result[1].pos.column).toBe(9);
         expect(result[1].element.tagName).toBe('STYLE');
+        expect(result[1].indent).toBe('\t');
 
-        expect(result[2].content).toBe('\n    body {\n\n    }\n');
+        expect(result[2].content).toBe('\n    body {\n\n    }\n    ');
         expect(result[2].pos.line).toBe(5);
-        expect(result[2].pos.col).toBe(1);
+        expect(result[2].pos.column).toBe(28);
         expect(result[2].element.tagName).toBe('STYLE');
+        expect(result[2].indent).toBe('    ');
     });
 });

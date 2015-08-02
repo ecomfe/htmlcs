@@ -20,13 +20,13 @@ describe('rule ' + rule, function () {
         expect(result1[0].type).toBe('WARN');
         expect(result1[0].code).toBe('027');
         expect(result1[0].line).toBe(3);
-        expect(result1[0].col).toBe(1);
+        expect(result1[0].column).toBe(1);
 
         expect(result2.length).toBe(1);
         expect(result2[0].type).toBe('WARN');
         expect(result2[0].code).toBe('027');
         expect(result2[0].line).toBe(3);
-        expect(result2[0].col).toBe(1);
+        expect(result2[0].column).toBe(1);
 
         expect(result3.length).toBe(0);
         expect(result4.length).toBe(0);

@@ -18,17 +18,17 @@ describe('hint rule ' + rule, function () {
         expect(result[0].type).toBe('WARN');
         expect(result[0].code).toBe('001');
         expect(result[0].line).toBe(11);
-        expect(result[0].col).toBe(5);
+        expect(result[0].column).toBe(5);
 
         expect(result[1].type).toBe('WARN');
         expect(result[1].code).toBe('001');
         expect(result[1].line).toBe(13);
-        expect(result[1].col).toBe(5);
+        expect(result[1].column).toBe(5);
 
         expect(result[2].type).toBe('WARN');
         expect(result[2].code).toBe('002');
         expect(result[2].line).toBe(16);
-        expect(result[2].col).toBe(5);
+        expect(result[2].column).toBe(5);
     });
 });
 
