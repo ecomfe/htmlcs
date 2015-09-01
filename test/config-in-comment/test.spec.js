@@ -17,6 +17,7 @@ describe('do config in comment', function () {
     var result8 = htmlcs.hintFile(path.join(__dirname, 'case8.html'));
     var result9 = htmlcs.hintFile(path.join(__dirname, 'case9.html'));
     var result10 = htmlcs.hintFile(path.join(__dirname, 'case10.html'));
+    var result11 = htmlcs.hintFile(path.join(__dirname, 'case11.html'));
 
     it('should return right result while do disable', function () {
         expect(result1.length).toBe(0);
@@ -134,5 +135,38 @@ describe('do config in comment', function () {
         expect(result10[3].code).toBe('015');
         expect(result10[3].line).toBe(6);
         expect(result10[3].column).toBe(1);
+    });
+
+    it('should be configable by line', function () {
+        expect(result11.length).toBe(7);
+
+        expect(result11[0].type).toBe('WARN');
+        expect(result11[0].code).toBe('012');
+        expect(result11[0].line).toBe(1);
+        expect(result11[0].column).toBe(1);
+        expect(result11[1].type).toBe('WARN');
+        expect(result11[1].code).toBe('015');
+        expect(result11[1].line).toBe(5);
+        expect(result11[1].column).toBe(1);
+        expect(result11[2].type).toBe('WARN');
+        expect(result11[2].code).toBe('012');
+        expect(result11[2].line).toBe(7);
+        expect(result11[2].column).toBe(1);
+        expect(result11[3].type).toBe('WARN');
+        expect(result11[3].code).toBe('015');
+        expect(result11[3].line).toBe(7);
+        expect(result11[3].column).toBe(1);
+        expect(result11[4].type).toBe('WARN');
+        expect(result11[4].code).toBe('012');
+        expect(result11[4].line).toBe(9);
+        expect(result11[4].column).toBe(1);
+        expect(result11[5].type).toBe('WARN');
+        expect(result11[5].code).toBe('029');
+        expect(result11[5].line).toBe(11);
+        expect(result11[5].column).toBe(4);
+        expect(result11[6].type).toBe('WARN');
+        expect(result11[6].code).toBe('029');
+        expect(result11[6].line).toBe(15);
+        expect(result11[6].column).toBe(4);
     });
 });
