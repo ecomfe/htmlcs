@@ -21,6 +21,7 @@
     "indent-char": "space-4",               // "space-4": Line should indent with 4 spaces.
     "lowercase-class-with-hyphen": true,    // true: ClassName should be lowercase words connected with hyphens
     "lowercase-id-with-hyphen": true,       // true: Id should be lowercase words connected with hyphens
+    "nest": true,                           // true: Elements should be nested abiding by specific rules
     "rel-stylesheet": true,                 // true: Attribute "rel" of imported css (<link>) should be set as "stylesheet"
     "script-content": true,                 // true: Content of <script> must meet standard
     "script-in-tail": true,                 // true: Js contents (script:not([type]), script[type="text/javascript"]) should be in the tail of <body>
