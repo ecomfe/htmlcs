@@ -49,8 +49,8 @@ html hint tool, focused on semantic code style.
 		    console.log(
 		        '[%s] line %d, column %d: %s (%s, %s)',
 		        item.type,
-		        item.pos.line,
-		        item.pos.column,
+		        item.line,
+		        item.column,
 		        item.message,
 		        item.rule,
 		        item.code
@@ -70,6 +70,24 @@ html hint tool, focused on semantic code style.
 		```javascript
 		var htmlcs = require('htmlcs');
 		console.log(htmlcs.format(code))
+		```
+
+	* add rule
+
+		```javascript
+		var htmlcs = require('htmlcs');
+		htmlcs.addRule({
+		    name: 'test-rule',
+		    desc: 'Just a test rule.',
+		    lint: function (getCfg, document, reporter) {
+		        reporter.warn(
+		            1,
+		            '099',
+		            'This is a test waring!'
+		        );
+		    }
+		});
+		var result = htmlcs.hint(code);
 		```
 
 ### Rules & Codes
@@ -96,6 +114,14 @@ html hint tool, focused on semantic code style.
 		<!-- htmlcs-disable -->
 		<!-- htmlcs-disable img-alt -->
 		<!-- htmlcs-disable img-alt, img-src, attr-value-double-quotes -->
+		```
+
+	- enable
+
+		```html
+		<!-- htmlcs-enable -->
+		<!-- htmlcs-enable img-alt -->
+		<!-- htmlcs-enable img-alt, img-src, attr-value-double-quotes -->
 		```
 
 	- config
