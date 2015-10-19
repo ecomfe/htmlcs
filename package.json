@@ -15,7 +15,7 @@
     "html-code-gen": "^0.3.6",
     "htmlparser2": "^3.8.2",
     "jformatter": "^1.0.6",
-    "manis": "^0.1.0",
+    "manis": "^0.2.0",
     "strip-json-comments": "^1.0.2"
   },
   "devDependencies": {
