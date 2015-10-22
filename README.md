@@ -8,7 +8,7 @@ htmlcs
 [![DevDependencies](https://img.shields.io/david/dev/ecomfe/htmlcs.svg?style=flat)](https://david-dm.org/ecomfe/htmlcs)
 
 
-html hint tool, focused on semantic code style.
+HTML code style check & format tool.
 
 ### Install
 
@@ -19,11 +19,27 @@ html hint tool, focused on semantic code style.
 * in CLI
 
 	```shell
-	htmlcs <file>
+	Usage: htmlcs <command> [options] [target...]
 
-	htmlcs <folder>
+	Commands:
+	  hint    Do hint given file(s)
+	  format  Do format given file(s)
 
-	htmlcs format <file>
+	Options:
+	  -h, --help      Show help                                            [boolean]
+	  -c, --config    Path to custom configuration file.                    [string]
+	  --diff          Check code style and output char diff.               [boolean]
+	  -i, --in-place  Edit input files in place; use with care!            [boolean]
+	  -v, --version   Show version number                                  [boolean]
+
+	Examples:
+	  htmlcs hint foo.html               do hint foo.html
+	  htmlcs hint foo.html bar.html      do hint foo.html & bar.html
+	  htmlcs hint ./                     do hint html files under ./
+	  htmlcs format foo.html             do format foo.html
+	  htmlcs format --diff foo.html      do format foo.html & show diff result
+	  htmlcs format --in-place foo.html  do format foo.html & write file in place
+
 	```
 
 * in Node.js / browser (with [browserify](https://github.com/substack/node-browserify))
