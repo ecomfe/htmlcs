@@ -41,7 +41,7 @@ if (!command) {
 // targets
 var targets = argv.slice(1);
 if (!targets.length) {
-    console.log('Target is not specified, use "./" as default.');
+    console.log('Warn: Target is not specified, use "./" as default.\n');
     targets.push('./');
 }
 
