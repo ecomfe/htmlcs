@@ -6,24 +6,41 @@ var walk = require('walk');
 var htmlcs = require('../');
 var info = require('../package.json');
 
-var op = 'help';
-var target = '';
+var argv = require('yargs')
+    .usage('Usage: $0 <command> [options] [target...]')
+    .command('hint', 'Do hint given file(s)')
+    .example('$0 hint -f foo.js', 'do hint the given file')
+    .command('format', 'Do format given file(s)')
+    .example('$0 format -f foo.js', 'do format the given file')
+    .help('h')
+    .alias('h', 'help')
+    .epilog('copyright 2015')
+    .argv;
 
-var defaultOp = 'hint';
+// default op & target
+var op = 'hint';
+var target = './';
 
-if (process.argv.length > 3) {
-    op = process.argv[2];
-    target = process.argv[3];
-}
-else {
-    op = defaultOp;
-    target = process.argv[2] || './';
+switch (argv._.length) {
+    case 0: break;
+    case 1:
+        target = argv._[0];
+        break;
+    default:
+        op = argv._[0];
+        target = argv._[1];
 }
 
 var hintFile = function (filePath) {
-    htmlcs.hintFile(filePath).forEach(function (item) {
-        console.log('[%s] line %d, column %d: %s (%s, %s)', item.type, item.line, item.column, item.message, item.rule, item.code);
-    });
+    var result = htmlcs.hintFile(filePath);
+    if (result.length) {
+        result.forEach(function (item) {
+            console.log('[%s] line %d, column %d: %s (%s, %s)', item.type, item.line, item.column, item.message, item.rule, item.code);
+        });
+    }
+    else {
+        console.log('Congratulations! There is no hint result.');
+    }
 };
 
 try {
@@ -51,7 +68,7 @@ try {
 
                     console.log('*', filePath + ':\n');
                     hintFile(filePath);
-                    console.log('\n');
+                    console.log('');
                     next();
                 });
 
