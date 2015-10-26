@@ -106,6 +106,10 @@ HTML code style check & format tool.
 		var result = htmlcs.hint(code);
 		```
 
+* with Grunt
+
+	[grunt-htmlcs](https://github.com/RRMoelker/grunt-htmlcs)
+
 ### Rules & Codes
 
 [lib/rules/](./lib/rules/)
