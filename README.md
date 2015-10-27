@@ -110,6 +110,10 @@ HTML code style check & format tool.
 
 	There is no official Gulp/Grunt plugin yet. We recommend [fecs](https://github.com/ecomfe/fecs), which uses htmlcs to hint HTML code and provides a wealth of tools.
 
+	- [fecs-gulp](https://github.com/ecomfe/fecs-gulp)
+
+	- [fecs-grunt](https://github.com/ecomfe/fecs-grunt)
+
 ### Rules & Codes
 
 [lib/rules/](./lib/rules/)
