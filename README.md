@@ -106,9 +106,9 @@ HTML code style check & format tool.
 		var result = htmlcs.hint(code);
 		```
 
-* with Grunt
+* with Gulp/Grunt
 
-	[grunt-htmlcs](https://github.com/RRMoelker/grunt-htmlcs)
+	There is no official Gulp/Grunt plugin yet. We recommend [fecs](https://github.com/ecomfe/fecs), which uses htmlcs to hint HTML code and provides a wealth of tools.
 
 ### Rules & Codes
 
@@ -150,3 +150,7 @@ HTML code style check & format tool.
 		<!-- htmlcs img-width-height: true -->
 		<!-- htmlcs img-width-height: true, indent-char: "tab" -->
 		```
+
+### Relative third-party tools
+
+* [grunt-htmlcs](https://github.com/RRMoelker/grunt-htmlcs)
