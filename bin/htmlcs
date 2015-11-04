@@ -1,82 +1,55 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var path = require('path');
-var walk = require('walk');
-var htmlcs = require('../');
-var info = require('../package.json');
+var yargs = require('yargs');
+var cli = require('../lib/cli');
 
-var op = 'help';
-var target = '';
+// usage, version & help info
+yargs = yargs
+    .usage('Usage: $0 <command> [options] [target...]')
+    .version(require('../package.json').version).alias('v', 'version')
+    .help('h').alias('h', 'help');
 
-var defaultOp = 'hint';
-
-if (process.argv.length > 3) {
-    op = process.argv[2];
-    target = process.argv[3];
-}
-else {
-    op = defaultOp;
-    target = process.argv[2] || './';
-}
-
-var hintFile = function (filePath) {
-    htmlcs.hintFile(filePath).forEach(function (item) {
-        console.log('[%s] line %d, column %d: %s (%s, %s)', item.type, item.line, item.column, item.message, item.rule, item.code);
+// commands
+cli.commands.forEach(function (command) {
+    yargs = yargs.command(command.name, command.describe);
+    command.examples.forEach(function (example) {
+        yargs = yargs.example(example[0], example[1]);
     });
-};
+});
 
-try {
-    switch (op) {
+// options
+cli.options.forEach(function (option) {
+    yargs = yargs.option(option.name, option);
+});
 
-        case 'hint':
+var argv = yargs.argv._ || [];
 
-            var stat = fs.statSync(target);
-
-            if (stat.isFile()) {
-                hintFile(target);
-                return;
-            }
-
-            if (stat.isDirectory()) {
-                var walker = walk.walk(target);
-
-                walker.on('file', function (root, fileStat, next) {
-                    var filePath = path.join(root, fileStat.name);
-
-                    if (filePath.slice(-5) !== '.html') {
-                        next();
-                        return;
-                    }
-
-                    console.log('*', filePath + ':\n');
-                    hintFile(filePath);
-                    console.log('\n');
-                    next();
-                });
-
-                return;
-            }
-
-            return;
-
-        case 'format':
-
-            console.log(htmlcs.formatFile(target));
-            return;
-
-        default:
-    }
+// command name
+var commandName = argv[0];
+if (!commandName) {
+    cli.helper.dealError('Command is required.');
 }
-catch (e) {
-    console.log('Error:', e.message || e);
-    console.log([
-        '',
-        ['Usage:'],
-        ['\thtmlcs', 'hint', '<file>'],
-        ['\thtmlcs', 'hint', '<folder>'],
-        ['\thtmlcs', 'format', '<file>']
-    ].map(function (line) {
-        return line && line.join(' ');
-    }).join('\n'));
+
+// command
+var command = cli.commands.filter(function (item) {
+    return item.name == commandName;
+})[0];
+if (!command) {
+    cli.helper.dealError('Unknown command: "' + commandName + '".');
 }
+
+// targets
+var targets = argv.slice(1);
+if (!targets.length) {
+    console.log('Warn: Target is not specified, use "./" as default.\n');
+    targets.push('./');
+}
+
+// target files
+var targetFiles = cli.helper.getTargetFiles(targets);
+if (!targetFiles.length) {
+    cli.helper.dealError('No matched file found.');
+}
+
+// execute command
+command.handler(yargs.argv, targetFiles);
