@@ -29,7 +29,7 @@
     "walk": "^2.3.9"
   },
   "scripts": {
-    "lint": "fecs -v && fecs lib cli test index.js --type=js",
+    "lint": "fecs -v && fecs lib test index.js --type=js",
     "coverage": "istanbul cover jasmine-node --captureExceptions test/**/*.spec.js test/lib/rules/*/*.spec.js",
     "test": "npm run lint && npm run coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
