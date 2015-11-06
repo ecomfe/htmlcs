@@ -24,7 +24,7 @@
     "rel-stylesheet": true,                 // true: Attribute "rel" of imported css (<link>) should be set as "stylesheet"
     "script-content": true,                 // true: Content of <script> must meet standard
     "script-in-tail": true,                 // true: Js contents (script:not([type]), script[type="text/javascript"]) should be in the tail of <body>
-    "self-close": "no-close",               // "no-close": Void tags should not close themeselves
+    "self-close": "no-close",               // "no-close": Void tags should not close themeselves  with "/"
     "spec-char-escape": true,               // true: Special characters must be escaped
     "style-content": true,                  // true: Content of <style> must meet standard
     "style-disabled": true,                 // true: Style tag can not be used
