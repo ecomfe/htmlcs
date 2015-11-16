@@ -170,3 +170,55 @@ describe('getPosition', function () {
         expect(pos.column).toBe(3);
     });
 });
+
+describe('extractCommentInfo', function () {
+    var commentInfo = [
+        'htmlcs-enable',
+        ' htmlcs-disable ',
+        'htmlcs-disable img-alt, img-src, attr-value-double-quotes',
+        'htmlcs "img-width-height": true',
+        'htmlcs img-width-height: true',
+        'htmlcs img-width-height: true, self-close: "no-close"'
+    ].map(util.extractCommentInfo);
+
+    it('should support disable & enable', function () {
+        expect(typeof commentInfo[0]).toBe('object');
+        expect(commentInfo[0].operation).toBe('enable');
+        expect(commentInfo[0].content).toBe(null);
+
+        expect(typeof commentInfo[1]).toBe('object');
+        expect(commentInfo[1].operation).toBe('disable');
+        expect(commentInfo[1].content).toBe(null);
+    });
+
+    it('should support content', function () {
+        expect(typeof commentInfo[2]).toBe('object');
+        expect(commentInfo[2].operation).toBe('disable');
+        expect(commentInfo[2].content.length).toBe(3);
+        expect(commentInfo[2].content[0]).toBe('img-alt');
+        expect(commentInfo[2].content[1]).toBe('img-src');
+        expect(commentInfo[2].content[2]).toBe('attr-value-double-quotes');
+    });
+
+    it('should support config', function () {
+        expect(typeof commentInfo[3]).toBe('object');
+        expect(commentInfo[3].operation).toBe('config');
+        expect(Object.keys(commentInfo[3].content).length).toBe(1);
+        expect(commentInfo[3].content['img-width-height']).toBe(true);
+
+        expect(typeof commentInfo[4]).toBe('object');
+        expect(commentInfo[4].operation).toBe('config');
+        expect(Object.keys(commentInfo[4].content).length).toBe(1);
+        expect(commentInfo[4].content['img-width-height']).toBe(true);
+    });
+
+    it('should support multi-config', function () {
+        expect(typeof commentInfo[5]).toBe('object');
+        expect(commentInfo[5].operation).toBe('config');
+        expect(Object.keys(commentInfo[5].content).length).toBe(2);
+        expect(commentInfo[5].content['img-width-height']).toBe(true);
+        expect(commentInfo[5].content['self-close']).toBe('no-close');
+    });
+
+});
+
