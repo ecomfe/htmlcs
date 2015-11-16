@@ -45,6 +45,8 @@
 
     "indent-char": "032",
 
+    "self-close": "039,040",
+
     "spec-char-escape": "033",
 
     "style-content": "038",
