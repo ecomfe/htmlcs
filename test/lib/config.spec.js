@@ -68,6 +68,21 @@ describe('load', function () {
         });
     });
 
+    describe('config file in YAML format', function () {
+        it('should return right config', function () {
+            createConfigFile(__dirname, [
+                '---            # The is a file for test',
+                'test: true     # value "test" should be true',
+                'format: yaml   # value "format" should be "yaml"',
+            ].join('\n'));
+
+            expect(config.load(__filename, true).test).toBe(true);
+            expect(config.load(__filename, true).format).toBe('yaml');
+
+            removeConfigFile();
+        });
+    });
+
     describe('no config file', function () {
         it('should use default config', function () {
             var cfg = config.load(__filename, true);
@@ -77,7 +92,7 @@ describe('load', function () {
 
     describe('wrong config file', function () {
         it('should throw error', function () {
-            createConfigFile(__dirname, 'xxx');
+            createConfigFile(__dirname, ':');
 
             var err;
             try {
