@@ -17,7 +17,7 @@
 
     "css-in-head": "008",
 
-    "doctype": "009",
+    "doctype": "009,041",
 
     "html-lang": "010",
 
@@ -46,6 +46,8 @@
     "script-in-tail": "023",
 
     "indent-char": "032",
+
+    "self-close": "039,040",
 
     "spec-char-escape": "033",
 
