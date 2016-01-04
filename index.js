@@ -9,22 +9,6 @@ var config = require('./lib/config');
 var htmlcs = require('./lib/htmlcs');
 
 /**
- * Try to load config info for given filePath & exit on error.
- *
- * @param {string} filePath - path of the target file
- * @return {Object} the config object
- */
-var loadConfig = function (filePath) {
-    try {
-        return config.load(filePath);
-    }
-    catch (e) {
-        console.error('Load config failed: ' + e.message);
-        process.exit(1);
-    }
-};
-
-/**
  * Do hint with given filePath & option for readFile.
  *
  * @param {string} filePath - path of the target file
@@ -37,7 +21,7 @@ var hintFile = function (filePath, options) {
     };
 
     var cnt = fs.readFileSync(filePath, options);
-    var cfg = loadConfig(filePath);
+    var cfg = config.load(filePath);
 
     return htmlcs.hint(cnt, cfg);
 };
@@ -55,7 +39,7 @@ var formatFile = function (filePath, options) {
     };
 
     var cnt = fs.readFileSync(filePath, options);
-    var cfg = loadConfig(filePath);
+    var cfg = config.load(filePath);
 
     return htmlcs.format(cnt, cfg);
 };

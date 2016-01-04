@@ -102,7 +102,7 @@ describe('load', function () {
                 err = e;
             }
 
-            expect(typeof err.message).toBe('string');
+            expect(err instanceof Error).toBe(true);
 
             removeConfigFile();
         });
