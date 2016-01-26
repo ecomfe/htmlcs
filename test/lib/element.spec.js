@@ -6,6 +6,7 @@
 var htmlparser2 = require('htmlparser2');
 
 var Node = require('../../lib/node');
+var Element = require('../../lib/element');
 
 var NodeType = {
     ELEMENT_NODE: 1,
@@ -32,6 +33,30 @@ var transformRecursively = function (node, root) {
 
     return node;
 };
+
+describe('Element', function () {
+    describe('init', function () {
+        it('should init a Element instance with given node', function () {
+            var ele = Element.init({
+                name: 'test-element'
+            });
+            expect(ele instanceof Element).toBe(true);
+            expect(Object.getPrototypeOf(ele)).toBe(Element.prototype);
+        });
+
+        it('should do nothing if given null', function () {
+            expect(Element.init(null)).toBe(null);
+        });
+
+        it('should not init repeatly', function () {
+            var ele = Element.init({
+                name: 'test-element'
+            });
+            var ele2 = Element.init(ele);
+            expect(ele).toBe(ele2);
+        });
+    });
+});
 
 describe('element', function () {
     var p = htmlparser2.parseDOM(

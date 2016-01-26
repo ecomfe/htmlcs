@@ -9,6 +9,49 @@ var path = require('path');
 var fsUtil = require('../../lib/fs-util');
 var config = require('../../lib/config');
 
+describe('parse', function () {
+    describe('JSON content', function () {
+        it('should return right result', function () {
+            var content = [
+                '{',
+                '    // The is a file for test',
+                '    "test": true    // value "test" should be true',
+                '}'
+            ].join('\n');
+
+            expect(config.parse(content).test).toBe(true);
+        });
+    });
+
+    describe('YAML content', function () {
+        it('should return right result', function () {
+            var content = [
+                '---            # The is a file for test',
+                'test: true     # value "test" should be true',
+                'format: yaml   # value "format" should be "yaml"'
+            ].join('\n');
+
+            expect(config.parse(content).test).toBe(true);
+            expect(config.parse(content).format).toBe('yaml');
+        });
+    });
+
+    describe('Invalid content', function () {
+        it('should throw error', function () {
+            var content = ':';
+            var err;
+
+            try {
+                config.parse(content);
+            }
+            catch (e) {
+                err = e;
+            }
+            expect(err instanceof Error).toBe(true);
+        });
+    });
+});
+
 describe('load', function () {
     var configFilePath;
 
