@@ -17,7 +17,7 @@
     "htmlparser2": "^3.8.2",
     "jformatter": "^1.0.6",
     "js-yaml": "^3.4.3",
-    "manis": "^0.2.1",
+    "manis": "^0.3.0",
     "strip-json-comments": "^1.0.2",
     "walk": "^2.3.9",
     "yargs": "^3.29.0"
