@@ -1,6 +1,6 @@
 {
   "name": "htmlcs",
-  "version": "0.1.8",
+  "version": "0.1.11",
   "description": "html hint tool, focused on semantic code style.",
   "main": "index.js",
   "browser": "browser.js",
@@ -16,8 +16,8 @@
     "html-code-gen": "^0.3.7",
     "htmlparser2": "^3.8.2",
     "jformatter": "^1.0.6",
-    "manis": "^0.2.1",
-    "strip-json-comments": "^1.0.2",
+    "manis": "^0.3.0",
+    "walk": "^2.3.9",
     "yargs": "^3.29.0"
   },
   "devDependencies": {
@@ -25,8 +25,7 @@
     "fecs": "^0.4.4",
     "istanbul": "^0.3.2",
     "jasmine-node": "^1.14.5",
-    "shelljs": "^0.3.0",
-    "walk": "^2.3.9"
+    "shelljs": "^0.3.0"
   },
   "scripts": {
     "lint": "fecs -v && fecs lib test index.js --type=js",
