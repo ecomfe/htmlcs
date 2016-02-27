@@ -119,4 +119,19 @@ describe('hint rule ' + rule, function () {
     it('should not check content of script / style', function () {
         expect(result5.length).toBe(0);
     });
+
+    var formatted1 = htmlcs.formattFile(path.join(__dirname, 'case1.html'));
+    var formatted2 = htmlcs.formattFile(path.join(__dirname, 'case2.html'));
+    var formatted3 = htmlcs.formattFile(path.join(__dirname, 'case3.html'));
+    var formatted4 = htmlcs.formattFile(path.join(__dirname, 'case4.html'));
+    var formatted5 = htmlcs.formattFile(path.join(__dirname, 'case5.html'));
+
+    it('should format correctly', function () {
+        expect(typeof formatted1).toBe('string');
+        expect(typeof formatted2).toBe('string');
+        expect(typeof formatted3).toBe('string');
+        expect(typeof formatted4).toBe('string');
+        expect(typeof formatted5).toBe('string');
+    });
+
 });
