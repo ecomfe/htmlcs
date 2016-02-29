@@ -3,6 +3,7 @@
  * @author nighca<nighca@live.cn>
  */
 
+var fs = require('fs');
 var path = require('path');
 var htmlcs = require('../../../../');
 
@@ -125,34 +126,33 @@ describe('hint rule ' + rule, function () {
         expect(result5.length).toBe(0);
     });
 
-    it('should format correctly for space-4', function () {
-        var formatted1 = htmlcs.formatFile(path.join(__dirname, 'case1.html'));
+    var formatAndCheck = function (fileName) {
+        var originFile = path.join(__dirname, fileName);
+        var formattedFile = originFile + '.formatted';
 
-        expect(typeof formatted1).toBe('string');
+        fs.writeFileSync(formattedFile, htmlcs.formatFile(originFile));
+        expect(htmlcs.hintFile(formattedFile).length).toBe(0);
+        fs.unlinkSync(formattedFile);
+    };
+
+    it('should format correctly for space-4', function () {
+        formatAndCheck('case1.html');
     });
 
     it('should format correctly for space-2', function () {
-        var formatted2 = htmlcs.formatFile(path.join(__dirname, 'case2.html'));
-
-        expect(typeof formatted2).toBe('string');
+        formatAndCheck('case2.html');
     });
 
     it('should format correctly for tab', function () {
-        var formatted3 = htmlcs.formatFile(path.join(__dirname, 'case3.html'));
-
-        expect(typeof formatted3).toBe('string');
+        formatAndCheck('case3.html');
     });
 
     it('should format correctly for default config', function () {
-        var formatted4 = htmlcs.formatFile(path.join(__dirname, 'case4.html'));
-
-        expect(typeof formatted4).toBe('string');
+        formatAndCheck('case4.html');
     });
 
     it('should format correctly for content of script / style', function () {
-        var formatted5 = htmlcs.formatFile(path.join(__dirname, 'case5.html'));
-
-        expect(typeof formatted5).toBe('string');
+        formatAndCheck('case5.html');
     });
 
 });
