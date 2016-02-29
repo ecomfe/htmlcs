@@ -125,15 +125,18 @@ describe('hint rule ' + rule, function () {
 
         expect(result5.length).toBe(0);
     });
+});
 
-    var formatAndCheck = function (fileName) {
-        var originFile = path.join(__dirname, fileName);
-        var formattedFile = originFile + '.formatted';
+var formatAndCheck = function (fileName) {
+    var originFile = path.join(__dirname, fileName);
+    var formattedFile = originFile + '.formatted';
 
-        fs.writeFileSync(formattedFile, htmlcs.formatFile(originFile));
-        expect(htmlcs.hintFile(formattedFile).length).toBe(0);
-        fs.unlinkSync(formattedFile);
-    };
+    fs.writeFileSync(formattedFile, htmlcs.formatFile(originFile));
+    expect(htmlcs.hintFile(formattedFile).length).toBe(0);
+    fs.unlinkSync(formattedFile);
+};
+
+describe('format rule ' + rule, function () {
 
     it('should format correctly for space-4', function () {
         formatAndCheck('case1.html');
