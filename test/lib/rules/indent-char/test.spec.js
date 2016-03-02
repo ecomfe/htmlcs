@@ -3,19 +3,17 @@
  * @author nighca<nighca@live.cn>
  */
 
+var fs = require('fs');
 var path = require('path');
 var htmlcs = require('../../../../');
 
 var rule = path.basename(__dirname);
 
 describe('hint rule ' + rule, function () {
-    var result1 = htmlcs.hintFile(path.join(__dirname, 'case1.html'));
-    var result2 = htmlcs.hintFile(path.join(__dirname, 'case2.html'));
-    var result3 = htmlcs.hintFile(path.join(__dirname, 'case3.html'));
-    var result4 = htmlcs.hintFile(path.join(__dirname, 'case4.html'));
-    var result5 = htmlcs.hintFile(path.join(__dirname, 'case5.html'));
 
     it('should return right result for space-4', function () {
+        var result1 = htmlcs.hintFile(path.join(__dirname, 'case1.html'));
+
         expect(result1.length).toBe(4);
 
         expect(result1[0].type).toBe('WARN');
@@ -40,6 +38,8 @@ describe('hint rule ' + rule, function () {
     });
 
     it('should return right result for space-2', function () {
+        var result2 = htmlcs.hintFile(path.join(__dirname, 'case2.html'));
+
         expect(result2.length).toBe(3);
 
         expect(result2[0].type).toBe('WARN');
@@ -59,6 +59,8 @@ describe('hint rule ' + rule, function () {
     });
 
     it('should return right result for tab', function () {
+        var result3 = htmlcs.hintFile(path.join(__dirname, 'case3.html'));
+
         expect(result3.length).toBe(6);
 
         expect(result3[0].type).toBe('WARN');
@@ -93,6 +95,8 @@ describe('hint rule ' + rule, function () {
     });
 
     it('should use space-4 as default', function () {
+        var result4 = htmlcs.hintFile(path.join(__dirname, 'case4.html'));
+
         expect(result4.length).toBe(4);
 
         expect(result4[0].type).toBe('WARN');
@@ -117,6 +121,41 @@ describe('hint rule ' + rule, function () {
     });
 
     it('should not check content of script / style', function () {
+        var result5 = htmlcs.hintFile(path.join(__dirname, 'case5.html'));
+
         expect(result5.length).toBe(0);
     });
+});
+
+var formatAndCheck = function (fileName) {
+    var originFile = path.join(__dirname, fileName);
+    var formattedFile = originFile + '.formatted';
+
+    fs.writeFileSync(formattedFile, htmlcs.formatFile(originFile));
+    expect(htmlcs.hintFile(formattedFile).length).toBe(0);
+    fs.unlinkSync(formattedFile);
+};
+
+describe('format rule ' + rule, function () {
+
+    it('should format correctly for space-4', function () {
+        formatAndCheck('case1.html');
+    });
+
+    it('should format correctly for space-2', function () {
+        formatAndCheck('case2.html');
+    });
+
+    it('should format correctly for tab', function () {
+        formatAndCheck('case3.html');
+    });
+
+    it('should format correctly for default config', function () {
+        formatAndCheck('case4.html');
+    });
+
+    it('should format correctly for content of script / style', function () {
+        formatAndCheck('case5.html');
+    });
+
 });
