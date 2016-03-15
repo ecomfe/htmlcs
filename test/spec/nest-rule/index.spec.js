@@ -88,19 +88,42 @@ var doTest = function (tagCases, tag) {
     });
 };
 
+var exclude = function (candidates, excludeList) {
+    if (!excludeList || !excludeList.length) {
+        return candidates;
+    }
+    return candidates.filter(function (candidate) {
+        return excludeList.indexOf(candidate) < 0;
+    });
+};
+
+var SECTIONING_CONTENT_TAGS = ['article', 'aside', 'nav', 'section'];
+var HEADING_CONTENT_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+var INTERACTIVE_CONTENT_TAGS = ['a', 'button', 'embed', 'iframe', 'input', 'keygen', 'label', 'select', 'textarea'];
+
 // create cases for 'flow content'
-var createFlowContentCases = function (tag) {
+var createFlowContentCases = function (tag, excludeTags) {
+    var validChildren = exclude(
+        ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'blockquote', 'br', 'button', 'canvas', 'cite', 'code', 'data', 'datalist', 'del', 'dfn', 'div', 'dl', 'em', 'embed', 'fieldset', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hr', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'keygen', 'label', 'main', 'map', 'mark', 'math', 'meter', 'nav', 'noscript', 'object', 'ol', 'output', 'p', 'pre', 'progress', 'q', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'span', 'strong', 'sub', 'sup', 'svg', 'table', 'template', 'textarea', 'time', 'u', 'ul', 'var', 'video', 'wbr'],
+        excludeTags
+    ).join('+');
+
     return [
-        [tag + '#target>a+abbr+address+article+aside+audio+b+bdi+bdo+blockquote+br+button+canvas+cite+code+data+datalist+del+dfn+div+dl+em+embed+fieldset+figure+footer+form+h1+h2+h3+h4+h5+h6+header+hr+i+iframe+img+input+ins+kbd+keygen+label+main+map+mark+math+meter+nav+noscript+object+ol+output+p+pre+progress+q+ruby+s+samp+script+section+select+small+span+strong+sub+sup+svg+table+template+textarea+time+u+ul+var+video+wbr', 0],
+        [tag + '#target>' + validChildren, 0],
         [tag + '>{hello!}', 0],
         [tag + '>base', 1]
     ];
 };
 
 // create cases for 'phrasing content'
-var createPhrasingContentCases = function (tag) {
+var createPhrasingContentCases = function (tag, excludeTags) {
+    var validChildren = exclude(
+        ['a', 'abbr', 'audio', 'b', 'bdi', 'bdo', 'br', 'button', 'canvas', 'cite', 'code', 'data', 'datalist', 'del', 'dfn', 'em', 'embed', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'keygen', 'label', 'map', 'mark', 'math', 'meter', 'noscript', 'object', 'output', 'progress', 'q', 'ruby', 's', 'samp', 'script', 'select', 'small', 'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea', 'time', 'u', 'var', 'video', 'wbr'],
+        excludeTags
+    ).join('+');
+
     return [
-        [tag + '#target>a+abbr+audio+b+bdi+bdo+br+button+canvas+cite+code+data+datalist+del+dfn+em+embed+i+iframe+img+input+ins+kbd+keygen+label+map+mark+math+meter+noscript+object+output+progress+q+ruby+s+samp+script+select+small+span+strong+sub+sup+svg+template+textarea+time+u+var+video+wbr', 0],
+        [tag + '#target>' + validChildren, 0],
         [tag + '{hello!}', 0],
         [tag + '>base', 1],
         [tag + '>section', 1]
@@ -271,7 +294,8 @@ var casesByTag = {
                 desc: 'text that is not inter-element whitespace',
                 cases: [
                     ['title{hello!}', 0],
-                    ['title>p{hello!}', 1],
+                    ['title>span{hello!}', 1],
+                    ['title', 1],
                     ['title{\u0020\u0009\u000a\u000c\u000d}', 1],
                 ]
             }
@@ -508,7 +532,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no main element descendants',
-                cases: createFlowContentCases('nav')
+                cases: createFlowContentCases('nav', ['main'])
                 // but with no main element descendants
                 // -> context of [ main ]
             }
@@ -534,7 +558,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no main element descendants',
-                cases: createFlowContentCases('aside')
+                cases: createFlowContentCases('aside', ['main'])
                 // but with no main element descendants
                 // -> context of [ main ]
             }
@@ -575,7 +599,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no header, footer, or main element descendants',
-                cases: createFlowContentCases('header')
+                cases: createFlowContentCases('header', ['header', 'footer', 'main'])
                 // but with no header, footer, or main element descendants
                 // -> context of [ header, footer, or main ]
             }
@@ -610,7 +634,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no header, footer, or main element descendants',
-                cases: createFlowContentCases('footer')
+                cases: createFlowContentCases('footer', ['header', 'footer', 'main'])
                 // but with no header, footer, or main element descendants
                 // -> context of [ header, footer, or main ]
             }
@@ -636,17 +660,17 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no heading content descendants, no sectioning content descendants, and no header, footer, or address element descendants',
-                cases: [
-                    ['address#target>a+abbr+audio+b+bdi+bdo+blockquote+br+button+canvas+cite+code+data+datalist+del+dfn+div+dl+em+embed+fieldset+figure+form+hr+i+iframe+img+input+ins+kbd+keygen+label+main+map+mark+math+meter+noscript+object+ol+output+p+pre+progress+q+ruby+s+samp+script+select+small+span+strong+sub+sup+svg+table+template+textarea+time+u+ul+var+video+wbr', 0],
-                    ['address>{hello!}', 0],
-                    ['address>base', 1],
-                    ['address>h1+h2+h3+h4+h5+h6', 6],
-                    ['address>div>h1+h2+h3+h4+h5+h6', 6],
-                    ['address>article+aside+nav+section', 4],
-                    ['address>div>article+aside+nav+section', 4],
+                cases: createFlowContentCases(
+                    'address',
+                    ['header', 'footer', 'address'].concat(HEADING_CONTENT_TAGS, SECTIONING_CONTENT_TAGS)
+                ).concat([
+                    ['address>' + HEADING_CONTENT_TAGS.join('+'), HEADING_CONTENT_TAGS.length],
+                    ['address>div>' + HEADING_CONTENT_TAGS.join('+'), HEADING_CONTENT_TAGS.length],
+                    ['address>' + SECTIONING_CONTENT_TAGS.join('+'), SECTIONING_CONTENT_TAGS.length],
+                    ['address>div>' + SECTIONING_CONTENT_TAGS.join('+'), SECTIONING_CONTENT_TAGS.length],
                     ['address#target>header+footer+address', 3],
                     ['address#target>div>header+footer+address', 3]
-                ]
+                ])
             }
         ]
     },
@@ -855,14 +879,14 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no header, footer, sectioning content, or heading content descendants',
-                cases: [
-                    ['dt>a+abbr+address+audio+b+bdi+bdo+blockquote+br+button+canvas+cite+code+data+datalist+del+dfn+div+dl+em+embed+fieldset+figure+form+hr+i+iframe+img+input+ins+kbd+keygen+label+main+map+mark+math+meter+noscript+object+ol+output+p+pre+progress+q+ruby+s+samp+script+select+small+span+strong+sub+sup+svg+table+template+textarea+time+u+ul+var+video+wbr', 0],
-                    ['dt>{hello!}', 0],
-                    ['dt>base', 1],
+                cases: createFlowContentCases(
+                    'dt',
+                    ['header', 'footer'].concat(SECTIONING_CONTENT_TAGS, HEADING_CONTENT_TAGS)
+                ).concat([
                     ['dt>header+footer', 2],
-                    ['dt>article+aside+nav+section', 4],
-                    ['dt>h1+h2+h3+h4+h5+h6', 6]
-                ]
+                    ['dt>' + SECTIONING_CONTENT_TAGS.join('+'), SECTIONING_CONTENT_TAGS.length],
+                    ['dt>' + HEADING_CONTENT_TAGS.join('+'), HEADING_CONTENT_TAGS.length]
+                ])
             }
         ]
     },
@@ -1202,14 +1226,10 @@ var casesByTag = {
         content: [
             {
                 desc: 'phrasing content, but there must be no dfn element descendants',
-                cases: [
-                    ['dfn>a+abbr+audio+b+bdi+bdo+br+button+canvas+cite+code+data+datalist+del+em+embed+i+iframe+img+input+ins+kbd+keygen+label+map+mark+math+meter+noscript+object+output+progress+q+ruby+s+samp+script+select+small+span+strong+sub+sup+svg+template+textarea+time+u+var+video+wbr', 0],
-                    ['dfn{hello!}', 0],
-                    ['dfn>base', 1],
-                    ['dfn>section', 1],
+                cases: createPhrasingContentCases('dfn', ['dfn']).concat([
                     ['dfn#target>dfn', 1],
                     ['dfn#target>span>dfn', 1]
-                ]
+                ])
             }
         ]
     },
@@ -2208,6 +2228,9 @@ var casesByTag = {
                     ['table>caption+colgroup+thead+tbody', 0],
                     ['table>caption+colgroup+thead+tr+tfoot', 0],
                     ['table>caption+colgroup+thead+tr*2+tfoot', 0],
+                    // "optionally a ..." means less than 2
+                    ['table>caption*2+colgroup+thead+tbody+tfoot', 1],
+                    ['table>caption+colgroup+thead*2+tbody+tfoot', 1],
                     // tbody & tr should not show together
                     ['table>caption+colgroup+thead+tbody+tr+tfoot', 1],
                     // but there can only be one tfoot element child in total
@@ -2252,15 +2275,11 @@ var casesByTag = {
         content: [
             {
                 desc: 'flow content, but with no descendant table elements',
-                cases: [
-                    // flow content (without table)
-                    ['caption>a+abbr+address+article+aside+audio+b+bdi+bdo+blockquote+br+button+canvas+cite+code+data+datalist+del+dfn+div+dl+em+embed+fieldset+figure+footer+form+h1+h2+h3+h4+h5+h6+header+hr+i+iframe+img+input+ins+kbd+keygen+label+main+map+mark+math+meter+nav+noscript+object+ol+output+p+pre+progress+q+ruby+s+samp+script+section+select+small+span+strong+sub+sup+svg+template+textarea+time+u+ul+var+video+wbr', 0],
-                    ['caption>{hello!}', 0],
-                    ['caption>base', 1],
+                cases: createFlowContentCases('caption', ['table']).concat([
                     // but with no descendant table elements
                     ['caption>table', 1],
                     ['caption>div>table', 1]
-                ]
+                ])
             }
         ]
     },
@@ -2381,6 +2400,527 @@ var casesByTag = {
                     ['tbody>p', 1],
                     ['tbody>tr*2+div', 1],
                     ['tbody>tr+script+span', 1]
+                ]
+            }
+        ]
+    },
+    thead: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['thead', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'as a child of a table element, after any caption, and colgroup elements and before any tbody, tfoot, and tr elements, but only if there are no other thead elements that are children of the table element',
+                cases: [
+                    // as a child of a table element
+                    ['table>thead', 0],
+                    ['body>thead', 1],
+                    ['div>thead', 1],
+                    ['span>thead', 1]
+                    // after any caption, and colgroup elements and before any tbody, tfoot, and tr elements, but only if there are no other thead elements that are children of the table element
+                    // -> content of [ table ]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'zero or more tr and script-supporting elements',
+                cases: [
+                    ['thead', 0],
+                    ['thead>tr', 0],
+                    ['thead>script', 0],
+                    ['thead>tr+script+tr', 0],
+                    ['thead>p', 1],
+                    ['thead>tr*2+div', 1],
+                    ['thead>tr+script+span', 1]
+                ]
+            }
+        ]
+    },
+    tfoot: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['tfoot', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'as a child of a table element, after any caption, colgroup, and thead elements and before any tbody and tr elements, but only if there are no other tfoot elements that are children of the table element',
+                    'as a child of a table element, after any caption, colgroup, thead, tbody, and tr elements, but only if there are no other tfoot elements that are children of the table element'
+                ].join(', or '),
+                cases: [
+                    // as a child of a table element
+                    ['table>tfoot', 0],
+                    ['body>tfoot', 1],
+                    ['div>tfoot', 1],
+                    ['span>tfoot', 1]
+                    // after any caption, colgroup, and thead elements and before any tbody and tr elements, but only if there are no other tfoot elements that are children of the table element
+                    // after any caption, colgroup, thead, tbody, and tr elements, but only if there are no other tfoot elements that are children of the table element
+                    // -> content of [ table ]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'zero or more tr and script-supporting elements',
+                cases: [
+                    ['tfoot', 0],
+                    ['tfoot>tr', 0],
+                    ['tfoot>script', 0],
+                    ['tfoot>tr+script+tr', 0],
+                    ['tfoot>p', 1],
+                    ['tfoot>tr*2+div', 1],
+                    ['tfoot>tr+script+span', 1]
+                ]
+            }
+        ]
+    },
+    tr: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['tr', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'as a child of a thead element',
+                    'as a child of a tbody element',
+                    'as a child of a tfoot element',
+                    'as a child of a table element, after any caption, colgroup, and thead elements, but only if there are no tbody elements that are children of the table element'
+                ].join(', or '),
+                cases: [
+                    // as a child of a thead element
+                    // as a child of a tbody element
+                    // as a child of a tfoot element
+                    // as a child of a table element
+                    ['thead>tr', 0],
+                    ['tbody>tr', 0],
+                    ['tfoot>tr', 0],
+                    ['table>tr', 0],
+                    ['body>tr', 1],
+                    ['div>tr', 1],
+                    ['span>tr', 1]
+                    // after any caption, colgroup, and thead elements, but only if there are no tbody elements that are children of the table element
+                    // -> content of [ table ]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'zero or more td, th, and script-supporting elements',
+                cases: [
+                    ['tr', 0],
+                    ['tr>td', 0],
+                    ['tr>th', 0],
+                    ['tr>script', 0],
+                    ['tr>td+script+th', 0],
+                    ['tr>p', 1],
+                    ['tr>td*2+div', 1],
+                    ['tr>td+scrip+th+span', 1]
+                ]
+            }
+        ]
+    },
+    td: {
+        categories: [
+            {
+                desc: 'sectioning root',
+                cases: [
+                    ['td', ['sectioning root']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'as a child of a tr element',
+                cases: [
+                    // as a child of a tr element
+                    ['tr>td', 0],
+                    ['tbody>td', 1],
+                    ['body>td', 1],
+                    ['div>td', 1],
+                    ['span>td', 1]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'flow content',
+                cases: createFlowContentCases('td')
+            }
+        ]
+    },
+    th: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['th', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'as a child of a tr element',
+                cases: [
+                    // as a child of a tr element
+                    ['tr>th', 0],
+                    ['thead>th', 1],
+                    ['body>th', 1],
+                    ['div>th', 1],
+                    ['span>th', 1]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'flow content, but with no header, footer, sectioning content, or heading content descendants',
+                cases: createFlowContentCases(
+                    'th',
+                    ['header', 'footer'].concat(SECTIONING_CONTENT_TAGS, HEADING_CONTENT_TAGS)
+                ).concat([
+                    ['th>header+footer', 2],
+                    ['th>div>header+footer', 2],
+                    ['th>' + SECTIONING_CONTENT_TAGS.join('+'), SECTIONING_CONTENT_TAGS.length],
+                    ['th>div>' + SECTIONING_CONTENT_TAGS.join('+'), SECTIONING_CONTENT_TAGS.length],
+                    ['th>' + HEADING_CONTENT_TAGS.join('+'), HEADING_CONTENT_TAGS.length],
+                    ['th>div>' + HEADING_CONTENT_TAGS.join('+'), HEADING_CONTENT_TAGS.length]
+                ])
+            }
+        ]
+    },
+    form: {
+        categories: [
+            {
+                desc: 'flow content, palpable content',
+                cases: [
+                    ['form', ['flow content', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where flow content is expected',
+                cases: [
+                    ['body>form', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'flow content, but with no form element descendants',
+                cases: createFlowContentCases('form', ['form']).concat([
+                    ['form#target>form', 1],
+                    ['form#target>div>form', 1]
+                ])
+            }
+        ]
+    },
+    label: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, interactive content, reassociateable form-associated element, palpable content',
+                cases: [
+                    ['label', ['flow content', 'phrasing content', 'interactive content', 'reassociateable form-associated element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>label', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content, but with no descendant labelable elements unless it is the element\'s labeled control, and no descendant label elements',
+                cases: createPhrasingContentCases('label', ['label']).concat([
+                    // with no descendant labelable elements unless it is the element's labeled control
+                    // "The label element represents a caption in a user interface. The caption can be associated with a specific form control, known as the label element's labeled control, either using the for attribute, or by putting the form control inside the label element itself"
+                    // so skip check here.
+                    ['label#target>label', 1],
+                    ['label#target>span>label', 1]
+                ])
+            }
+        ]
+    },
+    input: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, if the type attribute is in the hidden state: listed, submittable, resettable, and reassociateable form-associated element',
+                cases: [
+                    [
+                        'input[type="hidden"]',
+                        [
+                            'flow content',
+                            'phrasing content',
+                            'listed, submittable, resettable, and reassociateable form-associated element'
+                        ]
+                    ]
+                ]
+            },
+            {
+                desc: 'flow content, phrasing content, if the type attribute is not in the hidden state: interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    '', 'text', 'search', 'tel', 'url', 'email',
+                    'password', 'date', 'time', 'number', 'range', 'color',
+                    'checkbox', 'radio', 'file', 'sunmit', 'image', 'reset', 'button'
+                ].map(function (type) {
+                    return [
+                        'input' + (type ? ('[type="' + type + '"]') : ''),
+                        [
+                            'flow content',
+                            'phrasing content',
+                            'interactive content',
+                            'listed, labelable, submittable, resettable, and reassociateable form-associated element',
+                            'palpable content'
+                        ]
+                    ];
+                })
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>input', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'empty',
+                cases: [
+                    ['input', 0]
+                ]
+            }
+        ]
+    },
+    button: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    [
+                        'button',
+                        [
+                            'flow content',
+                            'phrasing content',
+                            'interactive content',
+                            'listed, labelable, submittable, and reassociateable form-associated element',
+                            'palpable content'
+                        ]
+                    ]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>button', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content, but there must be no interactive content descendant',
+                cases: createPhrasingContentCases('button', INTERACTIVE_CONTENT_TAGS).concat([
+                    ['button#target>a+embed+iframe+keygen+label', 5],
+                    ['button#target>span>a+embed+iframe+keygen+label', 5]
+                ])
+            }
+        ]
+    },
+    select: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    [
+                        'select',
+                        [
+                            'flow content',
+                            'phrasing content',
+                            'interactive content',
+                            'listed, labelable, submittable, resettable, and reassociateable form-associated element',
+                            'palpable content'
+                        ]
+                    ]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>select', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'zero or more option, optgroup, and script-supporting elements',
+                cases: [
+                    ['select', 0],
+                    ['select>option', 0],
+                    ['select>option*2', 0],
+                    ['select>optgroup', 0],
+                    ['select>optgroup*2', 0],
+                    ['select>option+optgroup', 0],
+                    ['select>script', 0],
+                    ['select>template', 0],
+                    ['select>option+script+optgroup+template', 0],
+                    ['select>p', 1],
+                    ['select>option+div', 1],
+                    ['select>option+span+script', 1]
+                ]
+            }
+        ]
+    },
+    datalist: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content',
+                cases: [
+                    [
+                        'datalist',
+                        [
+                            'flow content',
+                            'phrasing content'
+                        ]
+                    ]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>datalist', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'either: phrasing content (with zero or more option elements descendants), or: zero or more option elements',
+                cases: [
+                    ['datalist', 0],
+                    ['datalist>option', 0],
+                    ['datalist>option*2', 0],
+                    ['datalist>span', 0],
+                    ['datalist>strong', 0],
+                    ['datalist{hello!}', 0],
+                    ['datalist>span>option', 0],
+                    ['datalist>strong>option', 0],
+                    ['datalist>p', 1],
+                    ['datalist>div', 1]
+                ]
+            }
+        ]
+    },
+    optgroup: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['optgroup', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'as a child of a select element',
+                cases: [
+                    ['select>optgroup', 0],
+                    ['p>optgroup', 1],
+                    ['div>optgroup', 1],
+                    ['span>optgroup', 1]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'zero or more option and script-supporting elements',
+                cases: [
+                    ['optgroup', 0],
+                    ['optgroup>option', 0],
+                    ['optgroup>option*2', 0],
+                    ['optgroup>script', 0],
+                    ['optgroup>template', 0],
+                    ['optgroup>option+script+template', 0],
+                    ['optgroup>p', 1],
+                    ['optgroup>option+div', 1],
+                    ['optgroup>option+span+script', 1]
+                ]
+            }
+        ]
+    },
+    option: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['option', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'as a child of a select element',
+                    'as a child of a datalist element',
+                    'as a child of an optgroup element'
+                ].join(', or '),
+                cases: [
+                    ['select>option', 0],
+                    ['datalist>option', 0],
+                    ['optgroup>option', 0],
+                    ['p>option', 1],
+                    ['div>option', 1],
+                    ['span>option', 1]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'if the element has a label attribute and a value attribute: empty',
+                cases: [
+                    ['option[label="l"][value="v"]', 0],
+                    ['option[label="l"][value="v"]{hello!}', 1],
+                    ['option[label="l"][value="v"]{\u0020\u0009\u000a\u000c\u000d}', 1]
+                ]
+            },
+            {
+                desc: 'if the element has a label attribute but no value attribute: text',
+                cases: [
+                    ['option[label="l"]', 0],
+                    ['option[label="l"]{hello!}', 0],
+                    ['option[label="l"]{\u0020\u0009\u000a\u000c\u000d}', 0]
+                ]
+            },
+            {
+                desc: 'if the element has no label attribute: text that is not inter-element whitespace',
+                cases: [
+                    ['option{hello!}', 0],
+                    ['option>span{hello!}', 1],
+                    ['option', 1],
+                    ['option{\u0020\u0009\u000a\u000c\u000d}', 1]
                 ]
             }
         ]
