@@ -61,7 +61,6 @@ describe('define for media element', function () {
 
 describe('unfound define', function () {
     var name = 'some unfound define';
-    var match = define.is(name);
     var dismatch = define.isNot(name);
 
     it('should never match', function () {

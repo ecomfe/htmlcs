@@ -3,9 +3,13 @@
  * @author nighca<nighca@live.cn>
  */
 
+/* eslint-disable max-len */
+/* eslint-disable max-nested-callbacks */
+
 var emmet = require('emmet');
 var rules = require('../../../lib/spec/nest-rule');
 var parse = require('../../../lib/parse');
+var util = require('../../../lib/util');
 
 var forEach = function (obj, handler) {
     for (var tag in obj) {
@@ -31,82 +35,74 @@ var doTest = function (tagCases, tag) {
         });
     });
 
-    describe('categories of ' + tag, function () {
-        tagCases.categories.forEach(function (situation) {
-            it('should be ' + situation.desc, function () {
-                situation.cases.forEach(function (testcase) {
-                    var dom = testcase[0];
-                    var expected = testcase[1];
-                    var element = getElement(dom);
-                    var categories = rule.getCategories(element);
+    tagCases.categories.forEach(function (situation) {
+        situation.cases.forEach(function (testcase) {
+            var dom = testcase[0];
+            var expected = testcase[1];
+            var element = getElement(dom);
+            var categories = rule.getCategories(element);
 
-                    describe('categories of ' + tag + ' in ' + dom, function () {
-                        it('should be ' + expected, function () {
-                            expect(categories).toEqual(expected);
-                        });
-                    });
+            describe('categories of ' + tag + ' in ' + dom, function () {
+                it('should be ' + expected, function () {
+                    expect(categories).toEqual(expected);
                 });
             });
         });
     });
 
-    describe('contexts of ' + tag, function () {
-        if (tag !== 'area') {
-            tagCases.contexts.unshift({
-                desc: 'ok to have no parent',
-                cases: [[tag, 0]]
-            });
-        }
+    if (tag !== 'area') {
+        tagCases.contexts.unshift({
+            desc: 'ok to have no parent',
+            cases: [[tag, 0]]
+        });
+    }
 
-        tagCases.contexts.forEach(function (situation) {
-            it('should be ' + situation.desc, function () {
-                situation.cases.forEach(function (testcase) {
-                    var dom = testcase[0];
-                    var expected = testcase[1];
-                    var element = getElement(dom);
-                    var result = rule.validContext(element, []);
+    tagCases.contexts.forEach(function (situation) {
+        situation.cases.forEach(function (testcase) {
+            var dom = testcase[0];
+            var expected = testcase[1];
+            var element = getElement(dom);
+            var result = rule.validContext(element, []);
 
-                    describe('for contexts of ' + tag + ' in ' + dom, function () {
-                        it('there should be ' + expected + ' problem(s)', function () {
-                            expect(result.length).toBe(expected);
-                        });
-                    });
+            describe('for contexts of ' + tag + ' in ' + dom, function () {
+                it('there should be ' + expected + ' problem(s)', function () {
+                    expect(result.length).toBe(expected);
                 });
             });
         });
     });
 
-    describe('content of ' + tag, function () {
-        tagCases.content.forEach(function (situation) {
-            it('should be ' + situation.desc, function () {
-                // empty cases (impossible for self-close tags to have children by normal HTML parse)
-                // do some hack here
-                if (situation.desc === 'empty') {
-                    var element = getElement(tag);
-                    var resultWithNoChildren = rule.validContent(element, []);
-                    var resultWithChildren = rule.validContent(util.extend(element, {
-                        childNodes: getElement('div#target>p').childNodes.map(function (child) {
-                            child.parentNode = element;
-                            return child;
-                        })
-                    }), []);
+    tagCases.content.forEach(function (situation) {
+        // empty cases (impossible for self-close tags to have children by normal HTML parse)
+        // do some hack here
+        if (situation.desc === 'empty') {
+            var element = getElement(tag);
+            var resultWithNoChildren = rule.validContent(element, []);
+            var resultWithChildren = rule.validContent(util.extend(element, {
+                childNodes: getElement('div#target>p').childNodes.map(function (child) {
+                    child.parentNode = element;
+                    return child;
+                })
+            }), []);
 
+            describe('content of ' + tag, function () {
+                it('should be empty', function () {
                     expect(resultWithNoChildren.length).toBe(0);
                     expect(resultWithChildren.length).toBe(1);
-                    return;
-                }
+                });
+            });
+            return;
+        }
 
-                situation.cases.forEach(function (testcase) {
-                    var dom = testcase[0];
-                    var expected = testcase[1];
-                    var element = getElement(dom);
-                    var result = rule.validContent(element, []);
+        situation.cases.forEach(function (testcase) {
+            var dom = testcase[0];
+            var expected = testcase[1];
+            var element = getElement(dom);
+            var result = rule.validContent(element, []);
 
-                    describe('for content of ' + tag + ' in ' + dom, function () {
-                        it('there should be ' + expected + ' problem(s)', function () {
-                            expect(result.length).toBe(expected);
-                        });
-                    });
+            describe('for content of ' + tag + ' in ' + dom, function () {
+                it('there should be ' + expected + ' problem(s)', function () {
+                    expect(result.length).toBe(expected);
                 });
             });
         });
@@ -230,7 +226,7 @@ var createListCases = function (tag) {
 };
 
 var casesByTag = {
-    html: {
+    'html': {
         categories: [
             {
                 desc: 'none',
@@ -263,7 +259,7 @@ var casesByTag = {
             }
         ]
     },
-    head: {
+    'head': {
         categories: [
             {
                 desc: 'none',
@@ -295,7 +291,7 @@ var casesByTag = {
             }
         ]
     },
-    title: {
+    'title': {
         categories: [
             {
                 desc: 'metadata content',
@@ -321,12 +317,12 @@ var casesByTag = {
                     ['title{hello!}', 0],
                     ['title>span{hello!}', 1],
                     ['title', 1],
-                    ['title{\u0020\u0009\u000a\u000c\u000d}', 1],
+                    ['title{\u0020\u0009\u000a\u000c\u000d}', 1]
                 ]
             }
         ]
     },
-    base: {
+    'base': {
         categories: [
             {
                 desc: 'metadata content',
@@ -352,7 +348,7 @@ var casesByTag = {
             }
         ]
     },
-    link: {
+    'link': {
         categories: [
             {
                 desc: 'metadata content',
@@ -382,7 +378,7 @@ var casesByTag = {
             }
         ]
     },
-    meta: {
+    'meta': {
         categories: [
             {
                 desc: 'metadata content',
@@ -424,7 +420,7 @@ var casesByTag = {
             }
         ]
     },
-    style: {
+    'style': {
         categories: [
             {
                 desc: 'metadata content',
@@ -457,7 +453,7 @@ var casesByTag = {
             }
         ]
     },
-    body: {
+    'body': {
         categories: [
             {
                 desc: 'sectioning root',
@@ -483,7 +479,7 @@ var casesByTag = {
             }
         ]
     },
-    article: {
+    'article': {
         categories: [
             {
                 desc: 'flow content but with no main element descendants, sectioning content, palpable content',
@@ -509,7 +505,7 @@ var casesByTag = {
             }
         ]
     },
-    section: {
+    'section': {
         categories: [
             {
                 desc: 'flow content, sectioning content, palpable content',
@@ -533,7 +529,7 @@ var casesByTag = {
             }
         ]
     },
-    nav: {
+    'nav': {
         categories: [
             {
                 desc: 'flow content, sectioning content, palpable content',
@@ -559,7 +555,7 @@ var casesByTag = {
             }
         ]
     },
-    aside: {
+    'aside': {
         categories: [
             {
                 desc: 'flow content, sectioning content, palpable content',
@@ -585,13 +581,13 @@ var casesByTag = {
             }
         ]
     },
-    h1: createHeadingCases('h1'),
-    h2: createHeadingCases('h2'),
-    h3: createHeadingCases('h3'),
-    h4: createHeadingCases('h4'),
-    h5: createHeadingCases('h5'),
-    h6: createHeadingCases('h6'),
-    header: {
+    'h1': createHeadingCases('h1'),
+    'h2': createHeadingCases('h2'),
+    'h3': createHeadingCases('h3'),
+    'h4': createHeadingCases('h4'),
+    'h5': createHeadingCases('h5'),
+    'h6': createHeadingCases('h6'),
+    'header': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -626,7 +622,7 @@ var casesByTag = {
             }
         ]
     },
-    footer: {
+    'footer': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -661,7 +657,7 @@ var casesByTag = {
             }
         ]
     },
-    address: {
+    'address': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -695,7 +691,7 @@ var casesByTag = {
             }
         ]
     },
-    p: {
+    'p': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -719,7 +715,7 @@ var casesByTag = {
             }
         ]
     },
-    hr: {
+    'hr': {
         categories: [
             {
                 desc: 'flow content',
@@ -743,7 +739,7 @@ var casesByTag = {
             }
         ]
     },
-    pre: {
+    'pre': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -767,7 +763,7 @@ var casesByTag = {
             }
         ]
     },
-    blockquote: {
+    'blockquote': {
         categories: [
             {
                 desc: 'flow content, sectioning root, palpable content',
@@ -791,9 +787,9 @@ var casesByTag = {
             }
         ]
     },
-    ol: createListCases('ol'),
-    ul: createListCases('ul'),
-    li: {
+    'ol': createListCases('ol'),
+    'ul': createListCases('ul'),
+    'li': {
         categories: [
             {
                 desc: 'none',
@@ -820,7 +816,7 @@ var casesByTag = {
             }
         ]
     },
-    dl: {
+    'dl': {
         categories: [
             {
                 desc: 'flow content',
@@ -872,7 +868,7 @@ var casesByTag = {
             }
         ]
     },
-    dt: {
+    'dt': {
         categories: [
             {
                 desc: 'none',
@@ -909,7 +905,7 @@ var casesByTag = {
             }
         ]
     },
-    dd: {
+    'dd': {
         categories: [
             {
                 desc: 'none',
@@ -939,7 +935,7 @@ var casesByTag = {
             }
         ]
     },
-    figure: {
+    'figure': {
         categories: [
             {
                 desc: 'flow content, sectioning root, palpable content',
@@ -968,7 +964,7 @@ var casesByTag = {
             }
         ]
     },
-    figcaption: {
+    'figcaption': {
         categories: [
             {
                 desc: 'none',
@@ -995,7 +991,7 @@ var casesByTag = {
             }
         ]
     },
-    div: {
+    'div': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -1019,7 +1015,7 @@ var casesByTag = {
             }
         ]
     },
-    main: {
+    'main': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -1049,7 +1045,7 @@ var casesByTag = {
             }
         ]
     },
-    a: {
+    'a': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, palpable content',
@@ -1082,7 +1078,7 @@ var casesByTag = {
             }
         ]
     },
-    em: {
+    'em': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1106,7 +1102,7 @@ var casesByTag = {
             }
         ]
     },
-    strong: {
+    'strong': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1130,7 +1126,7 @@ var casesByTag = {
             }
         ]
     },
-    small: {
+    'small': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1154,7 +1150,7 @@ var casesByTag = {
             }
         ]
     },
-    s: {
+    's': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1178,7 +1174,7 @@ var casesByTag = {
             }
         ]
     },
-    cite: {
+    'cite': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1202,7 +1198,7 @@ var casesByTag = {
             }
         ]
     },
-    q: {
+    'q': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1226,7 +1222,7 @@ var casesByTag = {
             }
         ]
     },
-    dfn: {
+    'dfn': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1253,7 +1249,7 @@ var casesByTag = {
             }
         ]
     },
-    abbr: {
+    'abbr': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1277,7 +1273,7 @@ var casesByTag = {
             }
         ]
     },
-    data: {
+    'data': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1301,7 +1297,7 @@ var casesByTag = {
             }
         ]
     },
-    time: {
+    'time': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1325,7 +1321,7 @@ var casesByTag = {
             }
         ]
     },
-    code: {
+    'code': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1349,7 +1345,7 @@ var casesByTag = {
             }
         ]
     },
-    var: {
+    'var': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1373,7 +1369,7 @@ var casesByTag = {
             }
         ]
     },
-    samp: {
+    'samp': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1397,7 +1393,7 @@ var casesByTag = {
             }
         ]
     },
-    kbd: {
+    'kbd': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1421,7 +1417,7 @@ var casesByTag = {
             }
         ]
     },
-    sub: {
+    'sub': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1445,7 +1441,7 @@ var casesByTag = {
             }
         ]
     },
-    sup: {
+    'sup': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1469,7 +1465,7 @@ var casesByTag = {
             }
         ]
     },
-    i: {
+    'i': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1493,7 +1489,7 @@ var casesByTag = {
             }
         ]
     },
-    b: {
+    'b': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1517,7 +1513,7 @@ var casesByTag = {
             }
         ]
     },
-    u: {
+    'u': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1541,7 +1537,7 @@ var casesByTag = {
             }
         ]
     },
-    mark: {
+    'mark': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1565,7 +1561,7 @@ var casesByTag = {
             }
         ]
     },
-    ruby: {
+    'ruby': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1592,7 +1588,7 @@ var casesByTag = {
             }
         ]
     },
-    rb: {
+    'rb': {
         categories: [
             {
                 desc: 'none',
@@ -1617,7 +1613,7 @@ var casesByTag = {
             }
         ]
     },
-    rt: {
+    'rt': {
         categories: [
             {
                 desc: 'none',
@@ -1642,7 +1638,7 @@ var casesByTag = {
             }
         ]
     },
-    rtc: {
+    'rtc': {
         categories: [
             {
                 desc: 'none',
@@ -1670,7 +1666,7 @@ var casesByTag = {
             }
         ]
     },
-    rp: {
+    'rp': {
         categories: [
             {
                 desc: 'none',
@@ -1695,7 +1691,7 @@ var casesByTag = {
             }
         ]
     },
-    bdi: {
+    'bdi': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1719,7 +1715,7 @@ var casesByTag = {
             }
         ]
     },
-    bdo: {
+    'bdo': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1743,7 +1739,7 @@ var casesByTag = {
             }
         ]
     },
-    span: {
+    'span': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1767,7 +1763,7 @@ var casesByTag = {
             }
         ]
     },
-    br: {
+    'br': {
         categories: [
             {
                 desc: 'flow content, phrasing content',
@@ -1791,7 +1787,7 @@ var casesByTag = {
             }
         ]
     },
-    wbr: {
+    'wbr': {
         categories: [
             {
                 desc: 'flow content, phrasing content',
@@ -1815,7 +1811,7 @@ var casesByTag = {
             }
         ]
     },
-    ins: {
+    'ins': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -1844,7 +1840,7 @@ var casesByTag = {
             }
         ]
     },
-    del: {
+    'del': {
         categories: [
             {
                 desc: 'flow content, phrasing content',
@@ -1873,7 +1869,7 @@ var casesByTag = {
             }
         ]
     },
-    img: {
+    'img': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, form-associated element, palpable content',
@@ -1903,7 +1899,7 @@ var casesByTag = {
             }
         ]
     },
-    iframe: {
+    'iframe': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, interactive content, palpable content',
@@ -1930,7 +1926,7 @@ var casesByTag = {
             }
         ]
     },
-    embed: {
+    'embed': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, interactive content, palpable content',
@@ -1954,7 +1950,7 @@ var casesByTag = {
             }
         ]
     },
-    object: {
+    'object': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, listed, submittable, and reassociateable form-associated element, palpable content',
@@ -1991,7 +1987,7 @@ var casesByTag = {
             }
         ]
     },
-    param: {
+    'param': {
         categories: [
             {
                 desc: 'none',
@@ -2020,7 +2016,7 @@ var casesByTag = {
             }
         ]
     },
-    video: {
+    'video': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, palpable content',
@@ -2057,7 +2053,7 @@ var casesByTag = {
                     ['video[src="./test.mp4"]>div', 0],
                     ['p>video[src="./test.mp4"]>track+div', 1],
                     ['p>video#target[src="./test.mp4"]>audio+video', 2],
-                    ['p>video#target[src="./test.mp4"]>span>audio+video', 2],
+                    ['p>video#target[src="./test.mp4"]>span>audio+video', 2]
                 ]
             },
             {
@@ -2076,12 +2072,12 @@ var casesByTag = {
                     ['p>video>source+div', 1],
                     ['p>video>track+div', 1],
                     ['p>video#target>audio+video', 2],
-                    ['p>video#target>span>audio+video', 2],
+                    ['p>video#target>span>audio+video', 2]
                 ]
             }
         ]
     },
-    audio: {
+    'audio': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content',
@@ -2118,7 +2114,7 @@ var casesByTag = {
                     ['p>audio[src="./test.mp3"]>track+div', 1],
                     ['audio[src="./test.mp3"]>div', 0],
                     ['p>audio#target[src="./test.mp3"]>audio+video', 2],
-                    ['p>audio#target[src="./test.mp3"]>span>audio+video', 2],
+                    ['p>audio#target[src="./test.mp3"]>span>audio+video', 2]
                 ]
             },
             {
@@ -2137,12 +2133,12 @@ var casesByTag = {
                     ['audio>div', 0],
                     ['p>audio>track+div', 1],
                     ['p>audio#target>audio+video', 2],
-                    ['p>audio#target>span>audio+video', 2],
+                    ['p>audio#target>span>audio+video', 2]
                 ]
             }
         ]
     },
-    source: {
+    'source': {
         categories: [
             {
                 desc: 'none',
@@ -2175,7 +2171,7 @@ var casesByTag = {
             }
         ]
     },
-    track: {
+    'track': {
         categories: [
             {
                 desc: 'none',
@@ -2205,7 +2201,7 @@ var casesByTag = {
             }
         ]
     },
-    map: {
+    'map': {
         categories: [
             {
                 desc: 'flow content, phrasing content, palpable content',
@@ -2234,7 +2230,7 @@ var casesByTag = {
             }
         ]
     },
-    area: {
+    'area': {
         categories: [
             {
                 desc: 'flow content, phrasing content',
@@ -2262,7 +2258,7 @@ var casesByTag = {
             }
         ]
     },
-    table: {
+    'table': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -2314,7 +2310,7 @@ var casesByTag = {
             }
         ]
     },
-    caption: {
+    'caption': {
         categories: [
             {
                 desc: 'none',
@@ -2348,7 +2344,7 @@ var casesByTag = {
             }
         ]
     },
-    colgroup: {
+    'colgroup': {
         categories: [
             {
                 desc: 'none',
@@ -2399,7 +2395,7 @@ var casesByTag = {
             }
         ]
     },
-    col: {
+    'col': {
         categories: [
             {
                 desc: 'none',
@@ -2429,7 +2425,7 @@ var casesByTag = {
             }
         ]
     },
-    tbody: {
+    'tbody': {
         categories: [
             {
                 desc: 'none',
@@ -2467,7 +2463,7 @@ var casesByTag = {
             }
         ]
     },
-    thead: {
+    'thead': {
         categories: [
             {
                 desc: 'none',
@@ -2505,7 +2501,7 @@ var casesByTag = {
             }
         ]
     },
-    tfoot: {
+    'tfoot': {
         categories: [
             {
                 desc: 'none',
@@ -2547,7 +2543,7 @@ var casesByTag = {
             }
         ]
     },
-    tr: {
+    'tr': {
         categories: [
             {
                 desc: 'none',
@@ -2597,7 +2593,7 @@ var casesByTag = {
             }
         ]
     },
-    td: {
+    'td': {
         categories: [
             {
                 desc: 'sectioning root',
@@ -2626,7 +2622,7 @@ var casesByTag = {
             }
         ]
     },
-    th: {
+    'th': {
         categories: [
             {
                 desc: 'none',
@@ -2665,7 +2661,7 @@ var casesByTag = {
             }
         ]
     },
-    form: {
+    'form': {
         categories: [
             {
                 desc: 'flow content, palpable content',
@@ -2692,7 +2688,7 @@ var casesByTag = {
             }
         ]
     },
-    label: {
+    'label': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, reassociateable form-associated element, palpable content',
@@ -2722,7 +2718,7 @@ var casesByTag = {
             }
         ]
     },
-    input: {
+    'input': {
         categories: [
             {
                 desc: 'flow content, phrasing content, if the type attribute is in the hidden state: listed, submittable, resettable, and reassociateable form-associated element',
@@ -2772,7 +2768,7 @@ var casesByTag = {
             }
         ]
     },
-    button: {
+    'button': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, and reassociateable form-associated element, palpable content',
@@ -2808,7 +2804,7 @@ var casesByTag = {
             }
         ]
     },
-    select: {
+    'select': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
@@ -2854,7 +2850,7 @@ var casesByTag = {
             }
         ]
     },
-    datalist: {
+    'datalist': {
         categories: [
             {
                 desc: 'flow content, phrasing content',
@@ -2895,7 +2891,7 @@ var casesByTag = {
             }
         ]
     },
-    optgroup: {
+    'optgroup': {
         categories: [
             {
                 desc: 'none',
@@ -2932,7 +2928,7 @@ var casesByTag = {
             }
         ]
     },
-    option: {
+    'option': {
         categories: [
             {
                 desc: 'none',
@@ -2973,7 +2969,7 @@ var casesByTag = {
                     ['option[label="l"]', 0],
                     ['option[label="l"]{hello!}', 0],
                     ['option[label="l"]{\u0020\u0009\u000a\u000c\u000d}', 0],
-                    ['option[label="l"]>span{hello!}', 1],
+                    ['option[label="l"]>span{hello!}', 1]
                 ]
             },
             {
@@ -2987,7 +2983,7 @@ var casesByTag = {
             }
         ]
     },
-    textarea: {
+    'textarea': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
@@ -3018,7 +3014,7 @@ var casesByTag = {
             }
         ]
     },
-    keygen: {
+    'keygen': {
         categories: [
             {
                 desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
@@ -3042,7 +3038,7 @@ var casesByTag = {
             }
         ]
     },
-    output: {
+    'output': {
         categories: [
             {
                 desc: 'flow content, phrasing content, listed, labelable, resettable, and reassociateable form-associated element, palpable content',
@@ -3066,7 +3062,7 @@ var casesByTag = {
             }
         ]
     },
-    progress: {
+    'progress': {
         categories: [
             {
                 desc: 'flow content, phrasing content, labelable element, palpable content',
@@ -3093,7 +3089,7 @@ var casesByTag = {
             }
         ]
     },
-    meter: {
+    'meter': {
         categories: [
             {
                 desc: 'flow content, phrasing content, labelable element, palpable content',
@@ -3120,7 +3116,7 @@ var casesByTag = {
             }
         ]
     },
-    fieldset: {
+    'fieldset': {
         categories: [
             {
                 desc: 'flow content, sectioning root, listed and reassociateable form-associated element, palpable content',
@@ -3148,7 +3144,7 @@ var casesByTag = {
             }
         ]
     },
-    legend: {
+    'legend': {
         categories: [
             {
                 desc: 'none',
@@ -3179,7 +3175,7 @@ var casesByTag = {
             }
         ]
     },
-    script: {
+    'script': {
         categories: [
             {
                 desc: 'metadata content, flow content, phrasing content, script-supporting element',
@@ -3218,7 +3214,7 @@ var casesByTag = {
             }
         ]
     },
-    noscript: {
+    'noscript': {
         categories: [
             {
                 desc: 'metadata content, flow content, phrasing content',
@@ -3260,7 +3256,7 @@ var casesByTag = {
             }
         ]
     },
-    template: {
+    'template': {
         categories: [
             {
                 desc: 'metadata content, flow content, phrasing content, script-supporting element',
@@ -3312,7 +3308,7 @@ var casesByTag = {
             }
         ]
     },
-    canvas: {
+    'canvas': {
         categories: [
             {
                 desc: 'flow content, phrasing content, embedded content, palpable content',
@@ -3342,7 +3338,7 @@ var casesByTag = {
             }
         ]
     },
-    math: {
+    'math': {
         categories: [
             {
                 desc: 'embedded content, phrasing content, flow content',
@@ -3368,7 +3364,7 @@ var casesByTag = {
             }
         ]
     },
-    svg: {
+    'svg': {
         categories: [
             {
                 desc: 'embedded content, phrasing content, flow content',

@@ -125,10 +125,26 @@ describe('method getAncestors', function () {
     };
 
     it('should get ancestors for given element', function () {
-        expect(getAncestorsInfo(getTargetElement('html>head+body>script+div>(p#target>i)+ul>li*2'))).toBe('html,body,div');
-        expect(getAncestorsInfo(getTargetElement('html>head>meta+title+script#target'))).toBe('html,head');
-        expect(getAncestorsInfo(getTargetElement('html>head+body>p+ol>li>(h5#target>span*2)+p'))).toBe('html,body,ol,li');
-        expect(getAncestorsInfo(getTargetElement('body#target'))).toBe('');
+        expect(
+            getAncestorsInfo(
+                getTargetElement('html>head+body>script+div>(p#target>i)+ul>li*2')
+            )
+        ).toBe('html,body,div');
+        expect(
+            getAncestorsInfo(
+                getTargetElement('html>head>meta+title+script#target')
+            )
+        ).toBe('html,head');
+        expect(
+            getAncestorsInfo(
+                getTargetElement('html>head+body>p+ol>li>(h5#target>span*2)+p')
+            )
+        ).toBe('html,body,ol,li');
+        expect(
+            getAncestorsInfo(
+                getTargetElement('body#target')
+            )
+        ).toBe('');
     });
 });
 
@@ -144,10 +160,26 @@ describe('method walkDescendants', function () {
     };
 
     it('should get ancestors for given element', function () {
-        expect(getDescendantsInfo(getElement('html>head+body>script+div>(p>i)+ul>li*2'))).toBe('head,body,script,div,p,i,ul,li,li');
-        expect(getDescendantsInfo(getElement('html>head>meta+title+script'))).toBe('head,meta,title,script');
-        expect(getDescendantsInfo(getElement('html>head+body>p+ol>li>(h5>span*2)+p'))).toBe('head,body,p,ol,li,h5,span,span,p');
-        expect(getDescendantsInfo(getElement('body'))).toBe('');
+        expect(
+            getDescendantsInfo(
+                getElement('html>head+body>script+div>(p>i)+ul>li*2')
+            )
+        ).toBe('head,body,script,div,p,i,ul,li,li');
+        expect(
+            getDescendantsInfo(
+                getElement('html>head>meta+title+script')
+            )
+        ).toBe('head,meta,title,script');
+        expect(
+            getDescendantsInfo(
+                getElement('html>head+body>p+ol>li>(h5>span*2)+p')
+            )
+        ).toBe('head,body,p,ol,li,h5,span,span,p');
+        expect(
+            getDescendantsInfo(
+                getElement('body')
+            )
+        ).toBe('');
     });
 });
 
