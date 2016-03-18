@@ -21,7 +21,8 @@ var doTest = function (tagCases, tag) {
     var getElement = function (domExpression) {
         var htmlCode = emmet.expandAbbreviation(domExpression, {html: 'xhtml'});
         var document = parse(htmlCode);
-        return document.querySelector('#target') || document.getElementsByTagName(tag)[0];
+        var element = document.querySelector('#target') || document.getElementsByTagName(tag)[0];
+        return element;
     };
 
     describe('nest rule for ' + tag, function () {
@@ -50,6 +51,13 @@ var doTest = function (tagCases, tag) {
     });
 
     describe('contexts of ' + tag, function () {
+        if (tag !== 'area') {
+            tagCases.contexts.unshift({
+                desc: 'ok to have no parent',
+                cases: [[tag, 0]]
+            });
+        }
+
         tagCases.contexts.forEach(function (situation) {
             it('should be ' + situation.desc, function () {
                 situation.cases.forEach(function (testcase) {
@@ -60,7 +68,7 @@ var doTest = function (tagCases, tag) {
 
                     describe('for contexts of ' + tag + ' in ' + dom, function () {
                         it('there should be ' + expected + ' problem(s)', function () {
-                            expect(result.length).toEqual(expected);
+                            expect(result.length).toBe(expected);
                         });
                     });
                 });
@@ -71,6 +79,23 @@ var doTest = function (tagCases, tag) {
     describe('content of ' + tag, function () {
         tagCases.content.forEach(function (situation) {
             it('should be ' + situation.desc, function () {
+                // empty cases (impossible for self-close tags to have children by normal HTML parse)
+                // do some hack here
+                if (situation.desc === 'empty') {
+                    var element = getElement(tag);
+                    var resultWithNoChildren = rule.validContent(element, []);
+                    var resultWithChildren = rule.validContent(util.extend(element, {
+                        childNodes: getElement('div#target>p').childNodes.map(function (child) {
+                            child.parentNode = element;
+                            return child;
+                        })
+                    }), []);
+
+                    expect(resultWithNoChildren.length).toBe(0);
+                    expect(resultWithChildren.length).toBe(1);
+                    return;
+                }
+
                 situation.cases.forEach(function (testcase) {
                     var dom = testcase[0];
                     var expected = testcase[1];
@@ -79,7 +104,7 @@ var doTest = function (tagCases, tag) {
 
                     describe('for content of ' + tag + ' in ' + dom, function () {
                         it('there should be ' + expected + ' problem(s)', function () {
-                            expect(result.length).toEqual(expected);
+                            expect(result.length).toBe(expected);
                         });
                     });
                 });
@@ -323,9 +348,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['base', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -355,9 +378,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['link', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -399,9 +420,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['meta', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -430,9 +449,10 @@ var casesByTag = {
         ],
         content: [
             {
-                desc: 'empty',
+                desc: 'depends on the value of the type attribute, but must match requirements described in prose below',
                 cases: [
-                    ['style', 0]
+                    ['style', 0],
+                    ['style{a{color:red;}}', 0]
                 ]
             }
         ]
@@ -469,7 +489,8 @@ var casesByTag = {
                 desc: 'flow content but with no main element descendants, sectioning content, palpable content',
                 cases: [
                     ['article', ['flow content', 'sectioning content', 'palpable content']],
-                    ['article>main', ['sectioning content', 'palpable content']]
+                    ['article>main', ['sectioning content', 'palpable content']],
+                    ['article>p', ['flow content', 'sectioning content', 'palpable content']]
                 ]
             }
         ],
@@ -718,9 +739,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['hr', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1055,6 +1074,7 @@ var casesByTag = {
                     ['p>a{hello!}', 0],
                     ['p>a>span{hello!}', 0],
                     ['p>a>div', 1],
+                    ['a>div', 0],
                     // but there must be no interactive content descendant
                     ['a>button', 1],
                     ['a>p>button', 1]
@@ -1564,6 +1584,12 @@ var casesByTag = {
         ],
         content: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['ruby', 0]
+                ]
+            }
         ]
     },
     rb: {
@@ -1577,6 +1603,12 @@ var casesByTag = {
         ],
         contexts: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['rb', 0]
+                ]
+            }
         ],
         content: [
             {
@@ -1596,6 +1628,12 @@ var casesByTag = {
         ],
         contexts: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['rt', 0]
+                ]
+            }
         ],
         content: [
             {
@@ -1615,9 +1653,21 @@ var casesByTag = {
         ],
         contexts: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['rtc', 0]
+                ]
+            }
         ],
         content: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['rtc', 0]
+                ]
+            }
         ]
     },
     rp: {
@@ -1631,6 +1681,12 @@ var casesByTag = {
         ],
         contexts: [
             // TODO
+            {
+                desc: '',
+                cases: [
+                    ['rp', 0]
+                ]
+            }
         ],
         content: [
             {
@@ -1731,9 +1787,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['br', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1757,9 +1811,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['wbr', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1786,7 +1838,8 @@ var casesByTag = {
                 cases: [
                     ['p>ins{hello!}', 0],
                     ['p>ins>span{hello!}', 0],
-                    ['p>ins>div', 1]
+                    ['p>ins>div', 1],
+                    ['ins>div', 0]
                 ]
             }
         ]
@@ -1814,7 +1867,8 @@ var casesByTag = {
                 cases: [
                     ['p>del{hello!}', 0],
                     ['p>del>span{hello!}', 0],
-                    ['p>del>div', 1]
+                    ['p>del>div', 1],
+                    ['del>div', 0]
                 ]
             }
         ]
@@ -1837,15 +1891,15 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['img', 0]
+                ]
             }
         ],
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['img', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1861,7 +1915,9 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['iframe', 0]
+                ]
             }
         ],
         content: [
@@ -1869,6 +1925,7 @@ var casesByTag = {
                 desc: 'text that conforms to the requirements given in the prose',
                 cases: [
                     // TODO
+                    ['iframe', 0]
                 ]
             }
         ]
@@ -1885,15 +1942,15 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['embed', 0]
+                ]
             }
         ],
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['embed', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1915,7 +1972,9 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['object', 0]
+                ]
             }
         ],
         content: [
@@ -1926,7 +1985,8 @@ var casesByTag = {
                     ['p>object>span{hello!}', 0],
                     ['p>object>param+span{hello!}', 0],
                     ['p>object>span{hello!}+param', 0],
-                    ['p>object>div', 1]
+                    ['p>object>div', 1],
+                    ['object>div', 0]
                 ]
             }
         ]
@@ -1947,16 +2007,16 @@ var casesByTag = {
                     ['object>param', 0],
                     ['object>param+div', 0],
                     ['object>div+param', 1],
-                    ['object>div+param+p', 1]
+                    ['object>meta+param', 0],
+                    ['object>div+param+p', 1],
+                    ['div>param', 1]
                 ]
             }
         ],
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['param', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -1978,7 +2038,9 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['video', 0]
+                ]
             }
         ],
         content: [
@@ -1992,6 +2054,7 @@ var casesByTag = {
                     ['p>video[src="./test.mp4"]{hello!}', 0],
                     ['p>video[src="./test.mp4"]>span{hello!}', 0],
                     ['p>video[src="./test.mp4"]>div', 1],
+                    ['video[src="./test.mp4"]>div', 0],
                     ['p>video[src="./test.mp4"]>track+div', 1],
                     ['p>video#target[src="./test.mp4"]>audio+video', 2],
                     ['p>video#target[src="./test.mp4"]>span>audio+video', 2],
@@ -2009,6 +2072,7 @@ var casesByTag = {
                     ['p>video{hello!}', 0],
                     ['p>video>span{hello!}', 0],
                     ['p>video>div', 1],
+                    ['video>div', 0],
                     ['p>video>source+div', 1],
                     ['p>video>track+div', 1],
                     ['p>video#target>audio+video', 2],
@@ -2035,7 +2099,9 @@ var casesByTag = {
         contexts: [
             {
                 desc: 'where embedded content is expected',
-                cases: []
+                cases: [
+                    ['audio', 0]
+                ]
             }
         ],
         content: [
@@ -2050,6 +2116,7 @@ var casesByTag = {
                     ['p>audio[src="./test.mp3"]>span{hello!}', 0],
                     ['p>audio[src="./test.mp3"]>div', 1],
                     ['p>audio[src="./test.mp3"]>track+div', 1],
+                    ['audio[src="./test.mp3"]>div', 0],
                     ['p>audio#target[src="./test.mp3"]>audio+video', 2],
                     ['p>audio#target[src="./test.mp3"]>span>audio+video', 2],
                 ]
@@ -2067,6 +2134,7 @@ var casesByTag = {
                     ['p>audio>span{hello!}', 0],
                     ['p>audio>div', 1],
                     ['p>audio>source+div', 1],
+                    ['audio>div', 0],
                     ['p>audio>track+div', 1],
                     ['p>audio#target>audio+video', 2],
                     ['p>audio#target>span>audio+video', 2],
@@ -2094,6 +2162,7 @@ var casesByTag = {
                     ['video>source+track+div', 0],
                     ['video>div+source', 1],
                     ['video>track+source', 1],
+                    ['video>meta+source', 0],
                     ['video>div+source+p', 1],
                     ['video>track+source+p', 1]
                 ]
@@ -2102,9 +2171,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['source', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -2126,6 +2193,7 @@ var casesByTag = {
                     ['div>track', 1],
                     ['video>track+div', 0],
                     ['video>div+track', 1],
+                    ['video>meta+track', 0],
                     ['video>div+track+p', 1]
                 ]
             }
@@ -2133,9 +2201,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['track', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -2162,7 +2228,8 @@ var casesByTag = {
                 cases: [
                     ['p>map{hello!}', 0],
                     ['p>map>span{hello!}', 0],
-                    ['p>map>div', 1]
+                    ['p>map>div', 1],
+                    ['map>div', 0]
                 ]
             }
         ]
@@ -2191,9 +2258,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['area', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -2360,9 +2425,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['col', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -2705,9 +2768,7 @@ var casesByTag = {
         content: [
             {
                 desc: 'empty',
-                cases: [
-                    ['input', 0]
-                ]
+                cases: []
             }
         ]
     },
@@ -2911,7 +2972,8 @@ var casesByTag = {
                 cases: [
                     ['option[label="l"]', 0],
                     ['option[label="l"]{hello!}', 0],
-                    ['option[label="l"]{\u0020\u0009\u000a\u000c\u000d}', 0]
+                    ['option[label="l"]{\u0020\u0009\u000a\u000c\u000d}', 0],
+                    ['option[label="l"]>span{hello!}', 1],
                 ]
             },
             {
@@ -2921,6 +2983,413 @@ var casesByTag = {
                     ['option>span{hello!}', 1],
                     ['option', 1],
                     ['option{\u0020\u0009\u000a\u000c\u000d}', 1]
+                ]
+            }
+        ]
+    },
+    textarea: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    ['textarea', ['flow content', 'phrasing content', 'interactive content', 'listed, labelable, submittable, resettable, and reassociateable form-associated element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>textarea', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'text',
+                cases: [
+                    ['textarea', 0],
+                    ['textarea{hello!}', 0],
+                    ['textarea{\u0020\u0009\u000a\u000c\u000d}', 0],
+                    ['textarea>p', 1],
+                    ['textarea>div', 1],
+                    ['textarea>span', 1]
+                ]
+            }
+        ]
+    },
+    keygen: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, interactive content, listed, labelable, submittable, resettable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    ['keygen', ['flow content', 'phrasing content', 'interactive content', 'listed, labelable, submittable, resettable, and reassociateable form-associated element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>keygen', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'empty',
+                cases: []
+            }
+        ]
+    },
+    output: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, listed, labelable, resettable, and reassociateable form-associated element, palpable content',
+                cases: [
+                    ['output', ['flow content', 'phrasing content', 'listed, labelable, resettable, and reassociateable form-associated element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>output', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content',
+                cases: createPhrasingContentCases('output')
+            }
+        ]
+    },
+    progress: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, labelable element, palpable content',
+                cases: [
+                    ['progress', ['flow content', 'phrasing content', 'labelable element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>progress', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content, but there must be no progress element descendants',
+                cases: createPhrasingContentCases('progress', ['progress']).concat([
+                    ['progress#target>progress', 1],
+                    ['progress#target>span>progress', 1]
+                ])
+            }
+        ]
+    },
+    meter: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, labelable element, palpable content',
+                cases: [
+                    ['meter', ['flow content', 'phrasing content', 'labelable element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where phrasing content is expected',
+                cases: [
+                    ['span>meter', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content, but there must be no meter element descendants',
+                cases: createPhrasingContentCases('meter', ['meter']).concat([
+                    ['meter#target>meter', 1],
+                    ['meter#target>span>meter', 1]
+                ])
+            }
+        ]
+    },
+    fieldset: {
+        categories: [
+            {
+                desc: 'flow content, sectioning root, listed and reassociateable form-associated element, palpable content',
+                cases: [
+                    ['fieldset', ['flow content', 'sectioning root', 'listed and reassociateable form-associated element', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where flow content is expected',
+                cases: [
+                    ['body>fieldset', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'optionally a legend element, followed by flow content',
+                cases: createFlowContentCases('fieldset').concat([
+                    ['fieldset>legend+div', 0],
+                    ['fieldset>legend*2+div', 1],
+                    ['fieldset>div+legend', 1]
+                ])
+            }
+        ]
+    },
+    legend: {
+        categories: [
+            {
+                desc: 'none',
+                cases: [
+                    ['legend', []]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'as the first child of a fieldset element',
+                cases: [
+                    // as the first child
+                    // -> content of [ fieldset ]
+
+                    // as a child of a fieldset element
+                    ['fieldset>legend', 0],
+                    ['body>legend', 1],
+                    ['div>legend', 1],
+                    ['span>legend', 1]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'phrasing content',
+                cases: createPhrasingContentCases('legend')
+            }
+        ]
+    },
+    script: {
+        categories: [
+            {
+                desc: 'metadata content, flow content, phrasing content, script-supporting element',
+                cases: [
+                    ['script', ['metadata content', 'flow content', 'phrasing content', 'script-supporting element']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'where metadata content is expected',
+                    'where phrasing content is expected',
+                    'where script-supporting elements are expected'
+                ].join(', or '),
+                cases: [
+                    ['head>script', 0],
+                    ['span>script', 0],
+                    ['tbody>script', 0]
+                ]
+            }
+        ],
+        content: [
+            // If the content does not match script content restrictions, it will be parsed incorrectly, so skip checks here
+            {
+                desc: 'if there is no src attribute, depends on the value of the type attribute, but must match script content restrictions',
+                cases: [
+                    ['script', 0]
+                ]
+            },
+            {
+                desc: 'If there is a src attribute, the element must be either empty or contain only script documentation that also matches script content restrictions',
+                cases: [
+                    ['script', 0]
+                ]
+            }
+        ]
+    },
+    noscript: {
+        categories: [
+            {
+                desc: 'metadata content, flow content, phrasing content',
+                cases: [
+                    ['noscript', ['metadata content', 'flow content', 'phrasing content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'in a head element of an HTML document, if there are no ancestor noscript elements',
+                    'where phrasing content is expected in HTML documents, if there are no ancestor noscript elements'
+                ].join(', or '),
+                cases: [
+                    ['head>noscript', 0],
+                    ['head>noscript>noscript#target', 1],
+                    ['span>noscript', 0],
+                    ['span>noscript>noscript#target', 1]
+                ]
+            }
+        ],
+        content: [
+            // No way to decide if scripting is disabled, so skip checks here
+            {
+                desc: [
+                    'when scripting is disabled, in a head element: in any order, zero or more link elements, zero or more style elements, and zero or more meta elements',
+                    'when scripting is disabled, not in a head element: transparent, but there must be no noscript element descendants'
+                ].join(', or '),
+                cases: [
+                    ['noscript', 0]
+                ]
+            },
+            {
+                desc: 'otherwise: text that conforms to the requirements given in the prose',
+                cases: [
+                    ['noscript', 0]
+                ]
+            }
+        ]
+    },
+    template: {
+        categories: [
+            {
+                desc: 'metadata content, flow content, phrasing content, script-supporting element',
+                cases: [
+                    ['template', ['metadata content', 'flow content', 'phrasing content', 'script-supporting element']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: [
+                    'where metadata content is expected',
+                    'where phrasing content is expected',
+                    'where script-supporting elements are expected',
+                    'as a child of a colgroup element that doesn\'t have a span attribute'
+                ].join(', or '),
+                cases: [
+                    ['head>template', 0],
+                    ['span>template', 0],
+                    ['tbody>template', 0]
+                    // as a child of a colgroup element that doesn't have a span attribute
+                    // -> content of [ colgroup ]
+                ]
+            }
+        ],
+        content: [
+            // skip check here
+            {
+                desc: [
+                    'either: metadata content',
+                    'or: flow content',
+                    'or: the content model of ol and ul elements',
+                    'or: the content model of dl elements',
+                    'or: the content model of figure elements',
+                    'or: the content model of ruby elements',
+                    'or: the content model of object elements',
+                    'or: the content model of video and audio elements',
+                    'or: the content model of table elements',
+                    'or: the content model of colgroup elements',
+                    'or: the content model of thead, tbody, and tfoot elements',
+                    'or: the content model of tr elements',
+                    'or: the content model of fieldset elements',
+                    'or: the content model of select elements'
+                ].join('\n'),
+                cases: [
+                    // IGNORE
+                    ['template', 0]
+                ]
+            }
+        ]
+    },
+    canvas: {
+        categories: [
+            {
+                desc: 'flow content, phrasing content, embedded content, palpable content',
+                cases: [
+                    ['canvas', ['flow content', 'phrasing content', 'embedded content', 'palpable content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'where embedded content is expected',
+                cases: [
+                    // IGNORE
+                    ['canvas', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'transparent',
+                cases: [
+                    ['p>canvas{hello!}', 0],
+                    ['p>canvas>span{hello!}', 0],
+                    ['p>canvas>div', 1],
+                    ['canvas>div', 0]
+                ]
+            }
+        ]
+    },
+    math: {
+        categories: [
+            {
+                desc: 'embedded content, phrasing content, flow content',
+                cases: [
+                    ['math', ['embedded content', 'phrasing content', 'flow content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'do not check',
+                cases: [
+                    ['math', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'do not check',
+                cases: [
+                    ['math', 0]
+                ]
+            }
+        ]
+    },
+    svg: {
+        categories: [
+            {
+                desc: 'embedded content, phrasing content, flow content',
+                cases: [
+                    ['svg', ['embedded content', 'phrasing content', 'flow content']]
+                ]
+            }
+        ],
+        contexts: [
+            {
+                desc: 'do not check',
+                cases: [
+                    ['svg', 0]
+                ]
+            }
+        ],
+        content: [
+            {
+                desc: 'do not check',
+                cases: [
+                    ['svg', 0]
                 ]
             }
         ]
