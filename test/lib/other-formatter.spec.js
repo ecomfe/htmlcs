@@ -27,6 +27,31 @@ var testFormatter = function () {
             expect(typeof scriptFormatter).toBe('function');
         });
 
+        it('should not format non-javascript content', function () {
+            var node = parse('<script type="text/template">hello;\nworld!</script>').querySelector('script');
+            var content = node.childNodes[0].textContent;
+            var opt = {
+                'level': 0,
+                'indent-char': 'space',
+                'indent-size': 4
+            };
+            var indentContent = function (content) {
+                opt.level++;
+
+                return content.split('\n').map(function (line) {
+                    return line ? (indent(opt) + line) : line;
+                }).join('\n');
+            };
+            var newContent = scriptFormatter(content, node, opt,
+                {
+                    indent: indentContent,
+                    trim: removeBlankLineAround
+                }
+            );
+
+            expect(newContent).toBe(content);
+        });
+
         it('should format javascript', function () {
             var node = parse('<script>var a=0;\nvar b=1;</script>').querySelector('script');
             var node2 = parse('<script type="text/javascript">var a=0;</script>').querySelector('script');
