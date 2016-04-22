@@ -1,6 +1,6 @@
 {
   "name": "htmlcs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "html hint tool, focused on semantic code style.",
   "main": "index.js",
   "browser": "browser.js",
