@@ -53,6 +53,14 @@ describe('format rule ' + rule, function () {
     var head3 = parse(result3).querySelector('head');
     var charset3 = head3.querySelector('meta[charset]');
 
+    var result5 = htmlcs.formatFile(path.join(__dirname, 'case5.html'));
+    var head5 = parse(result5).querySelector('head');
+    var charset5 = head5.querySelector('meta[charset]');
+
+    var result6 = htmlcs.formatFile(path.join(__dirname, 'case6.html'));
+    var head6 = parse(result6).querySelector('head');
+    var charset6 = head6.querySelector('meta[charset]');
+
     it('should format well', function () {
         expect(!!charset1).toBe(true);
         expect(charset1 === head1.firstElementChild).toBe(true);
@@ -62,5 +70,11 @@ describe('format rule ' + rule, function () {
 
         expect(!!charset3).toBe(true);
         expect(charset3 === head3.firstElementChild).toBe(true);
+
+        expect(!!charset5).toBe(true);
+        expect(charset5 === head5.firstElementChild).toBe(true);
+
+        expect(!!charset6).toBe(true);
+        expect(charset6 === head6.firstElementChild).toBe(true);
     });
 });
