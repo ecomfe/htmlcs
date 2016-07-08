@@ -55,11 +55,13 @@ describe('extend', function () {
                 c: 3
             }
         );
+        result = extend(result, Object.create({d: 4}));
 
         it('should return right result', function () {
             expect(result.a).toBe(1);
             expect(result.b).toBe(2);
             expect(result.c).toBe(3);
+            expect(result.d).toBeUndefined();
         });
     });
 });
@@ -90,6 +92,8 @@ describe('extendAttribute', function () {
             }
         );
 
+        result = extendAttribute(result, Object.create({d: 4}));
+
         it('should return right result', function () {
             expect(result.a).toBe(1);
             expect(result.b).toBe(2);
@@ -97,6 +101,8 @@ describe('extendAttribute', function () {
 
             result.c = 4;
             expect(result.a).toBe(2);
+
+            expect(result.d).toBeUndefined();
         });
     });
 });
