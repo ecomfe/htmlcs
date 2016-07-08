@@ -31,7 +31,7 @@
   },
   "scripts": {
     "lint": "fecs -v && fecs lib test index.js --type=js",
-    "coverage": "istanbul cover jasmine-node --captureExceptions test/**/*.spec.js test/lib/rules/*/*.spec.js",
+    "coverage": "istanbul cover jasmine-node --captureExceptions test/",
     "test": "npm run lint && npm run coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
