@@ -72,7 +72,16 @@ describe('element', function () {
     it('should behave like a element(<a>)', function () {
         transformRecursively(p);
 
-        var node = p.childNodes[1];
+        var node = p.childNodes[0];
+
+
+        // as an element
+        expect(node.localName).toBe('span');
+        expect(node.tagName).toBe('SPAN');
+        expect(node.classList.length).toBe(0);
+        expect(node.lastElementChild).toBe(null);
+
+        node = p.childNodes[1];
 
         // as a node
         expect(node.nodeName).toBe('A');
