@@ -37,10 +37,14 @@ describe('format rule ' + rule, function () {
     var head1 = parse(htmlcs.formatFile(path.join(__dirname, 'case1.html'))).querySelector('head');
     var head2 = parse(htmlcs.formatFile(path.join(__dirname, 'case2.html'))).querySelector('head');
     var head3 = parse(htmlcs.formatFile(path.join(__dirname, 'case3.html'))).querySelector('head');
+    var head4 = parse(htmlcs.formatFile(path.join(__dirname, 'case4.html'))).querySelector('head');
 
     it('should format well', function () {
         expect(!!head1.querySelector('meta[name="viewport"]')).toBe(true);
         expect(!!head2.querySelector('meta[name="viewport"]')).toBe(true);
         expect(!head3).toBe(true);
+        expect(
+            head4.querySelector('meta[name="viewport"]').getAttribute('content')
+        ).toBe('width=device-width, initial-scale=2, maximum-scale=1');
     });
 });
