@@ -53,6 +53,8 @@ describe('format rule ' + rule, function () {
     var head3 = parse(htmlcs.formatFile(path.join(__dirname, 'case3.html'))).querySelector('head');
     var head4 = parse(htmlcs.formatFile(path.join(__dirname, 'case4.html'))).querySelector('head');
     var head5 = parse(htmlcs.formatFile(path.join(__dirname, 'case5.html'))).querySelector('head');
+    var head7 = parse(htmlcs.formatFile(path.join(__dirname, 'case7.html'))).querySelector('head');
+    var head8 = parse(htmlcs.formatFile(path.join(__dirname, 'case8.html'))).querySelector('head');
 
     it('should format well', function () {
         var title;
@@ -75,5 +77,11 @@ describe('format rule ' + rule, function () {
         expect(title.previousElementSibling).toBe(charsetMeta);
 
         expect(!head5).toBe(true);
+
+        title = head7.querySelector('title');
+        expect(title).toBe(head7.children[0]);
+
+        title = head8.querySelector('title');
+        expect(title).toBe(head8.children[0]);
     });
 });
