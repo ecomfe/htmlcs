@@ -65,5 +65,9 @@
 
     "no-duplication-id-and-name": "043",
 
-    "viewport": "027"
+    "viewport": "027",
+
+    "label-for-input": "044",
+
+    "no-meta-css": "045"
 }

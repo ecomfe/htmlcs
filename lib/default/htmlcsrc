@@ -36,6 +36,7 @@
     "no-duplication-id-and-name": true,     // true: Id and name should be not duplication in difference elements
     "viewport": true,                       // true: <meta name="viewport" content="..."> required
     "label-for-input": true,                // true: input should be associate with label
+    "no-meta-css": {"threshold": 3, "minlen": 3},
 
     "max-error": 0,                         // max num of errors, 0 means no limit
     "format": {},                           // basic options for format
