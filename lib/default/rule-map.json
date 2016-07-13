@@ -69,5 +69,7 @@
 
     "label-for-input": "044",
 
-    "no-meta-css": "045"
+    "no-meta-css": "045",
+
+    "no-bom": "046"
 }
