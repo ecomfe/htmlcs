@@ -1,5 +1,5 @@
 /**
- * @file test for no-duplication-id-and-name
+ * @file test for no-meta-css
  * @author chris<wfsr@foxmail.com>
  */
 

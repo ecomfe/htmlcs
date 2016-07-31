@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>standard file</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+
+<div class="red _js_red">
+    Lorem ipsum
+</div>
+
+<!-- htmlcs no-hook-class: false -->
+<div class="__js--div">
+<!-- htmlcs no-hook-class: {keys: "/[-_#](?:js|hook)[-_#]/"} -->
+    <p class="#js#para">Lorem ipsum</p>
+</div>
+
+<p class="-hook-warn l">
+    fecs [WARN] line 24, column 81: Class name(red) should be semantic. (no-meta-css, 045)
+</p>
+
+<p id="demo" class="a r w100"></p>
+
+<!-- htmlcs no-hook-class: {keys: ["/[-_#](?:js|hook)[-_#]/", "test-register"]} -->
+<form class="test-register">
+    <label for="demo" class="l"></label>
+    <input id="demo" name="demo" class="w100 red">
+</form>
+
+</body>
+</html>

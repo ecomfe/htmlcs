@@ -71,5 +71,7 @@
 
     "no-meta-css": "045",
 
+    "no-hook-class": "047",
+
     "no-bom": "046"
 }

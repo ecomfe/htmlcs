@@ -40,6 +40,9 @@
         "threshold": 3,
         "minlen": 3
     },
+    "no-hook-class": {
+        "keys": ["/[-_#](?:js|hook)[-_#]/"]
+    },
     "no-bom": true,
 
     "max-error": 0,                         // max num of errors, 0 means no limit
