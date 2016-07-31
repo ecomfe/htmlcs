@@ -45,6 +45,7 @@
     },
     "no-bom": true,
 
+    "max-len": 120,                         // max length of line, 0 means no limit
     "max-error": 0,                         // max num of errors, 0 means no limit
     "format": {},                           // basic options for format
     "linters": {},                          // extra linters ('scipt', 'style')

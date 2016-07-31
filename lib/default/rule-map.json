@@ -73,5 +73,7 @@
 
     "no-hook-class": "047",
 
+    "max-len": "048",
+
     "no-bom": "046"
 }
