@@ -3,3 +3,4 @@ test
 .fecsrc
 .gitignore
 .travis.yml
+coverage
