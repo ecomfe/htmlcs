@@ -56,6 +56,10 @@ HTML code style check & format tool.
 		```javascript
 		var htmlcs = require('htmlcs');
 		var result = htmlcs.hint(code);
+		// Or
+		htmlcs.hintAsync(code).then(
+			result => { /* ... */ }
+		);
 		```
 
 	* use hint result
@@ -78,14 +82,18 @@ HTML code style check & format tool.
 
 		```javascript
 		var htmlcs = require('htmlcs');
-		console.log(htmlcs.formatFile(filePath))
+		console.log(htmlcs.formatFile(filePath));
 		```
 
 	* format code (string)
 
 		```javascript
 		var htmlcs = require('htmlcs');
-		console.log(htmlcs.format(code))
+		console.log(htmlcs.format(code));
+		// Or
+		htmlcs.formatAsync(code).then(
+			result => console.log(result)
+		);
 		```
 
 	* add rule

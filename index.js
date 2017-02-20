@@ -48,7 +48,9 @@ module.exports = {
     addRule: htmlcs.addRule,
 
     hint: htmlcs.hint,
+    hintAsync: htmlcs.hintAsync,
     format: htmlcs.format,
+    formatAsync: htmlcs.formatAsync,
 
     hintFile: hintFile,
     formatFile: formatFile

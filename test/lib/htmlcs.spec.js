@@ -32,6 +32,30 @@ describe('htmlcs', function () {
 
     });
 
+    describe('hintAsync', function () {
+
+        it('should hint correctly & asyncly', function (done) {
+            var code = '<html></html>';
+            var cfg = {
+                'html-lang': true
+            };
+
+            /* eslint-disable max-nested-callbacks */
+            htmlcs.hintAsync(code, cfg).then(
+                function (result) {
+                    expect(result.length).toBe(1);
+                    expect(result[0].code).toBe('010');
+                    expect(result[0].rule).toBe('html-lang');
+                    expect(result[0].line).toBe(1);
+                    expect(result[0].column).toBe(1);
+                    done();
+                }
+            );
+            /* eslint-enable max-nested-callbacks */
+        });
+
+    });
+
     describe('format', function () {
 
         it('should format correctly', function () {
@@ -48,6 +72,55 @@ describe('htmlcs', function () {
             expect(htmlcs.format(code, null)).toBe(code);
             expect(htmlcs.format(code)).toBe(code);
             expect(htmlcs.format(code, {})).toBe(code);
+        });
+
+    });
+
+    describe('formatAsync', function () {
+
+        it('should format correctly & asyncly', function (done) {
+            var code = '<html></html>';
+            var cfg = {
+                'html-lang': true
+            };
+
+            /* eslint-disable max-nested-callbacks */
+            htmlcs.formatAsync(code, cfg).then(
+                function (result) {
+                    expect(result).toBe('<html lang="zh-CN"></html>');
+                    done();
+                }
+            );
+            /* eslint-enable max-nested-callbacks */
+        });
+
+        it('should support script/style formatters which returns a promise', function (done) {
+            var code = '<html><script>*</script><style>*</style></html>';
+            var asyncScriptFormatter = function () {
+                return Promise.resolve('script');
+            };
+            var asyncStyleFormatter = function () {
+                return Promise.resolve('style');
+            };
+            var cfg = {
+                'html-lang': true,
+                'format': {
+                    'no-format': true,
+                    'formatter': {
+                        script: asyncScriptFormatter,
+                        style: asyncStyleFormatter
+                    }
+                }
+            };
+
+            /* eslint-disable max-nested-callbacks */
+            htmlcs.formatAsync(code, cfg).then(
+                function (result) {
+                    expect(result).toBe('<html lang="zh-CN"><script>script</script><style>style</style></html>');
+                    done();
+                }
+            );
+            /* eslint-enable max-nested-callbacks */
         });
 
     });

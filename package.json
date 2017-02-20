@@ -29,6 +29,9 @@
     "jasmine-node": "^2.0.0",
     "shelljs": "^0.3.0"
   },
+  "engines": {
+    "node": ">=4"
+  },
   "scripts": {
     "lint": "fecs -v && fecs lib test index.js --type=js",
     "coverage": "istanbul cover jasmine-node --captureExceptions test/",
