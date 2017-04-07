@@ -23,6 +23,7 @@
     "lowercase-id-with-hyphen": true,       // true: Id should be lowercase words connected with hyphens
     "nest": true,                           // true: Elements should be nested abiding by specific rules
 	"no-space-before-tag-end": true,        // true: There should be no whitespaces before tag end
+    "protocol-omitted-in-href": true,       // true: Protocol (http:// or https://) should be omitted from href attribute (there should be "//" instead)
     "rel-stylesheet": true,                 // true: Attribute "rel" of imported css (<link>) should be set as "stylesheet"
     "script-content": true,                 // true: Content of <script> must meet standard
     "script-in-tail": true,                 // true: Js contents (script:not([type]), script[type="text/javascript"]) should be in the tail of <body>
