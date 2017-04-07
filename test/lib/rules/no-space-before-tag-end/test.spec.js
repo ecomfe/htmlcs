@@ -13,7 +13,7 @@ describe('hint rule ' + rule, function () {
     var result = htmlcs.hintFile(path.join(__dirname, 'case.html'));
 
     it('should return right result', function () {
-        expect(result.length).toBe(2);
+        expect(result.length).toBe(1);
 
         expect(result[0].type).toBe('WARN');
         expect(result[0].code).toBe('028');
