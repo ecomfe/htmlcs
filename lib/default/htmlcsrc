@@ -37,6 +37,7 @@
     "tagname-lowercase": true,              // true: Tagname must be lowercase
     "title-required": true,                 // true: <title> required
     "unique-id": true,                      // true: Id should be unique in page
+    "unnecessary-whitespace-in-text": true, // true: Unnecessary usage of a trailing white-space in text
     "no-duplication-id-and-name": true,     // true: Id and name should be not duplication in difference elements
     "viewport": true,                       // true: <meta name="viewport" content="..."> required
     "label-for-input": true,                // true: input should be associate with label
