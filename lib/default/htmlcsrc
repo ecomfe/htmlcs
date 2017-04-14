@@ -21,6 +21,7 @@
     "indent-char": "space-4",               // "space-4": Line should indent with 4 spaces.
     "lowercase-class-with-hyphen": true,    // true: ClassName should be lowercase words connected with hyphens
     "lowercase-id-with-hyphen": true,       // true: Id should be lowercase words connected with hyphens
+    "multiple-stylesheets": true,           // true: More than one style-sheet is included (combining all style-sheets into one neat CSS file would be cleaner)
     "nest": true,                           // true: Elements should be nested abiding by specific rules
     "new-line-for-blocks": true,            // true: There should be a new line for every block, list, or table element
 	"no-space-before-tag-end": false,       // false: There should be no whitespaces before tag end
