@@ -13,6 +13,7 @@ describe('rule ' + rule, function () {
     var result1 = htmlcs.hintFile(path.join(__dirname, 'case1.html'));
     var result2 = htmlcs.hintFile(path.join(__dirname, 'case2.html'));
     var result3 = htmlcs.hintFile(path.join(__dirname, 'case3.html'));
+	var result4 = htmlcs.hintFile(path.join(__dirname, 'case4.html'));
 
     it('should return right result', function () {
         expect(result1.length).toBe(1);
@@ -28,6 +29,11 @@ describe('rule ' + rule, function () {
         expect(result3[0].code).toBe('041');
         expect(result3[0].line).toBe(1);
         expect(result3[0].column).toBe(1);
+		
+		expect(result4[0].type).toBe('WARN');
+        expect(result4[0].code).toBe('041');
+        expect(result4[0].line).toBe(1);
+        expect(result4[0].column).toBe(1);
     });
 });
 
