@@ -10,7 +10,7 @@
     "button-type": true,                    // true: Attribute "type" of <button> should be set
     "charset": true,                        // true: <meta charset> required
     "css-in-head": true,                    // true: Css contents (link[rel=stylesheet], style) should to be in <head>
-    "doctype": "upper",                     // true: DOCTYPE required
+    "doctype": true,                        // true: DOCTYPE required
     "html-lang": true,                      // true: Attribute "lang" of <html> should be set
     "id-class-ad-disabled": true,           // true: Id and class can not use ad-relative keyword, it will be blocked by adblock software
     "ie-edge": true,                        // true: <meta http-equiv="X-UA-Compatible" content="IE=Edge"> required
