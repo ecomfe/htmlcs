@@ -29,8 +29,8 @@ describe('rule ' + rule, function () {
         expect(result3[0].code).toBe('041');
         expect(result3[0].line).toBe(1);
         expect(result3[0].column).toBe(1);
-		
-		expect(result4[0].type).toBe('WARN');
+
+        expect(result4[0].type).toBe('WARN');
         expect(result4[0].code).toBe('041');
         expect(result4[0].line).toBe(1);
         expect(result4[0].column).toBe(1);
