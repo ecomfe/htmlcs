@@ -10,7 +10,7 @@
     "button-type": true,                    // true: Attribute "type" of <button> should be set
     "charset": true,                        // true: <meta charset> required
     "css-in-head": true,                    // true: Css contents (link[rel=stylesheet], style) should to be in <head>
-    "doctype": true,                        // true: DOCTYPE required
+    "doctype": "upper",                        // true: DOCTYPE required
     "html-lang": true,                      // true: Attribute "lang" of <html> should be set
     "id-class-ad-disabled": true,           // true: Id and class can not use ad-relative keyword, it will be blocked by adblock software
     "ie-edge": true,                        // true: <meta http-equiv="X-UA-Compatible" content="IE=Edge"> required
@@ -21,7 +21,11 @@
     "indent-char": "space-4",               // "space-4": Line should indent with 4 spaces.
     "lowercase-class-with-hyphen": true,    // true: ClassName should be lowercase words connected with hyphens
     "lowercase-id-with-hyphen": true,       // true: Id should be lowercase words connected with hyphens
+    "multiple-stylesheets": true,           // true: More than one style-sheet is included (combining all style-sheets into one neat CSS file would be cleaner)
     "nest": true,                           // true: Elements should be nested abiding by specific rules
+    "new-line-for-blocks": true,            // true: There should be a new line for every block, list, or table element
+	"no-space-before-tag-end": false,       // false: There should be no whitespaces before tag end
+    "protocol-omitted-in-href": false,      // false: Protocol (http:// or https://) should be omitted from href attribute (there should be "//" instead)
     "rel-stylesheet": true,                 // true: Attribute "rel" of imported css (<link>) should be set as "stylesheet"
     "script-content": true,                 // true: Content of <script> must meet standard
     "script-in-tail": true,                 // true: Js contents (script:not([type]), script[type="text/javascript"]) should be in the tail of <body>
@@ -33,6 +37,7 @@
     "tagname-lowercase": true,              // true: Tagname must be lowercase
     "title-required": true,                 // true: <title> required
     "unique-id": true,                      // true: Id should be unique in page
+    "unnecessary-whitespace-in-text": true, // true: Unnecessary usage of a trailing white-space in text
     "no-duplication-id-and-name": true,     // true: Id and name should be not duplication in difference elements
     "viewport": true,                       // true: <meta name="viewport" content="..."> required
     "label-for-input": true,                // true: input should be associate with label
