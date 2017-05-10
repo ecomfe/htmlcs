@@ -33,7 +33,7 @@
     "node": ">=4"
   },
   "scripts": {
-    "lint": "fecs -v && fecs lib test index.js --type=js",
+    "lint": "fecs -v && fecs lib test index.js --type=js --rule",
     "coverage": "istanbul cover jasmine-node --captureExceptions test/",
     "test": "npm run lint && npm run coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls"

@@ -5,7 +5,6 @@
 
 var path = require('path');
 var htmlcs = require('../../../../');
-var parse = require('../../../../lib/parse');
 
 var rule = path.basename(__dirname);
 
@@ -26,4 +25,3 @@ describe('hint rule ' + rule, function () {
         expect(result[1].column).toBe(5);
     });
 });
-
