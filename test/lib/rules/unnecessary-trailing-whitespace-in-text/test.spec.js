@@ -16,7 +16,7 @@ describe('hint rule ' + rule, function () {
         expect(result.length).toBe(1);
 
         expect(result[0].type).toBe('WARN');
-        expect(result[0].code).toBe('051');
+        expect(result[0].code).toBe('052');
         expect(result[0].line).toBe(11);
         expect(result[0].column).toBe(11);
 
