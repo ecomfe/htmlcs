@@ -1,6 +1,6 @@
 {
   "name": "htmlcs",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "html hint tool, focused on semantic code style.",
   "main": "index.js",
   "browser": "browser.js",
@@ -19,7 +19,7 @@
     "jformatter": "stable",
     "manis": "^0.3.0",
     "walk": "^2.3.9",
-    "yargs": "^3.29.0"
+    "yargs": "^8.0.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.8",
@@ -27,7 +27,7 @@
     "fecs": "stable",
     "istanbul": "^0.4.2",
     "jasmine-node": "^2.0.0",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.7.7"
   },
   "engines": {
     "node": ">=4"
