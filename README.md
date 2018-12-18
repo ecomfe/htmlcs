@@ -5,7 +5,7 @@ htmlcs
 [![NPM version](https://img.shields.io/npm/v/htmlcs.svg?style=flat)](https://www.npmjs.com/package/htmlcs)
 [![Coverage Status](https://img.shields.io/coveralls/ecomfe/htmlcs.svg?style=flat)](https://coveralls.io/r/ecomfe/htmlcs)
 [![Dependencies](https://img.shields.io/david/ecomfe/htmlcs.svg?style=flat)](https://david-dm.org/ecomfe/htmlcs)
-[![DevDependencies](https://img.shields.io/david/dev/ecomfe/htmlcs.svg?style=flat)](https://david-dm.org/ecomfe/htmlcs)
+[![DevDependencies](https://img.shields.io/david/dev/ecomfe/htmlcs.svg?style=flat)](https://david-dm.org/ecomfe/htmlcs) [![Greenkeeper badge](https://badges.greenkeeper.io/ecomfe/htmlcs.svg)](https://greenkeeper.io/)
 
 
 HTML code style check & format tool.
